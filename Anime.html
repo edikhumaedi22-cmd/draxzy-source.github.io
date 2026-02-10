@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Station Clone</title>
+    <style>
+        /* Gaya Dasar */
+        body {
+            background-color: #0b011d; /* Ungu gelap sesuai gambar */
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 15px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            color: #ff00ff;
+            font-weight: bold;
+            font-size: 20px;
+            text-transform: uppercase;
+        }
+        .home-btn {
+            background-color: #a332c3;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Search Bar */
+        .search-container {
+            background-color: #1a0b35;
+            border: 1px solid #4a1d7a;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* Judul Section */
+        .section-title {
+            border-left: 4px solid #ff0080;
+            padding-left: 10px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-size: 18px;
+            letter-spacing: 1px;
+        }
+
+        /* Grid Kartu Anime */
+        .anime-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 kolom */
+            gap: 15px;
+        }
+
+        .anime-card {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #160a2c;
+        }
+
+        .anime-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Badge Rating */
+        .rating-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 0, 128, 0.8);
+            padding: 2px 8px;
+            border-radius: 15px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* Info di bawah gambar */
+        .anime-info {
+            padding: 10px 5px;
+        }
+        .anime-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .anime-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #00c3ff; /* Warna biru muda meta */
+        }
+    </style>
+</head>
+<body>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp</title>
+    <style>
+        body {
+            background-color: #121212;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+    .tool-desc {
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+    
+        .tool-title {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+        .tool-icon {
+      width: 50px;
+      height: 50px;
+      background: #9c27b0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      font-size: 1.5rem;
+      color: white;
+    }
+    
+        .tool-card {
+      background: linear-gradient(135deg, #2d004b, #4a0080);
+      border-radius: 15px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-5px);
+    }
+    
+        .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    
+    
+        
+                .section-header {
+            background: linear-gradient(90deg, #8a2be2, #4b0082);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            margin: 0 -15px 10px -15px;
+            font-size: 16px;
+            text-align: left;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .bottom-nav {
+            width: 100%;
+            background-color: #2a2a2a;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            border-top: 2px solid #ff3333;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: #cccccc;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: #ff3333;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .nav-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            background-color: rgba(255, 51, 51, 0.1);
+            transform: scale(1.05);
+        }
+
+        .icon-kembali::before { content: "🦠"; }
+
+        .android-navigation {
+            width: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            position: fixed;
+            bottom: -40px;
+            left: 0;
+            z-index: 999;
+        }
+
+        .android-btn {
+            color: #fff;
+            font-size: 20px;
+            padding: 5px 15px;
+        }
+    </style>
+</head>
+<body>
+
+
+        <div class="nav-item" onclick="window.location.href='whatsapp.html'">
+            <span class="nav-icon icon-kembali"></span>
+            <span class="nav-text">kembali</span>
+        </div>
+
+    <div class="search-container">
+        Cari anime (contoh: Naruto, One Piece, Attack on Titan)...
+    </div>
+
+    <h2 class="section-title">ANIME TERPOPULER</h2>
+
+    <div class="anime-grid">
+        <div class="anime-card">
+            <div class="rating-badge">★ 8.6</div>
+            <img src="https://img2.pixhost.to/images/5470/690950485_levvihosting.jpg" alt="AOT">
+            <div class="anime-info">
+                <div class="anime-title">One punch man</div>
+                <div class="anime-meta">
+                    <span>TV</span>
+                    <span>2013</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="anime-card">
+            <div class="rating-badge">★ 8.6</div>
+            <img src="https://img2.pixhost.to/images/5470/690950740_levvihosting.jpg" alt="Death Note">
+            <div class="anime-info">
+                <div class="anime-title">One Piece</div>
+                <div class="anime-meta">
+                    <span>TV</span>
+                    <span>2006</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="anime-card">
+            <div class="rating-badge">★ 9.1</div>
+            <img src="https://img2.pixhost.to/images/5470/690951051_levvihosting.jpg" alt="FMA">
+            <div class="anime-info">
+                <div class="anime-title">Naruto</div>
+                <div class="anime-meta">
+                    <span>TV</span>
+                    <span>2009</span>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+        
+            <div class="anime-grid">
+        <div class="anime-card">
+            <div class="rating-badge">★ 8.6</div>
+            <img src="https://img2.pixhost.to/images/5470/690953441_levvihosting.jpg" alt="AOT">
+            <div class="anime-info">
+                <div class="anime-title">Demon Slayer</div>
+                <div class="anime-meta">
+                    <span>TV</span>
+                    <span>2013</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="anime-card">
+            <div class="rating-badge">★ 8.6</div>
+            <img src="https://img2.pixhost.to/images/5470/690953776_levvihosting.jpg" alt="Death Note">
+            <div class="anime-info">
+                <div class="anime-title">Attack on Titan</div>
+                <div class="anime-meta">
+                    <span>TV</span>
+                    <span>2006</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="anime-card">
+            <div class="rating-badge">★ 9.1</div>
+            <img src="https://img2.pixhost.to/images/5470/690954292_levvihosting.jpg" alt="FMA">
+            <div class="anime-info">
+                <div class="anime-title">Hunter X Hunter</div>
+                <div class="anime-meta">
+                    <span>TV</span>
+                    <span>2009</span>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+        
+    <div class="anime-grid">
+        <div class="anime-card">
+            <div class="rating-badge">★ 9.1</div>
+            <img src="https://img2.pixhost.to/images/5470/690957182_levvihosting.jpg" alt="FMA">
+            <div class="anime-info">
+                <div class="anime-title">Jujutsu kaisen</div>
+                <div class="anime-meta">
+                    <span>TV</span>
+                    <span>2009</span>
+                </div>
+            </div>
+        </div>
+</body>
+</html>

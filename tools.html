@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools</title>
+    <style>
+        body {
+            background-color: #121212;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .bottom-nav {
+            width: 100%;
+            background-color: #2a2a2a;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            border-top: 2px solid #ff3333;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: #cccccc;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: #ff3333;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .nav-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            background-color: rgba(255, 51, 51, 0.1);
+            transform: scale(1.05);
+        }
+
+        .icon-home::before { content: "🏠"; }
+        .icon-whatsapp::before { content: "💬"; }
+        .icon-dashboard::before { content: "👻"; }
+        .icon-tools::before { content: "⚙️"; }
+
+        .android-navigation {
+            width: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            position: fixed;
+            bottom: -40px;
+            left: 0;
+            z-index: 999;
+        }
+
+        .android-btn {
+            color: #fff;
+            font-size: 20px;
+            padding: 5px 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Konten Tools -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DarkVerse Tools</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: rgba(30, 0, 60, 0.7);
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .header h1 {
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+    }
+
+    .header .icon {
+      width: 30px;
+      height: 30px;
+      background: #9c27b0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .tool-card {
+      background: linear-gradient(135deg, #2d004b, #4a0080);
+      border-radius: 15px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .tool-icon {
+      width: 50px;
+      height: 50px;
+      background: #9c27b0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .tool-title {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .tool-desc {
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+
+    .footer-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(30, 0, 60, 0.8);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      border-top: 1px solid #4a0080;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 5px;
+      color: white;
+      font-size: 0.75rem;
+    }
+
+    .nav-item.active {
+      color: #bb86fc;
+    }
+
+    .nav-icon {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>TOOLS DASHBOARD</h1>
+    <div class="icon">⚙️</div>
+  </div>
+
+  <div class="dashboard-grid">
+<a href="attack-panel.html" class="tool-card">
+    <div class="tool-icon">⚡</div>
+    <div class="tool-title">Glob Tools</div>
+    <div class="tool-desc">Kill & Wipe</div>
+</a>
+
+<a href="attack.html" class="tool-card">
+    <div class="tool-icon">📶</div>
+    <div class="tool-title">Network</div>
+    <div class="tool-desc">WIFI & Scan</div>
+</a> 
+
+    <div class="tool-card">
+      <div class="tool-icon">🔍</div>
+      <div class="tool-title">OSINT</div>
+      <div class="tool-desc">Intelligence</div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-icon">⬇️</div>
+      <div class="tool-title">Downloader</div>
+      <div class="tool-desc">Social Media</div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-icon">🔧</div>
+      <div class="tool-title">Utilities</div>
+      <div class="tool-desc">Extra Tools</div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-icon">🚀</div>
+      <div class="tool-title">Quick Access</div>
+      <div class="tool-desc">Favorites</div>
+    </div>
+    
+      <div class="dashboard-grid">
+<a href="kontol.html" class="tool-card">
+    <div class="tool-icon">💌</div>
+    <div class="tool-title">laporkan bug</div>
+    <div class="tool-desc">DeffXy</div>
+</a>
+  </div>
+
+  <div class="footer-nav">
+    <div class="nav-item">
+      <div class="nav-icon">🏠</div>
+      <div>Home</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon">💬</div>
+      <div>WhatsApp</div>
+    </div>
+    <div class="nav-item active">
+      <div class="nav-icon">🛠️</div>
+      <div>Tools</div>
+    </div>
+  </div>
+
+</body>
+</html>
+
+    <!-- Menu Navigasi Bawah -->
+    <div class="bottom-nav">
+        <div class="nav-item" onclick="window.location.href='index.html'">
+            <span class="nav-icon icon-home"></span>
+            <span class="nav-text">Home</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='whatsapp.html'">
+            <span class="nav-icon icon-whatsapp"></span>
+            <span class="nav-text">WhatsApp</span>
+        </div>
+                <div class="nav-item" onclick="window.location.href='dashboard.html'">
+            <span class="nav-icon icon-dashboard"></span>
+            <span class="nav-text">bug-system</span>
+        </div>
+        <div class="nav-item active">
+            <span class="nav-icon icon-tools"></span>
+            <span class="nav-text">Tools</span>
+        </div>
+    </div>
+
+    <!-- Tombol Android (opsional) -->
+    <div class="android-navigation">
+        <div class="android-btn">≡</div>
+        <div class="android-btn">●</div>
+        <div class="android-btn">◀</div>
+    </div>
+
+</body>
+</html>

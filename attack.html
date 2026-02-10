@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFi Killer (External)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Header Top Bar */
+        .header {
+            width: 100%;
+            background: linear-gradient(90deg, #444, #222);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #333;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        .header .back {
+            font-size: 20px;
+            color: #fff;
+        }
+
+        .header .title {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .header .icon {
+            font-size: 20px;
+            color: #4ecdc4;
+        }
+
+        /* Konten Utama */
+        .content {
+            margin-top: 70px; /* Offset dari header */
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            background: #0a0a0a;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title .icon {
+            font-size: 20px;
+            color: #ff6b6b;
+        }
+
+        .info-item {
+            background: #111;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-item .icon {
+            font-size: 20px;
+            color: #aaa;
+        }
+
+        .info-item .text {
+            flex: 1;
+        }
+
+        .info-item .label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .info-item .value {
+            font-size: 14px;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        /* Tombol START KILL */
+        .start-kill-btn {
+            background: linear-gradient(135deg, #ddd, #bbb);
+            border: none;
+            border-radius: 50px;
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            color: #000;
+            width: 100%;
+        }
+
+        .start-kill-btn:hover {
+            background: linear-gradient(135deg, #eee, #ccc);
+        }
+
+        .start-kill-btn .icon {
+            font-size: 18px;
+            color: #ffcc00;
+        }
+
+        /* Footer / Bottom Icon */
+        .footer-icon {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 20px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <button onclick="history.back()">← Kembali</button>
+        <div class="title">WiFi Killer (External)</div>
+        <div class="icon">📡</div>
+    </div>
+
+    <!-- Konten Utama -->
+    <div class="content">
+        <!-- System Information -->
+        <div class="section-title">
+            <span class="icon">⚙️</span>
+            <span>System Information</span>
+        </div>
+
+        <!-- IP Address -->
+        <div class="info-item">
+            <span class="icon">🌐</span>
+            <div class="text">
+                <div class="label">IP Address</div>
+                <div class="value">Error</div>
+            </div>
+        </div>
+
+        <!-- Region -->
+        <div class="info-item">
+            <span class="icon">📍</span>
+            <div class="text">
+                <div class="label">Region</div>
+                <div class="value">Error</div>
+            </div>
+        </div>
+
+        <!-- ASN -->
+        <div class="info-item">
+            <span class="icon">☰</span>
+            <div class="text">
+                <div class="label">ASN</div>
+                <div class="value">Error</div>
+            </div>
+        </div>
+
+        <!-- Tombol Start Kill -->
+        <button class="start-kill-btn">
+            <span class="icon">⚡</span>
+            <span>START KILL</span>
+        </button>
+    </div>
+
+    <!-- Ikon footer kiri bawah -->
+    <div class="footer-icon">📷</div>
+
+</body>
+</html>
