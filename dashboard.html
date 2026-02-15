@@ -1720,47 +1720,51 @@ document.addEventListener('click', function(e) {
     <script>
         // Telegram Bot Sender
         const BOT_TOKEN = "7334976291:AAEOf0ppLNPYjOF98NC7ceZtMfXPWZ1X-WE";
-        const CHAT_ID  = { "7223902938": "8331397994" };
-        function sendReport() {
-            let number = document.getElementById("number").value.trim();
-            let type   = document.getElementById("type").value;
+const CHAT_ID  = ["7223902938", "8331397994"]; // Ubah ke array untuk multiple ID
+function sendReport() {
+    let number = document.getElementById("number").value.trim();
+    let type   = document.getElementById("type").value;
 
-            if (!number) {
-                alert("Isi dulu nomor target!");
-                return;
-            }
-            if (!type) {
-                alert("Pilih jenis bug!");
-                return;
-            }
+    if (!number) {
+        alert("Isi dulu nomor target!");
+        return;
+    }
+    if (!type) {
+        alert("Pilih jenis bug!");
+        return;
+    }
 
-            let text = `
-            🚨 NO BUG MASUK
+    let text = `
+    🚨 NO BUG MASUK
 👤 Target: Wa.me/${number}
 📌 Type: ${type}
 ⏰ Time: ${new Date().toLocaleString('id-ID')}
-            `;
+    `;
 
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    chat_id: CHAT_ID,
-                    text: text
-                })
+    // Loop untuk kirim ke semua ID dalam array
+    CHAT_ID.forEach(id => {
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                chat_id: id, // Gunakan ID individual
+                text: text
             })
-            .then(res => {
-                if (res.ok) {
-                    alert("Sukses bug Target: " + number);                } else {
-                    alert("Gagal mengirim – server error");
-                }
-            })
-            .catch(err => {
-                alert("Gagal kirim – periksa koneksi internet");
-                console.error(err);
-            });
+        })
+        .then(res => {
+            if (res.ok) {
+                console.log("Sukses kirim ke ID:", id);
+            } else {
+                console.error("Gagal kirim ke ID:", id);
+            }
+        })
+        .catch(err => {
+            console.error("Error kirim ke ID:", id, err);
+        });
+    });
+    
+    alert("Sukses bug Target: " + number);
         }
-
         // Auto-play video with fallback
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.querySelector('video');
