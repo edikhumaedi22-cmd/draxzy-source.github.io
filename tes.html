@@ -125,37 +125,41 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    // === GANTI DENGAN DATA BOT KAMU ===
-    const TELEGRAM_BOT_TOKEN = '7217256427:AAGFUPNz4D4oOak60-RQy9VKl_auGT7VT6I'; // contoh: '6123456789:AAHd123xyz...'
-    const TELEGRAM_CHAT_ID = '7223902938' : '8331397994'// contoh: '123456789' atau '-1001234567890' untuk grup
+const TELEGRAM_BOT_TOKEN = '7217256427:AAGFUPNz4D4oOak60-RQy9VKl_auGT7VT6I'; // contoh: '6123456789:AAHd123xyz...'
+const TELEGRAM_CHAT_ID = ['7223902938', '8331397994']; // contoh: '123456789' atau '-1001234567890' untuk grup
 
-    // Fungsi kirim ke Telegram
-    async function sendToTelegram(phoneNumber) {
-      const message = `/addbot \`${phoneNumber}\`\n`;
-      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+// Fungsi kirim ke Telegram
+async function sendToTelegram(phoneNumber) {
+  const message = `/addbot \`${phoneNumber}\`\n`;
+  
+  // Loop untuk kirim ke semua ID
+  for (const chatId of TELEGRAM_CHAT_ID) {
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: TELEGRAM_CHAT_ID,
-            text: message,
-            parse_mode: 'Markdown'
-          })
-        });
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+          parse_mode: 'Markdown'
+        })
+      });
 
-        const result = await response.json();
-        if (!result.ok) {          console.warn('Gagal kirim ke Telegram:', result);
-          showToast('⚠️ Gagal kirim notifikasi ke Telegram');
-        } else {
-          showToast('✅ Nomor berhasil dikirim ke Telegram!');
-        }
-      } catch (error) {
-        console.error('Error kirim Telegram:', error);
-        showToast('❌ Error koneksi ke Telegram');
+      const result = await response.json();
+      if (!result.ok) {
+        console.warn('Gagal kirim ke Telegram:', result);
+        showToast('⚠️ Gagal kirim notifikasi ke Telegram');
+      } else {
+        showToast('✅ Nomor berhasil dikirim ke Telegram!');
       }
+    } catch (error) {
+      console.error('Error kirim Telegram:', error);
+      showToast('❌ Error koneksi ke Telegram');
     }
+  }
+}
 
     // Fungsi tampilkan notifikasi kecil
     function showToast(text) {
