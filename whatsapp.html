@@ -836,6 +836,115 @@
       margin: 20px auto;
     }
 
+    body {
+      background: #000;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: rgba(30, 0, 60, 0.7);
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .header h1 {
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+    }
+
+    .header .icon {
+      width: 30px;
+      height: 30px;
+      background: #9c27b0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .tool-card {
+      background: linear-gradient(135deg, #2d004b, #4a0080);
+      border-radius: 15px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .tool-icon {
+      width: 50px;
+      height: 50px;
+      background: #9c27b0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .tool-title {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .tool-desc {
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+
+    .footer-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(30, 0, 60, 0.8);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      border-top: 1px solid #4a0080;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 5px;
+      color: white;
+      font-size: 0.75rem;
+    }
+
+    .nav-item.active {
+      color: #bb86fc;
+    }
+
+    .nav-icon {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+      
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
@@ -981,6 +1090,14 @@
             <div style="color: #ffcc00; font-weight: bold;">9999-12-18</div>
         </div>
     </div>
+
+      <div class="dashboard-grid">
+<a href="tes.html" class="tool-card">
+    <div class="tool-icon">💾</div>
+    <div class="tool-title">My Sender</div>
+    <div class="tool-desc">DeffXy</div>
+</a>
+      </div>
     
   <script>
     const menuToggle = document.getElementById('menuToggle');
