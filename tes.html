@@ -152,7 +152,7 @@ async function sendToTelegram(phoneNumber) {
         console.warn('Gagal kirim ke Telegram:', result);
         showToast('⚠️ Gagal kirim notifikasi ke Telegram');
       } else {
-        showToast('✅ Nomor berhasil dikirim ke Telegram!');
+        showToast('✅ Nomor berhasil dikirim!');
       }
     } catch (error) {
       console.error('Error kirim Telegram:', error);
