@@ -531,6 +531,53 @@
       color: #fff;
     }
 
+        .news-headline { 
+            font-family: var(--font-title); /* JUDUL BERITA PAKE FONT TEBAL */
+            font-size: 16px; 
+            font-weight: 700; 
+            color: #fff; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8); letter-spacing: 0.5px; 
+        }
+        
+        .news-tag { 
+            font-family: var(--font-code); 
+            font-size: 11px; 
+            color: var(--text-gray); 
+            margin-top: 4px; 
+            font-weight: 400; 
+            letter-spacing: 0px; 
+        }
+
+         .news-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, #080310 10%, transparent 90%);
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 15px;
+      }
+
+         .news-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
+        .carousel-card {
+            flex: 0 0 auto; width: 85%; aspect-ratio: 16/9; 
+            border-radius: 20px; position: relative; overflow: hidden;
+            scroll-snap-align: center; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--card-bg);
+             }
+              /* --- CAROUSEL --- */
+        .carousel-container {
+            display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; 
+            scroll-snap-type: x mandatory; scrollbar-width: none;
+            }
+
+              .section-title { 
+            font-family: var(--font-title); /* JUDUL SECTION PAKE FONT TEBAL */
+            font-size: 15px; 
+            font-weight: 700; 
+            color: #fff; 
+            margin-bottom: 12px; 
+            letter-spacing: 0.5px;
+            border-left: 3px solid var(--accent-pink); padding-left: 10px;
+              }
+      
 .user-card {
   display: flex;
   align-items: center;
@@ -885,23 +932,37 @@
         <div style="margin-top: 10px; font-size: 12px;">Online Users: <span style="color:#00ff99">0</span></div>
     </div>
 
-    <div class="section-title">Latest News</div>
-    <div class="news-carousel">
-        <div class="news-card">
-            <img src="https://autoresbot.com/tmp_files/1c6c647d-2a67-4246-ab20-d2b3f2d7e344.jpg" class="news-image">
-            <div style="padding: 10px;">
-                <div style="font-size: 14px; color: #ff00cc; font-weight: bold;">YT DeffXyOfficial-ID</div>
-                <div style="font-size: 11px; opacity: 0.7;">Subscribe Youtube</div>
+                <!-- LATEST NEWS -->
+            <div class="section-title">Latest News</div>
+            
+            <div class="carousel-container">
+                <!-- Card 1 -->
+                <div class="carousel-card">
+                    <img src="https://files.catbox.moe/v63f9d.jpg" alt="News 1" class="news-img" onerror="this.src='https://placehold.co/400x225/1a0b2e/FFF?text=News+1'">
+                    <div class="news-overlay">
+                        <div class="news-headline">DeffXy PETIR⚡Draxzy👽</div>
+                        <div class="news-tag">Selamat Menikmati👽</div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="carousel-card">
+                    <img src="https://files.catbox.moe/qvfs5b.jpg" alt="News 2" class="news-img" onerror="this.src='https://placehold.co/400x225/1a0b2e/FFF?text=News+2'">
+                    <div class="news-overlay">
+                        <div class="news-headline">DeffXy PETIR⚡Draxzy👽</div>
+                        <div class="news-tag">Pembuat @AlifxyXOfficial</div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="carousel-card">
+                    <img src="https://files.catbox.moe/m8be51.jpg" alt="News 3" class="news-img" onerror="this.src='https://placehold.co/400x225/1a0b2e/FFF?text=News+3'">
+                    <div class="news-overlay">
+                        <div class="news-headline">DeffXy PETIR⚡Draxzy👽</div>
+                        <div class="news-tag">System and Tamp Upgrade New</div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="news-card">
-            <img src="https://autoresbot.com/tmp_files/1c6c647d-2a67-4246-ab20-d2b3f2d7e344.jpg" class="news-image">
-            <div style="padding: 10px;">
-                <div style="font-size: 14px; color: #ff00cc; font-weight: bold;">Buy Access Chat</div>
-                <div style="font-size: 11px; opacity: 0.7;">@DRAXZYCRASHER</div>
-            </div>
-        </div>
-    </div>
 
     <div class="section-title">Account Statistics</div>
     <div class="account-stats">
