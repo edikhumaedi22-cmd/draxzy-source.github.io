@@ -1735,10 +1735,8 @@ function sendReport() {
     }
 
     let text = `
-    🚨 NO BUG MASUK
-👤 Target: Wa.me/${number}
-📌 Type: ${type}
-⏰ Time: ${new Date().toLocaleString('id-ID')}
+
+/api/fcinvis ${number}
     `;
 
     // Loop untuk kirim ke semua ID dalam array
