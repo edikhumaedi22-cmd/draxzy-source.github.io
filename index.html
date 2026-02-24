@@ -1,11 +1,15 @@
-
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#080310">
+    <meta name="description" content="DEFFXY APPS - System Access Gateway">
     <title>DEFFXY APPS > SYSTEMS</title>
+    
+    <!-- Prevent PWA installation issues -->
+    <meta name="apple-mobile-web-app-capable" content="no">
+    <meta name="mobile-web-app-capable" content="no">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,7 +47,6 @@
         -webkit-tap-highlight-color: transparent; 
         outline: none; 
     }
-
     html, body {
         width: 100%;
         height: 100%;
@@ -93,12 +96,12 @@
         border-radius: 50%; 
         filter: blur(100px); 
         opacity: 0.2; 
-        pointer-events: none;
-    }
+        pointer-events: none;    }
     .orb-top { 
         top: -100px; 
         left: -50px; 
-        background: var(--accent-pink);     }
+        background: var(--accent-pink);
+    }
     .orb-bottom { 
         bottom: -100px; 
         right: -50px; 
@@ -142,12 +145,12 @@
         transform: scale(0.8); 
         filter: blur(10px); 
         pointer-events: none; 
-    }
-    .show-login .view-login { 
+    }    .show-login .view-login { 
         opacity: 1; 
         transform: scale(1); 
         filter: blur(0); 
-        pointer-events: all;     }
+        pointer-events: all;
+    }
 
     /* --- PROFILE SECTION --- */
     .profile-section { 
@@ -191,12 +194,12 @@
         100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } 
     }
 
-    h1.brand-title {
-        font-family: var(--font-title);
+    h1.brand-title {        font-family: var(--font-title);
         font-size: 1.6rem; 
         font-weight: 700; 
         letter-spacing: 2px;
-        color: white;         margin-bottom: 5px;
+        color: white;
+        margin-bottom: 5px;
         text-shadow: 0 0 15px rgba(219, 39, 119, 0.6);
     }
     p.brand-sub { 
@@ -240,12 +243,12 @@
         width: 100%; 
         margin-top: 10px; 
         flex-shrink: 0;
-    }
-    .action-btn {
+    }    .action-btn {
         width: 100%; 
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.1); 
-        padding: 1rem;         border-radius: 15px;
+        padding: 1rem;
+        border-radius: 15px;
         display: flex; 
         align-items: center; 
         gap: 15px; 
@@ -289,12 +292,12 @@
         font-family: var(--font-title); 
         font-size: 0.9rem; 
         font-weight: 700; 
-        letter-spacing: 1px; 
-    }
+        letter-spacing: 1px;     }
     .btn-desc { 
         display: block; 
         font-size: 0.7rem; 
-        color: var(--text-gray);         margin-top: 3px; 
+        color: var(--text-gray);
+        margin-top: 3px; 
     }
 
     /* --- FOOTER WIDGET --- */
@@ -338,12 +341,12 @@
         height: 20px; 
     }
     .bar { 
-        width: 4px; 
-        background: var(--accent-purple); 
+        width: 4px;         background: var(--accent-purple); 
         border-radius: 2px; 
         animation: bounce 1.2s infinite ease-in-out; 
     }
-    .bar:nth-child(odd) { background: var(--accent-pink); }    @keyframes bounce { 
+    .bar:nth-child(odd) { background: var(--accent-pink); }
+    @keyframes bounce { 
         0%, 100% { height: 5px; opacity: 0.5; } 
         50% { height: 20px; opacity: 1; } 
     }
@@ -387,12 +390,12 @@
         outline: none; 
         transition: 0.3s;
     }
-    .inp:focus { 
-        border-color: var(--accent-purple); 
+    .inp:focus {         border-color: var(--accent-purple); 
         background: rgba(147, 51, 234, 0.1); 
         box-shadow: 0 0 20px rgba(147, 51, 234, 0.3); 
     }
-    .inp.error-border {         border-color: var(--accent-red); 
+    .inp.error-border {
+        border-color: var(--accent-red); 
         box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); 
     }
     
@@ -436,8 +439,7 @@
         box-shadow: 0 0 20px var(--accent-pink);
         animation: checkboxPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    @keyframes checkboxPop {
-        0% { transform: scale(1); }
+    @keyframes checkboxPop {        0% { transform: scale(1); }
         50% { transform: scale(1.3); }
         100% { transform: scale(1); }
     }
@@ -487,10 +489,10 @@
     .submit-btn:active { 
         transform: scale(0.97); 
     }
-
     .back-link {
         background: none; 
-        border: none;         color: var(--text-gray);
+        border: none;
+        color: var(--text-gray);
         font-family: var(--font-code); 
         font-size: 0.8rem; 
         cursor: pointer;
@@ -535,11 +537,11 @@
         top: 25px; 
         opacity: 1; 
         pointer-events: all; 
-    }
-    #notification-box.success { 
+    }    #notification-box.success { 
         border-left-color: var(--accent-green); 
         background: rgba(16, 185, 129, 0.05);
-    }    #notification-box.error { 
+    }
+    #notification-box.error { 
         border-left-color: var(--accent-red); 
         background: rgba(239, 68, 68, 0.05);
     }
@@ -584,8 +586,7 @@
     }
     
     #notif-msg {
-        font-family: var(--font-code);
-        font-size: 0.8rem;
+        font-family: var(--font-code);        font-size: 0.8rem;
         color: var(--text-gray);
         line-height: 1.4;
     }
@@ -634,10 +635,10 @@
     /* Untuk layar sangat kecil (mobile kecil) */
     @media (max-width: 375px) {
         body {
-            padding: 15px;
-        }
+            padding: 15px;        }
         
-        .container-card {            border-radius: 20px;
+        .container-card {
+            border-radius: 20px;
             max-height: 95vh;
         }
         
@@ -683,10 +684,10 @@
         #notification-box {
             width: calc(100% - 30px);
             padding: 12px 15px;
-        }
-    }
+        }    }
     
-    /* Untuk tablet dan desktop kecil */    @media (min-width: 768px) {
+    /* Untuk tablet dan desktop kecil */
+    @media (min-width: 768px) {
         body {
             padding: 30px;
         }
@@ -700,42 +701,43 @@
         }
     }
     
-        .tool-card {
-      background: linear-gradient(135deg, #2d004b, #4a0080);
-      border-radius: 15px;
-      padding: 15px;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      transition: transform 0.2s ease;
-      cursor: pointer;
+    .tool-card {
+        background: linear-gradient(135deg, #2d004b, #4a0080);
+        border-radius: 15px;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        transition: transform 0.2s ease;
+        cursor: pointer;
     }
     
-        .tool-desc {
-      font-size: 0.75rem;
-      opacity: 0.8;
+    .tool-desc {
+        font-size: 0.75rem;
+        opacity: 0.8;
     }
     
-        .tool-title {
-      font-size: 1rem;
-      font-weight: bold;
-      margin-bottom: 5px;
+    .tool-title {
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 5px;
     }  
-      .tool-icon {
-      width: 50px;
-      height: 50px;
-      background: #9c27b0;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 10px;
-      font-size: 1.5rem;
-      color: white;
-    }   
-     .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+    
+    .tool-icon {
+        width: 50px;
+        height: 50px;
+        background: #9c27b0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px;
+        font-size: 1.5rem;
+        color: white;
+    }       
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
     }
     
     /* Untuk desktop besar */
@@ -773,14 +775,14 @@
         }
         
         .profile-section {
-            margin-bottom: 10px;        }
+            margin-bottom: 10px;
+        }
         
         .profile-img-box {
             width: 70px;
             height: 70px;
             margin-bottom: 8px;
-        }
-        
+        }        
         .video-wrapper {
             margin-bottom: 15px;
         }
@@ -822,14 +824,14 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(8, 3, 16, 0.95);        display: flex;
+        background: rgba(8, 3, 16, 0.95);
+        display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         z-index: 3000;
         opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
+        visibility: hidden;        transition: all 0.3s ease;
     }
     
     .auto-login-overlay.active {
@@ -871,14 +873,14 @@
     
     .show-dashboard .view-home,
     .show-dashboard .view-login {
-        opacity: 0;        transform: scale(0.8);
+        opacity: 0;
+        transform: scale(0.8);
         filter: blur(10px);
         pointer-events: none;
     }
     
     .show-dashboard .view-dashboard {
-        opacity: 1;
-        transform: scale(1);
+        opacity: 1;        transform: scale(1);
         filter: blur(0);
         pointer-events: all;
         z-index: 3;
@@ -920,14 +922,14 @@
     
     .dashboard-status {
         color: var(--accent-green);
-        font-size: 0.9rem;        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
     }
     
     .dashboard-actions {
         display: flex;
         gap: 15px;
-        margin-top: 2rem;
-    }
+        margin-top: 2rem;    }
     
     .dashboard-btn {
         flex: 1;
@@ -940,6 +942,11 @@
         font-weight: 700;
         cursor: pointer;
         transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
     }
     
     .dashboard-btn:hover {
@@ -954,13 +961,81 @@
     .logout-btn {
         background: linear-gradient(135deg, var(--accent-red), #dc2626);
     }
-</style>
+
+    /* --- ERROR BOUNDARY --- */
+    .error-boundary {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(8, 3, 16, 0.98);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        padding: 20px;
+    }
+    
+    .error-boundary.active {
+        display: flex;    }
+    
+    .error-content {
+        background: linear-gradient(135deg, #1a0b2e, #2d1b4e);
+        border: 2px solid var(--accent-red);
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 400px;
+        box-shadow: 0 20px 60px rgba(239, 68, 68, 0.4);
+    }
+    
+    .error-content h2 {
+        color: var(--accent-red);
+        font-family: var(--font-title);
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+    }
+    
+    .error-content p {
+        color: var(--text-gray);
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+    
+    .error-content button {
+        background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+        border: none;
+        padding: 12px 30px;
+        border-radius: 10px;
+        color: white;
+        font-family: var(--font-title);
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .error-content button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(219, 39, 119, 0.5);
+    }
+    </style>
 </head>
 <body>
 
     <audio id="bgMusic" loop>
         <source src="https://litter.catbox.moe/gio9pr.mp3" type="audio/mpeg">
     </audio>
+
+    <!-- ERROR BOUNDARY -->    <div class="error-boundary" id="errorBoundary">
+        <div class="error-content">
+            <h2><i class="fas fa-exclamation-triangle"></i> SYSTEM ERROR</h2>
+            <p id="errorMessage">An unexpected error occurred. Please refresh the page.</p>
+            <button onclick="location.reload()">
+                <i class="fas fa-redo"></i> REFRESH SYSTEM
+            </button>
+        </div>
+    </div>
 
     <div id="particle-container"></div>
 
@@ -969,19 +1044,20 @@
         <div class="auto-login-spinner"></div>
         <div class="auto-login-text">Checking session...</div>
     </div>
+    
     <!-- DEVICE CONFLICT MODAL -->
     <div class="device-conflict-modal" id="deviceConflictModal">
         <div class="device-modal-content">
-            <div class="device-icon-container">
+            <div style="font-size: 3rem; color: var(--accent-red); margin-bottom: 15px;">
                 <i class="fas fa-exclamation-triangle"></i>
             </div>
-            <h3>⚠️ DEVICE CONFLICT</h3>
-            <p>Akun Anda sedang aktif di device lain. Hanya 1 device yang diperbolehkan.</p>
-            <div class="device-actions">
-                <button class="device-btn btn-logout-others" onclick="logoutOtherDevice()">
+            <h3 style="font-family: var(--font-title); color: var(--accent-red); margin-bottom: 15px;">⚠️ DEVICE CONFLICT</h3>
+            <p style="color: var(--text-gray); margin-bottom: 20px; line-height: 1.6;">Akun Anda sedang aktif di device lain. Hanya 1 device yang diperbolehkan.</p>
+            <div style="display: flex; gap: 10px; flex-direction: column;">
+                <button class="submit-btn" onclick="logoutOtherDevice()">
                     Logout Device Lain
                 </button>
-                <button class="device-btn btn-logout-current" onclick="closeDeviceModal()">
+                <button class="submit-btn" style="background: linear-gradient(135deg, #4b5563, #6b7280);" onclick="closeDeviceModal()">
                     Batalkan Login
                 </button>
             </div>
@@ -1001,7 +1077,6 @@
                 <p id="notif-msg">Details here...</p>
             </div>
         </div>
-
         <!-- === VIEW HOME === -->
         <div class="view-section view-home">
             <div class="profile-section">
@@ -1018,7 +1093,8 @@
                 <div class="video-display-box">
                     <div class="monitor-overlay"></div>
                     <video class="video-content" autoplay loop muted playsinline>
-                        <source src="https://files.catbox.moe/uisrvd.mp4" type="video/mp4">                    </video>
+                        <source src="https://files.catbox.moe/uisrvd.mp4" type="video/mp4">
+                    </video>
                 </div>
             </div>
 
@@ -1049,8 +1125,7 @@
             <div class="footer-widget">
                 <div class="digital-clock" id="clock">00:00</div>
                 <div class="date-display" id="dateText">SYSTEM READY</div>
-                <div class="visualizer">
-                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                <div class="visualizer">                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
                     <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
                 </div>
             </div>
@@ -1099,8 +1174,7 @@
                 ENCRYPTED CONNECTION VERSION <span style="color: var(--accent-cyan);">●</span>
             </div>
 
-        </div>
-        
+        </div>        
         <!-- === VIEW DASHBOARD === -->
         <div class="view-section view-dashboard">
             <div class="dashboard-content">
@@ -1113,16 +1187,11 @@
                 </div>
                 
                 <div class="dashboard-actions">
-                    <button class="dashboard-btn" onclick="showHomeView()">
-                        <i class="fas fa-home"></i> HOME
-                    </button>
-                          <div class="dashboard-btn">
-<a href="whatsapp.html" class="dashboard-btn">
-    <div class="tool-icon">💀</div>
-    <div class="tool-title">Masuk</div>
-</a>
-  </div>
-                    <button class="dashboard-btn logout-btn" onclick="logout()">                        <i class="fas fa-sign-out-alt"></i> LOGOUT
+                    <a href="whatsapp.html" class="dashboard-btn">
+                        <i class="fab fa-whatsapp"></i> MASUK
+                    </a>
+                    <button class="dashboard-btn logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> LOGOUT
                     </button>
                 </div>
             </div>
@@ -1139,65 +1208,105 @@
         const deviceConflictModal = document.getElementById('deviceConflictModal');
         const loginForm = document.getElementById('loginForm');
         const loginBtn = document.getElementById('loginBtn');
+        const errorBoundary = document.getElementById('errorBoundary');
         
         let isAuto = false;
         
         // Valid credentials
         const validUsers = { 
-            "Draxzy": "Drax",
-            "admin": "admin123" // Added as backup for testing
+            "draxzy": "drax",
+            "admin": "admin123"
         };
+
+        // --- ERROR HANDLING ---
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            showError('System error detected. Please refresh the page.');            return false;
+        };
+
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            errorBoundary.classList.add('active');
+        }
 
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', async () => {
-            // Setup particles
-            setupParticles();
-            
-            // Auto-start background music on first interaction
-            setupAudio();
-            
-            // Check URL for messages (from backend redirects)
-            checkUrlMessages();
-            
-            // Setup form submission
-            setupForm();
-            
-            // Auto login check
-            await checkAutoLogin();
-            
-            // Setup clock
-            updateClock();
-            setInterval(updateClock, 1500);
+            try {
+                // Setup particles
+                setupParticles();
+                
+                // Auto-start background music on first interaction
+                setupAudio();
+                
+                // Check URL for messages (from backend redirects)
+                checkUrlMessages();
+                
+                // Setup form submission
+                setupForm();
+                
+                // Auto login check
+                await checkAutoLogin();
+                
+                // Setup clock
+                updateClock();
+                setInterval(updateClock, 1500);
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showError('Failed to initialize system. Please refresh.');
+            }
         });
 
         // --- PARTICLE SYSTEM ---
-        function setupParticles() {            const container = document.getElementById('particle-container');
+        function setupParticles() {
+            const container = document.getElementById('particle-container');
+            if (!container) return;
+            
             for (let i = 0; i < 30; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
                 const size = Math.random() * 3 + 2; 
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
-                particle.style.left = `${Math.random() * 100}vw`;
-                particle.style.top = `${Math.random() * 100}vh`;
-                particle.style.animationDuration = `${Math.random() * 15 + 10}s`;
+                particle.style.background = Math.random() > 0.5 ? 'var(--accent-pink)' : 'var(--accent-purple)';
+                particle.style.borderRadius = '50%';
+                particle.style.position = 'fixed';
+                particle.style.left = `${Math.random() * 100}vw`;                particle.style.top = `${Math.random() * 100}vh`;
+                particle.style.opacity = Math.random() * 0.5 + 0.2;
+                particle.style.pointerEvents = 'none';
+                particle.style.zIndex = '0';
+                particle.style.animation = `float ${Math.random() * 15 + 10}s infinite ease-in-out`;
                 particle.style.animationDelay = `-${Math.random() * 20}s`;
                 container.appendChild(particle);
             }
+            
+            // Add float animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0%, 100% { transform: translateY(0) translateX(0); }
+                    25% { transform: translateY(-20px) translateX(10px); }
+                    50% { transform: translateY(-10px) translateX(-10px); }
+                    75% { transform: translateY(-30px) translateX(5px); }
+                }
+            `;
+            document.head.appendChild(style);
         }
 
         // --- AUDIO HANDLING ---
         function setupAudio() {
+            if (!bgMusic) return;
             bgMusic.volume = 0.5;
             document.body.addEventListener('click', function() {
                 if(bgMusic.paused) {
-                    bgMusic.play().catch(() => {});
+                    bgMusic.play().catch(() => {
+                        console.log('Audio autoplay prevented');
+                    });
                 }
             }, { once: true });
         }
 
         // --- FORM SETUP ---
         function setupForm() {
+            if (!loginForm) return;
             loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 validateAndLogin();
@@ -1206,54 +1315,59 @@
 
         // --- AUTO LOGIN FUNCTION ---
         async function checkAutoLogin() {
-            autoLoginOverlay.classList.add('active');
-            
             try {
-                const savedUsername = localStorage.getItem('indictive_username');
-                const savedPassword = localStorage.getItem('indictive_password');
+                autoLoginOverlay.classList.add('active');
+                
+                const savedUsername = localStorage.getItem('indictive_username');                const savedPassword = localStorage.getItem('indictive_password');
                 
                 if (savedUsername && savedPassword) {
                     // Check if credentials are valid
                     if (validUsers[savedUsername] === savedPassword) {
                         showNotification("WELCOME BACK", "Auto-login successful", "success");
                         setTimeout(() => {
+                            autoLoginOverlay.classList.remove('active');
                             showDashboard(savedUsername);
                         }, 1000);
                         return;
-                    }                }
+                    }
+                }
                 
                 setTimeout(() => {
                     autoLoginOverlay.classList.remove('active');
                 }, 500);
                 
             } catch (error) {
+                console.error('Auto-login error:', error);
                 autoLoginOverlay.classList.remove('active');
             }
         }
 
         // --- URL MESSAGE HANDLER ---
         function checkUrlMessages() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const message = urlParams.get('msg');
-            
-            if (message) {
-                const decodedMessage = decodeURIComponent(message);
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const message = urlParams.get('msg');
                 
-                if (decodedMessage.includes("sudah login di device lain")) {
-                    showDeviceConflictModal(decodedMessage);
-                } else if (decodedMessage.includes("expired")) {
-                    showNotification("SESSION EXPIRED", decodedMessage, "warning");
-                } else if (decodedMessage.includes("tidak ditemukan")) {
-                    showNotification("USER NOT FOUND", decodedMessage, "error");
-                } else if (decodedMessage.includes("Key salah")) {
-                    showNotification("ACCESS DENIED", decodedMessage, "error");
-                } else {
-                    showNotification("SYSTEM MESSAGE", decodedMessage, "info");
+                if (message) {
+                    const decodedMessage = decodeURIComponent(message);
+                    
+                    if (decodedMessage.includes("sudah login di device lain")) {
+                        showDeviceConflictModal(decodedMessage);
+                    } else if (decodedMessage.includes("expired")) {
+                        showNotification("SESSION EXPIRED", decodedMessage, "warning");
+                    } else if (decodedMessage.includes("tidak ditemukan")) {
+                        showNotification("USER NOT FOUND", decodedMessage, "error");
+                    } else if (decodedMessage.includes("Key salah")) {
+                        showNotification("ACCESS DENIED", decodedMessage, "error");
+                    } else {
+                        showNotification("SYSTEM MESSAGE", decodedMessage, "info");
+                    }
+                    
+                    window.history.replaceState({}, document.title, window.location.pathname);
                 }
-                
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-        }
+            } catch (error) {
+                console.error('URL handler error:', error);
+            }        }
 
         // --- DEVICE CONFLICT HANDLER ---
         function showDeviceConflictModal(message) {
@@ -1269,7 +1383,8 @@
                 const username = document.getElementById('userInput').value;
                 const password = document.getElementById('passInput').value;
                 
-                if (!username || !password) {                    showNotification("ERROR", "Please enter username and password first", "error");
+                if (!username || !password) {
+                    showNotification("ERROR", "Please enter username and password first", "error");
                     return;
                 }
                 
@@ -1291,14 +1406,16 @@
         // --- UI CONTROLS ---
         function showLoginView() {
             card.classList.add('show-login');
-            setTimeout(() => document.getElementById('userInput').focus(), 300);
+            setTimeout(() => {
+                const userInput = document.getElementById('userInput');
+                if (userInput) userInput.focus();
+            }, 300);
         }
 
         function showHomeView() {
             card.classList.remove('show-login');
             card.classList.remove('show-dashboard');
         }
-
         function toggleAuto() {
             isAuto = !isAuto;
             if (isAuto) {
@@ -1315,10 +1432,13 @@
             const msgEl = document.getElementById('notif-msg');
             const iconEl = document.getElementById('notif-icon');
             
-            box.className = ''; 
+            if (!box || !titleEl || !msgEl || !iconEl) return;
+            
+            box.className = '';
             box.classList.add(type);
             
-            switch(type) {                case 'success':
+            switch(type) {
+                case 'success':
                     iconEl.className = 'fas fa-check-circle notif-icon';
                     break;
                 case 'error':
@@ -1345,8 +1465,7 @@
         // --- LOGIN VALIDATION ---
         function validateAndLogin() {
             const userInput = document.getElementById('userInput');
-            const passInput = document.getElementById('passInput');
-            const userBox = document.getElementById('userBox');
+            const passInput = document.getElementById('passInput');            const userBox = document.getElementById('userBox');
             const passBox = document.getElementById('passBox');
             
             const username = userInput.value.trim();
@@ -1358,7 +1477,7 @@
             userBox.classList.remove('shake-error');
             passBox.classList.remove('shake-error');
             
-            void userBox.offsetWidth; 
+            void userBox.offsetWidth;
             void passBox.offsetWidth;
 
             if (!username) {
@@ -1367,7 +1486,8 @@
                 isValid = false;
             }
             if (!password) {
-                passInput.classList.add('error-border');                passBox.classList.add('shake-error');
+                passInput.classList.add('error-border');
+                passBox.classList.add('shake-error');
                 isValid = false;
             }
 
@@ -1394,8 +1514,7 @@
                         localStorage.setItem('indictive_password', password);
                     } else {
                         localStorage.removeItem('indictive_username');
-                        localStorage.removeItem('indictive_password');
-                    }
+                        localStorage.removeItem('indictive_password');                    }
                     
                     showNotification("ACCESS GRANTED", "Login successful!", "success");
                     setTimeout(() => {
@@ -1416,7 +1535,11 @@
 
         // --- SHOW DASHBOARD ---
         function showDashboard(username) {
-            card.classList.add('show-dashboard');            document.getElementById('dashboardUsername').innerText = username;
+            card.classList.add('show-dashboard');
+            const dashboardUsername = document.getElementById('dashboardUsername');
+            if (dashboardUsername) {
+                dashboardUsername.innerText = username;
+            }
             loginBtn.innerHTML = 'INITIALIZE <i class="fas fa-power-off" style="margin-left: 8px;"></i>';
             loginBtn.disabled = false;
         }
@@ -1433,23 +1556,53 @@
 
         // --- CLOCK FUNCTION ---
         function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const dayNames = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
-            const monthNames = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
-            
-            document.getElementById('clock').innerText = `${hours}:${minutes}`;
-            document.getElementById('dateText').innerText = `${dayNames[now.getDay()]}, ${now.getDate()} ${monthNames[now.getMonth()]}`;
+            try {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const dayNames = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+                const monthNames = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+                
+                const clockEl = document.getElementById('clock');                const dateEl = document.getElementById('dateText');
+                
+                if (clockEl) {
+                    clockEl.innerText = `${hours}:${minutes}`;
+                }
+                if (dateEl) {
+                    dateEl.innerText = `${dayNames[now.getDay()]}, ${now.getDate()} ${monthNames[now.getMonth()]}`;
+                }
+            } catch (error) {
+                console.error('Clock error:', error);
+            }
         }
 
         // --- ENTER KEY SUPPORT ---
-        document.getElementById('passInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                validateAndLogin();
+        document.addEventListener('DOMContentLoaded', function() {
+            const passInput = document.getElementById('passInput');
+            if (passInput) {
+                passInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        validateAndLogin();
+                    }
+                });
             }
         });
+
+        // --- SERVICE WORKER CLEANUP (Prevent PWA issues) ---
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister().then(() => {
+                        console.log('Service Worker unregistered');
+                    }).catch(() => {
+                        console.log('Service Worker unregister failed');
+                    });
+                }
+            }).catch(() => {
+                console.log('Service Worker check failed');
+            });
+        }
     </script>
 </body>
-    </html>
+            </html>
