@@ -2,251 +2,70 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Maintenance Countdown</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEFFXY APPS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        /* Reset & Base - Kompatibel WebView Lama */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+        :root {
+            --bg-dark: #080310;
+            --accent-pink: #db2777;
+            --accent-purple: #9333ea;
+            --accent-cyan: #06b6d4;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --text-gray: #9ca3af;
         }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-            background: #667eea;
-            display: -webkit-flex;
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        body {
+            background: radial-gradient(circle at 50% 0%, #1a0b2e 0%, #080310 80%);
+            font-family: 'Share Tech Mono', monospace;
+            min-height: 100vh;
             display: flex;
-            -webkit-justify-content: center;
-            justify-content: center;
-            -webkit-align-items: center;
             align-items: center;
-            padding: 10px;
-            position: relative;
-        }
-
-        /* Overlay - Tanpa backdrop-filter yang bermasalah */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 9999;
-            display: -webkit-flex;
-            display: flex;
-            -webkit-justify-content: center;
             justify-content: center;
-            -webkit-align-items: flex-start;
-            align-items: flex-start;
             padding: 15px;
-            overflow-y: auto;
         }
-        /* Container - Gradient sederhana */
-        .maintenance-container {
-            background: #1e2a4a;
-            border-radius: 16px;
-            padding: 20px 15px;
-            max-width: 400px;
+
+        .container {
             width: 100%;
+            max-width: 420px;
+            background: rgba(26, 11, 46, 0.85);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(219, 39, 119, 0.3);
+            border-radius: 25px;
+            overflow: hidden;
+        }
+
+        /* ==================== */
+        /* MAINTENANCE SCREEN  */
+        /* ==================== */
+        .maintenance-screen {            background: linear-gradient(180deg, #1e2a4a 0%, #2d3748 100%);
+            padding: 40px 25px;
             text-align: center;
-            border: 1px solid #333;
-            margin-top: 8vh;
+            display: none;
         }
 
-        /* Icon Tools */
-        .tools-icon {
-            width: 65px;
-            height: 65px;
-            margin: 0 auto 15px;
-            background: #ff6b6b;
-            border-radius: 50%;
-            display: -webkit-flex;
-            display: flex;
-            -webkit-justify-content: center;
-            justify-content: center;
-            -webkit-align-items: center;
-            align-items: center;
-        }
-
-        .tools-icon svg {
-            width: 32px;
-            height: 32px;
-            fill: white;
-        }
-
-        /* Title */
-        .maintenance-title {
-            color: #ffffff;
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            line-height: 1.3;
-        }
-
-        /* Countdown - Layout fleksibel */
-        .countdown-container {
-            display: -webkit-flex;
-            display: flex;
-            -webkit-justify-content: center;
-            justify-content: center;            -webkit-align-items: center;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .time-box {
-            background: #2d3748;
-            border-radius: 10px;
-            padding: 12px 10px;
-            min-width: 65px;
-            border: 1px solid #444;
-            -webkit-flex: 1;
-            flex: 1;
-            max-width: 80px;
-        }
-
-        .time-value {
-            color: #ffffff;
-            font-size: 32px;
-            font-weight: bold;
+        .maintenance-screen.active {
             display: block;
-            line-height: 1;
-            margin-bottom: 5px;
-            font-family: monospace;
         }
 
-        .time-label {
-            color: #aaa;
-            font-size: 10px;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        .separator {
-            color: #ff6b6b;
-            font-size: 24px;
-            font-weight: bold;
-            margin: 0 2px;
-        }
-
-        /* Finish Button */
-        .finish-button {
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 20px;
-            font-size: 14px;            font-weight: bold;
-            cursor: pointer;
-            display: -webkit-inline-flex;
+        .maintenance-status {
             display: inline-flex;
-            -webkit-align-items: center;
             align-items: center;
-            -webkit-justify-content: center;
-            justify-content: center;
-            gap: 6px;
-            width: 100%;
-            max-width: 280px;
-            margin: 0 auto 15px;
-        }
-
-        .finish-button:active {
-            opacity: 0.9;
-        }
-
-        .finish-button svg {
-            width: 16px;
-            height: 16px;
-            fill: white;
-        }
-
-        #finish-time {
-            font-family: monospace;
-            font-weight: bold;
-        }
-
-        /* Settings Panel */
-        .settings-panel {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #333;
-        }
-
-        .settings-title {
-            color: #aaa;
-            font-size: 12px;
-            margin-bottom: 10px;
-        }
-
-        .time-input-group {
-            display: -webkit-flex;
-            display: flex;
-            gap: 5px;
-            -webkit-justify-content: center;
-            justify-content: center;
-            margin-bottom: 10px;
-            flex-wrap: wrap;        }
-
-        .time-input {
-            background: #333;
-            border: 1px solid #555;
-            border-radius: 6px;
-            padding: 8px 5px;
-            color: white;
-            width: 60px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .time-input::-webkit-outer-spin-button,
-        .time-input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .set-button {
-            background: #48bb78;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 15px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            max-width: 180px;
-            margin: 0 auto;
-            display: block;
-        }
-
-        .set-button:active {
-            opacity: 0.9;
-        }
-
-        .set-button.reset {
-            background: #fc8181;
-            margin-top: 8px;
-        }
-
-        /* Status Indicator */
-        .status-indicator {
-            display: -webkit-flex;
-            display: flex;
-            -webkit-align-items: center;
-            align-items: center;
-            -webkit-justify-content: center;            justify-content: center;
-            gap: 6px;
-            margin-bottom: 12px;
-            color: #68d391;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 6px 15px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            color: var(--accent-green);
             font-size: 12px;
             font-weight: bold;
         }
@@ -254,346 +73,564 @@
         .status-dot {
             width: 8px;
             height: 8px;
-            background: #68d391;
+            background: var(--accent-green);
             border-radius: 50%;
+            animation: pulse 2s infinite;
         }
 
-        /* Responsive */
-        @media (max-width: 480px) {
-            .maintenance-container {
-                padding: 15px 10px;
-                margin-top: 5vh;
-            }
-            .maintenance-title { font-size: 18px; }
-            .time-box { min-width: 55px; padding: 10px 8px; }
-            .time-value { font-size: 28px; }
-            .time-label { font-size: 9px; }
-            .separator { font-size: 20px; }
-            .tools-icon { width: 55px; height: 55px; }
-            .tools-icon svg { width: 28px; height: 28px; }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
         }
 
-        .overlay.hidden { display: none !important; }
+        .tools-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
+        }
+
+        .tools-icon svg {
+            width: 35px;            height: 35px;
+            fill: white;
+        }
+
+        .maintenance-title {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .countdown-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .time-unit {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 15px 12px;
+            min-width: 70px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .time-value {
+            color: white;
+            font-size: 36px;
+            font-weight: bold;
+            display: block;
+            line-height: 1;
+            margin-bottom: 5px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .time-label {
+            color: var(--text-gray);
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+
+        .separator {
+            color: var(--accent-pink);
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: -10px;        }
+
+        .finish-info {
+            background: var(--accent-red);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* ==================== */
+        /* LOGIN SCREEN        */
+        /* ==================== */
+        .login-screen {
+            display: none;
+            padding: 30px 25px;
+        }
+
+        .login-screen.active {
+            display: block;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo-circle {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 0 30px rgba(219, 39, 119, 0.4);
+        }
+
+        .brand-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 900;            color: white;
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+        }
+
+        .brand-subtitle {
+            color: var(--accent-cyan);
+            font-size: 11px;
+            letter-spacing: 4px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            color: var(--accent-pink);
+            font-size: 11px;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 14px 14px 14px 45px;
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            font-family: 'Share Tech Mono', monospace;
+            transition: all 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 42px;
+            color: var(--text-gray);
+            font-size: 16px;
+        }
+        .input-wrapper {
+            position: relative;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+
+        .menu-buttons {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .menu-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .menu-btn:active {
+            background: rgba(219, 39, 119, 0.15);
+            border-color: var(--accent-pink);
+        }
+
+        .menu-icon {            width: 40px;
+            height: 40px;
+            background: rgba(236, 72, 153, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-pink);
+        }
+
+        .menu-text {
+            flex: 1;
+        }
+
+        .menu-title {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .menu-desc {
+            display: block;
+            font-size: 11px;
+            color: var(--text-gray);
+        }
+
+        /* ==================== */
+        /* DASHBOARD SCREEN    */
+        /* ==================== */
+        .dashboard-screen {
+            display: none;
+            padding: 30px 25px;
+            text-align: center;
+        }
+
+        .dashboard-screen.active {
+            display: block;
+        }
+
+        .access-granted {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--accent-green);
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+        }
+
+        .welcome-text {            color: var(--text-gray);
+            margin-bottom: 25px;
+        }
+
+        .user-info {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .username-display {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+        }
+
+        .status-active {
+            color: var(--accent-green);
+            font-size: 13px;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .dash-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+
+        .dash-btn:active {
+            transform: scale(0.97);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            color: white;
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, var(--accent-red), #dc2626);
+            color: white;
+        }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
 
-    <div class="overlay" id="overlay">
-        <div class="maintenance-container">
-            <!-- Status -->
-            <div class="status-indicator">
+    <div class="container">
+        
+        <!-- ==================== -->
+        <!-- MAINTENANCE SCREEN  -->
+        <!-- ==================== -->
+        <div id="maintenanceScreen" class="maintenance-screen">
+            <div class="maintenance-status">
                 <div class="status-dot"></div>
                 <span>Maintenance Aktif</span>
             </div>
 
-            <!-- Icon -->
             <div class="tools-icon">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 24 24">
                     <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
                 </svg>
             </div>
-            <!-- Title -->
-            <h1 class="maintenance-title">MAINTENANCE BERLANGSUNG</h1>
 
-            <!-- Countdown -->
-            <div class="countdown-container">
-                <div class="time-box">
+            <div class="maintenance-title">MAINTENANCE BERLANGSUNG</div>
+
+            <div class="countdown-box">
+                <div class="time-unit">
                     <span class="time-value" id="hours">00</span>
                     <span class="time-label">Jam</span>
                 </div>
                 <div class="separator">:</div>
-                <div class="time-box">
-                    <span class="time-value" id="minutes">00</span>
+                <div class="time-unit">
+                    <span class="time-value" id="minutes">59</span>
                     <span class="time-label">Menit</span>
                 </div>
                 <div class="separator">:</div>
-                <div class="time-box">
-                    <span class="time-value" id="seconds">00</span>
-                    <span class="time-label">Detik</span>
-                </div>
+                <div class="time-unit">
+                    <span class="time-value" id="seconds">15</span>
+                    <span class="time-label">Detik</span>                </div>
             </div>
 
-            <!-- Finish Button -->
-            <button class="finish-button" id="finishBtn">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-1.01-1.41-1.51l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
-                </svg>
-                Selesai: <span id="finish-time">00:00:00</span>
-            </button>
-
-            <!-- Settings (Developer Only) -->
-            <div class="settings-panel">
-                <div class="settings-title">⚙️ Atur Waktu</div>
-                <div class="ttime-input-group">
+            <div class="finish-info">
+                <i class="fas fa-clock"></i>
+                <span>Selesai: <span id="finishTime">00:59:15</span></span>
             </div>
         </div>
+
+        <!-- ==================== -->
+        <!-- LOGIN SCREEN        -->
+        <!-- ==================== -->
+        <div id="loginScreen" class="login-screen">
+            <div class="logo-section">
+                <div class="logo-circle">IN</div>
+                <div class="brand-title">DEFFXY APPS</div>
+                <div class="brand-subtitle">SYSTEM ACCESS GATEWAY</div>
+            </div>
+
+            <div class="menu-buttons">
+                <div class="menu-btn" onclick="showLoginForm()">
+                    <div class="menu-icon">
+                        <i class="fas fa-fingerprint"></i>
+                    </div>
+                    <div class="menu-text">
+                        <span class="menu-title">Login System</span>
+                        <span class="menu-desc">Verify Credentials</span>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: var(--accent-pink);"></i>
+                </div>
+
+                <a href="https://wa.me/6288215310412" target="_blank" class="menu-btn">
+                    <div class="menu-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="menu-text">
+                        <span class="menu-title">Get Access Key</span>
+                        <span class="menu-desc">Request Access</span>
+                    </div>
+                    <i class="fas fa-external-link-alt" style="color: var(--accent-pink);"></i>
+                </a>
+            </div>
+
+            <!-- Login Form (Hidden by default) -->
+            <div id="loginForm" class="hidden" style="margin-top: 25px;">
+                <div class="input-wrapper">
+                    <input type="text" id="username" class="input-field" placeholder="Username">
+                    <i class="fas fa-user input-icon"></i>
+                </div>
+                <div class="input-wrapper" style="margin-top: 15px;">
+                    <input type="password" id="password" class="input-field" placeholder="Password">
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+
+                <button class="login-btn" onclick="performLogin()" style="margin-top: 20px;">
+                    <i class="fas fa-sign-in-alt"></i> LOGIN
+                </button>
+
+                <button onclick="hideLoginForm()" style="background: none; border: none; color: var(--text-gray); margin-top: 15px; cursor: pointer; font-family: inherit;">
+                    <i class="fas fa-arrow-left"></i> Kembali
+                </button>
+            </div>
+        </div>
+
+        <!-- ==================== -->
+        <!-- DASHBOARD SCREEN    -->
+        <!-- ==================== -->
+        <div id="dashboardScreen" class="dashboard-screen">
+            <div class="access-granted">ACCESS GRANTED</div>
+            <div class="welcome-text">Welcome back, Commander!</div>
+
+            <div class="user-info">
+                <div class="username-display" id="displayUsername">draxzy</div>
+                <div class="status-active"><i class="fas fa-check-circle"></i> Status: Active</div>
+            </div>
+
+            <div class="dashboard-actions">
+                <a href="https://wa.me/6288215310412" class="dash-btn btn-primary">
+                    <i class="fab fa-whatsapp"></i> MASUK
+                </a>
+                <button class="dash-btn btn-logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> LOGOUT
+                </button>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // === KONFIGURASI ===
-        var STORAGE_KEY = 'maintenance_end_time';
-        var DEFAULT_DURATION = (1 + 59 * 60) + 59;
-        
-        var countdownInterval = null;
-        var endTime = null;
-        // === FUNGSI HELPERS (Kompatibel Lama) ===
-        function safeGetElement(id) {
-            try {
-                return document.getElementById(id);
-            } catch(e) {
-                console.log('Element not found: ' + id);
-                return null;
-            }
-        }
+        // Valid credentials
+        const validUsers = { 
+            "draxzy": "drax",
+            "admin": "admin123"
+        };
 
-        function safeLocalStorage(action, key, value) {
-            try {
-                if (action === 'get') {
-                    return localStorage.getItem(key);
-                } else if (action === 'set') {
-                    localStorage.setItem(key, value);
-                    return true;
-                } else if (action === 'remove') {
-                    localStorage.removeItem(key);
-                    return true;
-                }
-            } catch(e) {
-                console.log('LocalStorage error: ' + e.message);
-                return null;
-            }
-        }
-
-        function pad(num) {
-            return (num < 10 ? '0' : '') + num;
-        }
-
-        // === FUNGSI UTAMA ===
-        function getRemainingSeconds() {
-            try {
-                var now = Date.now ? Date.now() : new Date().getTime();
-                var remaining = Math.floor((endTime - now) / 1000);
-                return Math.max(0, remaining);
-            } catch(e) {
-                console.log('Time calc error: ' + e.message);
-                return 0;
-            }
-        }
-
-        function updateCountdown() {
-            try {
-                var totalSeconds = getRemainingSeconds();
-                
-                var hours = Math.floor(totalSeconds / 3600);
-                var minutes = Math.floor((totalSeconds % 3600) / 60);                var seconds = totalSeconds % 60;
-
-                var hEl = safeGetElement('hours');
-                var mEl = safeGetElement('minutes');
-                var sEl = safeGetElement('seconds');
-                var ftEl = safeGetElement('finish-time');
-
-                if (hEl) hEl.textContent = pad(hours);
-                if (mEl) mEl.textContent = pad(minutes);
-                if (sEl) sEl.textContent = pad(seconds);
-                if (ftEl) ftEl.textContent = pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
-
-                if (totalSeconds <= 0) {
-                    onMaintenanceFinished();
-                    return false;
-                }
-                return true;
-            } catch(e) {
-                console.log('Update error: ' + e.message);
-                return false;
-            }
-        }
-
-        function onMaintenanceFinished() {
-            try {
-                if (countdownInterval) {
-                    clearInterval(countdownInterval);
-                    countdownInterval = null;
-                }
-                
-                // Callback ke APK
-                if (window.AndroidInterface && typeof window.AndroidInterface.onMaintenanceFinished === 'function') {
-                    window.AndroidInterface.onMaintenanceFinished();
-                }
-                
-                console.log('Maintenance finished');
-            } catch(e) {
-                console.log('Finish error: ' + e.message);
-            }
-        }
-
-        function startCountdown() {
-            try {
-                if (countdownInterval) {
-                    clearInterval(countdownInterval);
-                }
-                
-                if (updateCountdown()) {
-                    countdownInterval = setInterval(updateCountdown, 1000);
-                }            } catch(e) {
-                console.log('Start error: ' + e.message);
-            }
-        }
-
-        function setNewEndTime(durationSeconds) {
-            try {
-                var now = Date.now ? Date.now() : new Date().getTime();
-                endTime = now + (durationSeconds * 1000);
-                safeLocalStorage('set', STORAGE_KEY, endTime.toString());
-                startCountdown();
-            } catch(e) {
-                console.log('SetEndTime error: ' + e.message);
-            }
-        }
-
-        // === FUNGSI PUBLIK ===
-        function setCustomTime() {
-            try {
-                var hInput = safeGetElement('inputHours');
-                var mInput = safeGetElement('inputMinutes');
-                var sInput = safeGetElement('inputSeconds');
-                
-                var hours = parseInt(hInput && hInput.value) || 0;
-                var minutes = parseInt(mInput && mInput.value) || 0;
-                var seconds = parseInt(sInput && sInput.value) || 0;
-
-                var totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
-                
-                if (totalSeconds > 0) {
-                    setNewEndTime(totalSeconds);
+        // Check which screen to show
+        function checkScreen() {
+            // Check if maintenance is active (you can change this condition)
+            const maintenanceActive = true; // Set to false to show login screen            
+            if (maintenanceActive) {
+                showMaintenance();
+            } else {
+                // Check if user is logged in
+                const loggedInUser = localStorage.getItem('loggedInUser');
+                if (loggedInUser) {
+                    showDashboard(loggedInUser);
                 } else {
-                    alert('Masukkan waktu yang valid!');
+                    showLogin();
                 }
-            } catch(e) {
-                alert('Error: ' + e.message);
             }
         }
 
-        function resetTimer() {
-            try {
-                safeLocalStorage('remove', STORAGE_KEY);
-                setNewEndTime(DEFAULT_DURATION);
-            } catch(e) {
-                alert('Reset error: ' + e.message);
+        function showMaintenance() {
+            document.getElementById('maintenanceScreen').classList.add('active');
+            document.getElementById('loginScreen').classList.remove('active');
+            document.getElementById('dashboardScreen').classList.remove('active');
+            startCountdown();
+        }
+
+        function showLogin() {
+            document.getElementById('maintenanceScreen').classList.remove('active');
+            document.getElementById('loginScreen').classList.add('active');
+            document.getElementById('dashboardScreen').classList.remove('active');
+        }
+
+        function showDashboard(username) {
+            document.getElementById('maintenanceScreen').classList.remove('active');
+            document.getElementById('loginScreen').classList.remove('active');
+            document.getElementById('dashboardScreen').classList.add('active');
+            document.getElementById('displayUsername').textContent = username;
+        }
+
+        function showLoginForm() {
+            document.getElementById('loginForm').classList.remove('hidden');
+        }
+
+        function hideLoginForm() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        function performLogin() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (validUsers[username] === password) {
+                localStorage.setItem('loggedInUser', username);                showDashboard(username);
+            } else {
+                alert('Username atau password salah!');
             }
         }
 
-        function setTimeFromURL() {
-            try {                var query = window.location.search || '';
-                if (query.indexOf('?') === 0) {
-                    query = query.substring(1);
-                }
-                
-                var params = {};
-                var pairs = query.split('&');
-                for (var i = 0; i < pairs.length; i++) {
-                    var parts = pairs[i].split('=');
-                    if (parts.length === 2) {
-                        params[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1]);
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            showLogin();
+        }
+
+        // Countdown Timer
+        function startCountdown() {
+            let hours = 0;
+            let minutes = 59;
+            let seconds = 15;
+
+            setInterval(() => {
+                if (seconds > 0) {
+                    seconds--;
+                } else {
+                    if (minutes > 0) {
+                        minutes--;
+                        seconds = 59;
+                    } else if (hours > 0) {
+                        hours--;
+                        minutes = 59;
+                        seconds = 59;
                     }
                 }
-                
-                var hours = parseInt(params['hours']) || 0;
-                var minutes = parseInt(params['minutes']) || 0;
-                var seconds = parseInt(params['seconds']) || 0;
-                
-                if (hours > 0 || minutes > 0 || seconds > 0) {
-                    var totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
-                    setNewEndTime(totalSeconds);
-                    return true;
-                }
-            } catch(e) {
-                console.log('URL parse error: ' + e.message);
-            }
-            return false;
+
+                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+                document.getElementById('finishTime').textContent = 
+                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }, 1000);
         }
 
-        // === WebView Android Bridge ===
-        window.setMaintenanceTime = function(hours, minutes, seconds) {
-            try {
-                var totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
-                if (totalSeconds > 0) {
-                    setNewEndTime(totalSeconds);
-                }
-            } catch(e) {
-                console.log('Bridge error: ' + e.message);
-            }
-        };
-
-        window.pauseMaintenanceTimer = function() {
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
-                countdownInterval = null;
-            }
-        };
-        
-        window.resumeMaintenanceTimer = function() {
-            if (endTime && !countdownInterval) {                startCountdown();
-            }
-        };
-
-        // === INISIALISASI ===
-        function init() {
-            try {
-                // Prioritas: URL > localStorage > default
-                if (setTimeFromURL()) {
-                    return;
-                }
-                
-                var saved = safeLocalStorage('get', STORAGE_KEY);
-                if (saved) {
-                    endTime = parseInt(saved);
-                    if (endTime && getRemainingSeconds() > 0) {
-                        startCountdown();
-                        return;
-                    } else {
-                        safeLocalStorage('remove', STORAGE_KEY);
-                    }
-                }
-                
-                setNewEndTime(DEFAULT_DURATION);
-            } catch(e) {
-                console.log('Init error: ' + e.message);
-                // Fallback: mulai dengan default
-                setNewEndTime(DEFAULT_DURATION);
-            }
-        }
-
-        // === GLOBAL ERROR HANDLER ===
-        window.onerror = function(msg, src, line, col, err) {
-            console.log('Global error: ' + msg + ' at ' + line + ':' + col);
-            // Jangan biarkan error menghentikan eksekusi
-            return true;
-        };
-
-        // === RUN ===
-        if (document.addEventListener) {
-            document.addEventListener('DOMContentLoaded', init);
-        } else if (document.attachEvent) {
-            document.attachEvent('onreadystatechange', function() {
-                if (document.readyState === 'complete') init();
-            });
-        }
-        
-        // Fallback immediate
-        if (document.readyState === 'complete' || document.readyState === 'interactive') {
-            setTimeout(init, 0);        }
-
-        // Visibility handler
-        if (document.addEventListener) {
-            document.addEventListener('visibilitychange', function() {
-                if (!document.hidden && endTime) {
-                    startCountdown();
-                }
-            });
-        }
+        // Initialize
+        window.addEventListener('DOMContentLoaded', checkScreen);
     </script>
 
 </body>
-</html>
+                        </html>
 
 
 
