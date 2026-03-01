@@ -2,70 +2,251 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEFFXY APPS</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Maintenance Countdown</title>
     <style>
-        :root {
-            --bg-dark: #080310;
-            --accent-pink: #db2777;
-            --accent-purple: #9333ea;
-            --accent-cyan: #06b6d4;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --text-gray: #9ca3af;
+        /* Reset & Base - Kompatibel WebView Lama */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-        }
-
-        body {
-            background: radial-gradient(circle at 50% 0%, #1a0b2e 0%, #080310 80%);
-            font-family: 'Share Tech Mono', monospace;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-        }
-
-        .container {
+        html, body {
             width: 100%;
-            max-width: 420px;
-            background: rgba(26, 11, 46, 0.85);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(219, 39, 119, 0.3);
-            border-radius: 25px;
+            height: 100%;
             overflow: hidden;
+            font-family: Arial, sans-serif;
+            background: #667eea;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-align-items: center;
+            align-items: center;
+            padding: 10px;
+            position: relative;
         }
 
-        /* ==================== */
-        /* MAINTENANCE SCREEN  */
-        /* ==================== */
-        .maintenance-screen {            background: linear-gradient(180deg, #1e2a4a 0%, #2d3748 100%);
-            padding: 40px 25px;
+        /* Overlay - Tanpa backdrop-filter yang bermasalah */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-align-items: flex-start;
+            align-items: flex-start;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        /* Container - Gradient sederhana */
+        .maintenance-container {
+            background: #1e2a4a;
+            border-radius: 16px;
+            padding: 20px 15px;
+            max-width: 400px;
+            width: 100%;
             text-align: center;
-            display: none;
+            border: 1px solid #333;
+            margin-top: 8vh;
         }
 
-        .maintenance-screen.active {
+        /* Icon Tools */
+        .tools-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 15px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+        .tools-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        /* Title */
+        .maintenance-title {
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            line-height: 1.3;
+        }
+
+        /* Countdown - Layout fleksibel */
+        .countdown-container {
+            display: -webkit-flex;
+            display: flex;
+            -webkit-justify-content: center;
+            justify-content: center;            -webkit-align-items: center;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .time-box {
+            background: #2d3748;
+            border-radius: 10px;
+            padding: 12px 10px;
+            min-width: 65px;
+            border: 1px solid #444;
+            -webkit-flex: 1;
+            flex: 1;
+            max-width: 80px;
+        }
+
+        .time-value {
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: bold;
+            display: block;
+            line-height: 1;
+            margin-bottom: 5px;
+            font-family: monospace;
+        }
+
+        .time-label {
+            color: #aaa;
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .separator {
+            color: #ff6b6b;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 2px;
+        }
+
+        /* Finish Button */
+        .finish-button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 20px;
+            font-size: 14px;            font-weight: bold;
+            cursor: pointer;
+            display: -webkit-inline-flex;
+            display: inline-flex;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto 15px;
+        }
+
+        .finish-button:active {
+            opacity: 0.9;
+        }
+
+        .finish-button svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+
+        #finish-time {
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        /* Settings Panel */
+        .settings-panel {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+        }
+
+        .settings-title {
+            color: #aaa;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .time-input-group {
+            display: -webkit-flex;
+            display: flex;
+            gap: 5px;
+            -webkit-justify-content: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;        }
+
+        .time-input {
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 6px;
+            padding: 8px 5px;
+            color: white;
+            width: 60px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .time-input::-webkit-outer-spin-button,
+        .time-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .set-button {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            max-width: 180px;
+            margin: 0 auto;
             display: block;
         }
 
-        .maintenance-status {
-            display: inline-flex;
+        .set-button:active {
+            opacity: 0.9;
+        }
+
+        .set-button.reset {
+            background: #fc8181;
+            margin-top: 8px;
+        }
+
+        /* Status Indicator */
+        .status-indicator {
+            display: -webkit-flex;
+            display: flex;
+            -webkit-align-items: center;
             align-items: center;
-            gap: 8px;
-            background: rgba(16, 185, 129, 0.1);
-            padding: 6px 15px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            color: var(--accent-green);
+            -webkit-justify-content: center;            justify-content: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            color: #68d391;
             font-size: 12px;
             font-weight: bold;
         }
@@ -73,2301 +254,343 @@
         .status-dot {
             width: 8px;
             height: 8px;
-            background: var(--accent-green);
+            background: #68d391;
             border-radius: 50%;
-            animation: pulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+        /* Responsive */
+        @media (max-width: 480px) {
+            .maintenance-container {
+                padding: 15px 10px;
+                margin-top: 5vh;
+            }
+            .maintenance-title { font-size: 18px; }
+            .time-box { min-width: 55px; padding: 10px 8px; }
+            .time-value { font-size: 28px; }
+            .time-label { font-size: 9px; }
+            .separator { font-size: 20px; }
+            .tools-icon { width: 55px; height: 55px; }
+            .tools-icon svg { width: 28px; height: 28px; }
         }
 
-        .tools-icon {
-            width: 70px;
-            height: 70px;
-            margin: 0 auto 20px;
-            background: var(--accent-red);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
-        }
-
-        .tools-icon svg {
-            width: 35px;            height: 35px;
-            fill: white;
-        }
-
-        .maintenance-title {
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .countdown-box {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-
-        .time-unit {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 12px;
-            padding: 15px 12px;
-            min-width: 70px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .time-value {
-            color: white;
-            font-size: 36px;
-            font-weight: bold;
-            display: block;
-            line-height: 1;
-            margin-bottom: 5px;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .time-label {
-            color: var(--text-gray);
-            font-size: 10px;
-            text-transform: uppercase;
-        }
-
-        .separator {
-            color: var(--accent-pink);
-            font-size: 28px;
-            font-weight: bold;
-            margin-top: -10px;        }
-
-        .finish-info {
-            background: var(--accent-red);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 25px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        /* ==================== */
-        /* LOGIN SCREEN        */
-        /* ==================== */
-        .login-screen {
-            display: none;
-            padding: 30px 25px;
-        }
-
-        .login-screen.active {
-            display: block;
-        }
-
-        .logo-section {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-
-        .logo-circle {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 15px;
-            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: bold;
-            color: white;
-            box-shadow: 0 0 30px rgba(219, 39, 119, 0.4);
-        }
-
-        .brand-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
-            font-weight: 900;            color: white;
-            letter-spacing: 3px;
-            margin-bottom: 5px;
-        }
-
-        .brand-subtitle {
-            color: var(--accent-cyan);
-            font-size: 11px;
-            letter-spacing: 4px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-label {
-            display: block;
-            color: var(--accent-pink);
-            font-size: 11px;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        .input-field {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 14px 14px 14px 45px;
-            border-radius: 12px;
-            color: white;
-            font-size: 14px;
-            font-family: 'Share Tech Mono', monospace;
-            transition: all 0.3s;
-        }
-
-        .input-field:focus {
-            outline: none;
-            border-color: var(--accent-purple);
-            box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 15px;
-            top: 42px;
-            color: var(--text-gray);
-            font-size: 16px;
-        }
-        .input-wrapper {
-            position: relative;
-        }
-
-        .login-btn {
-            width: 100%;
-            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-            border: none;
-            padding: 15px;
-            border-radius: 12px;
-            color: white;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 14px;
-            letter-spacing: 2px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: transform 0.2s;
-        }
-
-        .login-btn:active {
-            transform: scale(0.98);
-        }
-
-        .menu-buttons {
-            margin-top: 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .menu-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .menu-btn:active {
-            background: rgba(219, 39, 119, 0.15);
-            border-color: var(--accent-pink);
-        }
-
-        .menu-icon {            width: 40px;
-            height: 40px;
-            background: rgba(236, 72, 153, 0.1);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-pink);
-        }
-
-        .menu-text {
-            flex: 1;
-        }
-
-        .menu-title {
-            display: block;
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 3px;
-        }
-
-        .menu-desc {
-            display: block;
-            font-size: 11px;
-            color: var(--text-gray);
-        }
-
-        /* ==================== */
-        /* DASHBOARD SCREEN    */
-        /* ==================== */
-        .dashboard-screen {
-            display: none;
-            padding: 30px 25px;
-            text-align: center;
-        }
-
-        .dashboard-screen.active {
-            display: block;
-        }
-
-        .access-granted {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--accent-green);
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
-        }
-
-        .welcome-text {            color: var(--text-gray);
-            margin-bottom: 25px;
-        }
-
-        .user-info {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-        }
-
-        .username-display {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 22px;
-            color: var(--accent-cyan);
-            margin-bottom: 8px;
-        }
-
-        .status-active {
-            color: var(--accent-green);
-            font-size: 13px;
-        }
-
-        .dashboard-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .dash-btn {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: transform 0.2s;
-        }
-
-        .dash-btn:active {
-            transform: scale(0.97);
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-            color: white;
-        }
-
-        .btn-logout {
-            background: linear-gradient(135deg, var(--accent-red), #dc2626);
-            color: white;
-        }
-
-        .hidden {
-            display: none !important;
-        }
+        .overlay.hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        
-        <!-- ==================== -->
-        <!-- MAINTENANCE SCREEN  -->
-        <!-- ==================== -->
-        <div id="maintenanceScreen" class="maintenance-screen">
-            <div class="maintenance-status">
+    <div class="overlay" id="overlay">
+        <div class="maintenance-container">
+            <!-- Status -->
+            <div class="status-indicator">
                 <div class="status-dot"></div>
                 <span>Maintenance Aktif</span>
             </div>
 
+            <!-- Icon -->
             <div class="tools-icon">
-                <svg viewBox="0 0 24 24">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
                 </svg>
             </div>
+            <!-- Title -->
+            <h1 class="maintenance-title">MAINTENANCE BERLANGSUNG</h1>
 
-            <div class="maintenance-title">MAINTENANCE BERLANGSUNG</div>
-
-            <div class="countdown-box">
-                <div class="time-unit">
+            <!-- Countdown -->
+            <div class="countdown-container">
+                <div class="time-box">
                     <span class="time-value" id="hours">00</span>
                     <span class="time-label">Jam</span>
                 </div>
                 <div class="separator">:</div>
-                <div class="time-unit">
-                    <span class="time-value" id="minutes">59</span>
+                <div class="time-box">
+                    <span class="time-value" id="minutes">00</span>
                     <span class="time-label">Menit</span>
                 </div>
                 <div class="separator">:</div>
-                <div class="time-unit">
-                    <span class="time-value" id="seconds">15</span>
-                    <span class="time-label">Detik</span>                </div>
+                <div class="time-box">
+                    <span class="time-value" id="seconds">00</span>
+                    <span class="time-label">Detik</span>
+                </div>
             </div>
 
-            <div class="finish-info">
-                <i class="fas fa-clock"></i>
-                <span>Selesai: <span id="finishTime">00:59:15</span></span>
+            <!-- Finish Button -->
+            <button class="finish-button" id="finishBtn">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-1.01-1.41-1.51l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+                </svg>
+                Selesai: <span id="finish-time">00:00:00</span>
+            </button>
+
+            <!-- Settings (Developer Only) -->
+            <div class="settings-panel">
+                <div class="settings-title">⚙️ Atur Waktu</div>
+                <div class="time-input-group">
             </div>
         </div>
-
-        <!-- ==================== -->
-        <!-- LOGIN SCREEN        -->
-        <!-- ==================== -->
-        <div id="loginScreen" class="login-screen">
-            <div class="logo-section">
-                <div class="logo-circle">IN</div>
-                <div class="brand-title">DEFFXY APPS</div>
-                <div class="brand-subtitle">SYSTEM ACCESS GATEWAY</div>
-            </div>
-
-            <div class="menu-buttons">
-                <div class="menu-btn" onclick="showLoginForm()">
-                    <div class="menu-icon">
-                        <i class="fas fa-fingerprint"></i>
-                    </div>
-                    <div class="menu-text">
-                        <span class="menu-title">Login System</span>
-                        <span class="menu-desc">Verify Credentials</span>
-                    </div>
-                    <i class="fas fa-chevron-right" style="color: var(--accent-pink);"></i>
-                </div>
-
-                <a href="https://wa.me/6288215310412" target="_blank" class="menu-btn">
-                    <div class="menu-icon">
-                        <i class="fab fa-whatsapp"></i>
-                    </div>
-                    <div class="menu-text">
-                        <span class="menu-title">Get Access Key</span>
-                        <span class="menu-desc">Request Access</span>
-                    </div>
-                    <i class="fas fa-external-link-alt" style="color: var(--accent-pink);"></i>
-                </a>
-            </div>
-
-            <!-- Login Form (Hidden by default) -->
-            <div id="loginForm" class="hidden" style="margin-top: 25px;">
-                <div class="input-wrapper">
-                    <input type="text" id="username" class="input-field" placeholder="Username">
-                    <i class="fas fa-user input-icon"></i>
-                </div>
-                <div class="input-wrapper" style="margin-top: 15px;">
-                    <input type="password" id="password" class="input-field" placeholder="Password">
-                    <i class="fas fa-lock input-icon"></i>
-                </div>
-
-                <button class="login-btn" onclick="performLogin()" style="margin-top: 20px;">
-                    <i class="fas fa-sign-in-alt"></i> LOGIN
-                </button>
-
-                <button onclick="hideLoginForm()" style="background: none; border: none; color: var(--text-gray); margin-top: 15px; cursor: pointer; font-family: inherit;">
-                    <i class="fas fa-arrow-left"></i> Kembali
-                </button>
-            </div>
-        </div>
-
-        <!-- ==================== -->
-        <!-- DASHBOARD SCREEN    -->
-        <!-- ==================== -->
-        <div id="dashboardScreen" class="dashboard-screen">
-            <div class="access-granted">ACCESS GRANTED</div>
-            <div class="welcome-text">Welcome back, Commander!</div>
-
-            <div class="user-info">
-                <div class="username-display" id="displayUsername">draxzy</div>
-                <div class="status-active"><i class="fas fa-check-circle"></i> Status: Active</div>
-            </div>
-
-            <div class="dashboard-actions">
-                <a href="https://wa.me/6288215310412" class="dash-btn btn-primary">
-                    <i class="fab fa-whatsapp"></i> MASUK
-                </a>
-                <button class="dash-btn btn-logout" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i> LOGOUT
-                </button>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        // Valid credentials
-        const validUsers = { 
-            "draxzy": "drax",
-            "admin": "admin123"
-        };
+        // === KONFIGURASI ===
+        var STORAGE_KEY = 'maintenance_end_time';
+        var DEFAULT_DURATION = (17 * 60) + 53;
+        
+        var countdownInterval = null;
+        var endTime = null;
+        // === FUNGSI HELPERS (Kompatibel Lama) ===
+        function safeGetElement(id) {
+            try {
+                return document.getElementById(id);
+            } catch(e) {
+                console.log('Element not found: ' + id);
+                return null;
+            }
+        }
 
-        // Check which screen to show
-        function checkScreen() {
-            // Check if maintenance is active (you can change this condition)
-            const maintenanceActive = true; // Set to false to show login screen            
-            if (maintenanceActive) {
-                showMaintenance();
-            } else {
-                // Check if user is logged in
-                const loggedInUser = localStorage.getItem('loggedInUser');
-                if (loggedInUser) {
-                    showDashboard(loggedInUser);
-                } else {
-                    showLogin();
+        function safeLocalStorage(action, key, value) {
+            try {
+                if (action === 'get') {
+                    return localStorage.getItem(key);
+                } else if (action === 'set') {
+                    localStorage.setItem(key, value);
+                    return true;
+                } else if (action === 'remove') {
+                    localStorage.removeItem(key);
+                    return true;
                 }
+            } catch(e) {
+                console.log('LocalStorage error: ' + e.message);
+                return null;
             }
         }
 
-        function showMaintenance() {
-            document.getElementById('maintenanceScreen').classList.add('active');
-            document.getElementById('loginScreen').classList.remove('active');
-            document.getElementById('dashboardScreen').classList.remove('active');
-            startCountdown();
+        function pad(num) {
+            return (num < 10 ? '0' : '') + num;
         }
 
-        function showLogin() {
-            document.getElementById('maintenanceScreen').classList.remove('active');
-            document.getElementById('loginScreen').classList.add('active');
-            document.getElementById('dashboardScreen').classList.remove('active');
-        }
-
-        function showDashboard(username) {
-            document.getElementById('maintenanceScreen').classList.remove('active');
-            document.getElementById('loginScreen').classList.remove('active');
-            document.getElementById('dashboardScreen').classList.add('active');
-            document.getElementById('displayUsername').textContent = username;
-        }
-
-        function showLoginForm() {
-            document.getElementById('loginForm').classList.remove('hidden');
-        }
-
-        function hideLoginForm() {
-            document.getElementById('loginForm').classList.add('hidden');
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-        }
-
-        function performLogin() {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
-
-            if (validUsers[username] === password) {
-                localStorage.setItem('loggedInUser', username);                showDashboard(username);
-            } else {
-                alert('Username atau password salah!');
+        // === FUNGSI UTAMA ===
+        function getRemainingSeconds() {
+            try {
+                var now = Date.now ? Date.now() : new Date().getTime();
+                var remaining = Math.floor((endTime - now) / 1000);
+                return Math.max(0, remaining);
+            } catch(e) {
+                console.log('Time calc error: ' + e.message);
+                return 0;
             }
         }
 
-        function logout() {
-            localStorage.removeItem('loggedInUser');
-            showLogin();
+        function updateCountdown() {
+            try {
+                var totalSeconds = getRemainingSeconds();
+                
+                var hours = Math.floor(totalSeconds / 3600);
+                var minutes = Math.floor((totalSeconds % 3600) / 60);                var seconds = totalSeconds % 60;
+
+                var hEl = safeGetElement('hours');
+                var mEl = safeGetElement('minutes');
+                var sEl = safeGetElement('seconds');
+                var ftEl = safeGetElement('finish-time');
+
+                if (hEl) hEl.textContent = pad(hours);
+                if (mEl) mEl.textContent = pad(minutes);
+                if (sEl) sEl.textContent = pad(seconds);
+                if (ftEl) ftEl.textContent = pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+
+                if (totalSeconds <= 0) {
+                    onMaintenanceFinished();
+                    return false;
+                }
+                return true;
+            } catch(e) {
+                console.log('Update error: ' + e.message);
+                return false;
+            }
         }
 
-        // Countdown Timer
+        function onMaintenanceFinished() {
+            try {
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                }
+                
+                // Callback ke APK
+                if (window.AndroidInterface && typeof window.AndroidInterface.onMaintenanceFinished === 'function') {
+                    window.AndroidInterface.onMaintenanceFinished();
+                }
+                
+                console.log('Maintenance finished');
+            } catch(e) {
+                console.log('Finish error: ' + e.message);
+            }
+        }
+
         function startCountdown() {
-            let hours = 0;
-            let minutes = 59;
-            let seconds = 15;
+            try {
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                }
+                
+                if (updateCountdown()) {
+                    countdownInterval = setInterval(updateCountdown, 1000);
+                }            } catch(e) {
+                console.log('Start error: ' + e.message);
+            }
+        }
 
-            setInterval(() => {
-                if (seconds > 0) {
-                    seconds--;
+        function setNewEndTime(durationSeconds) {
+            try {
+                var now = Date.now ? Date.now() : new Date().getTime();
+                endTime = now + (durationSeconds * 1000);
+                safeLocalStorage('set', STORAGE_KEY, endTime.toString());
+                startCountdown();
+            } catch(e) {
+                console.log('SetEndTime error: ' + e.message);
+            }
+        }
+
+        // === FUNGSI PUBLIK ===
+        function setCustomTime() {
+            try {
+                var hInput = safeGetElement('inputHours');
+                var mInput = safeGetElement('inputMinutes');
+                var sInput = safeGetElement('inputSeconds');
+                
+                var hours = parseInt(hInput && hInput.value) || 0;
+                var minutes = parseInt(mInput && mInput.value) || 0;
+                var seconds = parseInt(sInput && sInput.value) || 0;
+
+                var totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+                
+                if (totalSeconds > 0) {
+                    setNewEndTime(totalSeconds);
                 } else {
-                    if (minutes > 0) {
-                        minutes--;
-                        seconds = 59;
-                    } else if (hours > 0) {
-                        hours--;
-                        minutes = 59;
-                        seconds = 59;
-                    }
+                    alert('Masukkan waktu yang valid!');
                 }
-
-                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-                document.getElementById('finishTime').textContent = 
-                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            }, 1000);
-        }
-
-        // Initialize
-        window.addEventListener('DOMContentLoaded', checkScreen);
-    </script>
-
-</body>
-                        </html>
-
-
-
-
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#080310">
-    <meta name="description" content="DEFFXY APPS - System Access Gateway">
-    <title>DEFFXY APPS > SYSTEMS</title>
-    
-    <!-- Prevent PWA installation issues -->
-    <meta name="apple-mobile-web-app-capable" content="no">
-    <meta name="mobile-web-app-capable" content="no">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-    /* --- THEME VARIABLES --- */
-    :root {
-        --bg-dark: #080310;       
-        --bg-gradient: radial-gradient(circle at 50% 0%, #1a0b2e 0%, #080310 80%);
-        
-        --card-bg: rgba(26, 11, 46, 0.85);       
-        --accent-pink: #db2777;   
-        --accent-purple: #9333ea; 
-        --accent-cyan: #06b6d4;
-        --accent-green: #10b981;
-        --accent-red: #ef4444;
-        --accent-yellow: #fbbf24;
-        
-        --text-gray: #9ca3af; 
-        --text-white: #ffffff;
-
-        --font-title: 'Orbitron', sans-serif;
-        --font-code: 'Share Tech Mono', monospace;
-    }
-
-    * { 
-        box-sizing: border-box; 
-        margin: 0; 
-        padding: 0; 
-        -webkit-tap-highlight-color: transparent; 
-        outline: none; 
-    }
-    html, body {
-        width: 100%;
-        height: 100%;
-        overflow-x: hidden;
-    }
-    body {
-        background-color: var(--bg-dark);
-        background-image: var(--bg-gradient);
-        background-attachment: fixed;
-        background-size: cover;
-        color: var(--text-white);
-        font-family: var(--font-code);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        padding: 20px;
-        overflow-y: auto;
-    }
-
-    /* --- MAIN CARD CONTAINER --- */
-    .container-card {
-        position: relative;
-        width: 100%;
-        max-width: 420px;
-        min-height: 600px;
-        max-height: 90vh;
-        background: var(--card-bg);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        border: 1px solid rgba(219, 39, 119, 0.3); 
-        border-radius: 25px;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-        display: flex; 
-        flex-direction: column;
-        z-index: 10;
-        transition: all 0.3s ease;
-        overflow: hidden;
-        margin: 20px 0;
-    }
-
-    .glow-orb {
-        position: absolute; 
-        width: 250px; 
-        height: 250px;
-        border-radius: 50%; 
-        filter: blur(100px); 
-        opacity: 0.2; 
-        pointer-events: none;    }
-    .orb-top { 
-        top: -100px; 
-        left: -50px; 
-        background: var(--accent-pink);
-    }
-    .orb-bottom { 
-        bottom: -100px; 
-        right: -50px; 
-        background: var(--accent-purple); 
-    }
-
-    /* --- TRANSITIONS & SCROLLING --- */
-    .view-section {
-        position: absolute; 
-        inset: 0;
-        padding: 1.5rem 1.5rem;
-        display: flex; 
-        flex-direction: column;
-        transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-        backface-visibility: hidden;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-    }
-    
-    .view-section::-webkit-scrollbar { 
-        display: none; 
-    }
-
-    .view-home { 
-        opacity: 1; 
-        transform: scale(1); 
-        filter: blur(0); 
-        z-index: 2; 
-    }
-    .view-login { 
-        opacity: 0; 
-        transform: scale(1.5); 
-        filter: blur(20px); 
-        pointer-events: none; 
-        z-index: 1; 
-    }
-
-    .show-login .view-home { 
-        opacity: 0; 
-        transform: scale(0.8); 
-        filter: blur(10px); 
-        pointer-events: none; 
-    }    .show-login .view-login { 
-        opacity: 1; 
-        transform: scale(1); 
-        filter: blur(0); 
-        pointer-events: all;
-    }
-
-    /* --- PROFILE SECTION --- */
-    .profile-section { 
-        text-align: center; 
-        margin-bottom: 20px; 
-        margin-top: 10px; 
-        flex-shrink: 0;
-    }
-    .profile-img-box {
-        width: 90px; 
-        height: 90px; 
-        margin: 0 auto 15px;
-        border-radius: 50%; 
-        padding: 3px;
-        background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-        box-shadow: 0 0 30px rgba(219, 39, 119, 0.4);
-        position: relative;
-    }
-    .profile-img {
-        width: 100%; 
-        height: 100%; 
-        object-fit: cover; 
-        border-radius: 50%;
-        border: 3px solid #000; 
-        background: #000;
-    }
-    .status-dot {
-        position: absolute; 
-        bottom: 5px; 
-        right: 5px; 
-        width: 14px; 
-        height: 14px;
-        background: #10b981; 
-        border: 3px solid #1a0b2e; 
-        border-radius: 50%;
-        animation: pulse 2s infinite;
-    }
-    @keyframes pulse { 
-        0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 
-        70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); } 
-        100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } 
-    }
-
-    h1.brand-title {        font-family: var(--font-title);
-        font-size: 1.6rem; 
-        font-weight: 700; 
-        letter-spacing: 2px;
-        color: white;
-        margin-bottom: 5px;
-        text-shadow: 0 0 15px rgba(219, 39, 119, 0.6);
-    }
-    p.brand-sub { 
-        font-size: 0.75rem; 
-        color: var(--accent-cyan); 
-        letter-spacing: 3px; 
-        font-weight: 600; 
-    }
-
-    /* --- VIDEO CARD --- */
-    .video-wrapper {
-        display: flex; 
-        justify-content: center;
-        transform: skewX(-12deg); 
-        padding: 0 5px; 
-        margin-bottom: 25px;
-        flex-shrink: 0;
-    }
-    .video-display-box {
-        width: 100%; 
-        height: 85px; 
-        background: #000; 
-        border-radius: 10px;
-        border: 2px solid rgba(219, 39, 119, 0.3);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.7); 
-        overflow: hidden; 
-        position: relative;
-    }
-    .video-content {
-        width: 120%; 
-        height: 100%; 
-        object-fit: cover; 
-        margin-left: -10%; 
-        opacity: 0.9;
-        transform: skewX(12deg); 
-        filter: hue-rotate(390deg) contrast(1.8);
-    }
-
-    /* --- BUTTONS --- */
-    .button-group { 
-        width: 100%; 
-        margin-top: 10px; 
-        flex-shrink: 0;
-    }    .action-btn {
-        width: 100%; 
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1); 
-        padding: 1rem;
-        border-radius: 15px;
-        display: flex; 
-        align-items: center; 
-        gap: 15px; 
-        color: white; 
-        cursor: pointer; 
-        text-decoration: none;
-        margin-bottom: 15px; 
-        transition: all 0.3s ease;
-        flex-shrink: 0;
-    }
-    .action-btn:active { 
-        background: rgba(219, 39, 119, 0.15); 
-        border-color: var(--accent-pink); 
-        transform: scale(0.98); 
-    }
-    .btn-icon-sq {
-        width: 40px; 
-        height: 40px; 
-        background: rgba(236, 72, 153, 0.1); 
-        border-radius: 10px;
-        display: flex; 
-        align-items: center; 
-        justify-content: center;
-        color: var(--accent-pink); 
-        border: 1px solid rgba(219, 39, 119, 0.2);
-        flex-shrink: 0;
-        transition: all 0.3s ease;
-    }
-    .action-btn:hover .btn-icon-sq { 
-        background: var(--accent-pink); 
-        color: white; 
-        box-shadow: 0 0 20px var(--accent-pink); 
-        transform: rotate(5deg);
-    }
-    .btn-content { 
-        flex: 1; 
-        min-width: 0;
-    }
-
-    .btn-title { 
-        display: block; 
-        font-family: var(--font-title); 
-        font-size: 0.9rem; 
-        font-weight: 700; 
-        letter-spacing: 1px;     }
-    .btn-desc { 
-        display: block; 
-        font-size: 0.7rem; 
-        color: var(--text-gray);
-        margin-top: 3px; 
-    }
-    
-    /* --- FOOTER WIDGET --- */
-    .footer-widget {
-        margin-top: auto; 
-        width: 100%; 
-        padding: 15px;
-        background: rgba(0,0,0,0.25); 
-        border-radius: 15px;
-        border: 1px solid rgba(255,255,255,0.08);
-        display: flex; 
-        flex-direction: column; 
-        align-items: center;
-        position: relative; 
-        overflow: hidden;
-        flex-shrink: 0;
-        backdrop-filter: blur(5px);
-    }
-    .digital-clock {
-        font-family: var(--font-title); 
-        font-size: 1.8rem; 
-        font-weight: 700; 
-        color: white;
-        letter-spacing: 2px; 
-        text-shadow: 0 0 15px rgba(147, 51, 234, 0.6);
-        line-height: 1; 
-        margin-bottom: 8px;
-    }
-    .date-display {
-        font-family: var(--font-code); 
-        font-size: 0.8rem; 
-        color: var(--accent-pink); 
-        letter-spacing: 2px;
-        margin-bottom: 12px; 
-        font-weight: 600;
-    }
-    .visualizer { 
-        display: flex; 
-        align-items: flex-end; 
-        gap: 4px; 
-        height: 20px; 
-    }
-    .bar { 
-        width: 4px;         background: var(--accent-purple); 
-        border-radius: 2px; 
-        animation: bounce 1.2s infinite ease-in-out; 
-    }
-    .bar:nth-child(odd) { background: var(--accent-pink); }
-    @keyframes bounce { 
-        0%, 100% { height: 5px; opacity: 0.5; } 
-        50% { height: 20px; opacity: 1; } 
-    }
-
-    /* --- LOGIN FORM STYLES --- */
-    .input-box { 
-        margin-bottom: 1.2rem; 
-        position: relative; 
-        transition: transform 0.2s ease; 
-        flex-shrink: 0;
-    }
-    
-    .shake-error { 
-        animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; 
-    }
-    @keyframes shake {
-        10%, 90% { transform: translate3d(-1px, 0, 0); }
-        20%, 80% { transform: translate3d(2px, 0, 0); }
-        30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-        40%, 60% { transform: translate3d(4px, 0, 0); }
-    }
-
-    .lbl { 
-        font-family: var(--font-code); 
-        font-size: 0.7rem; 
-        color: var(--accent-pink); 
-        letter-spacing: 2px; 
-        font-weight: bold; 
-        display: block; 
-        margin-bottom: 8px; 
-    }
-    .inp {
-        width: 100%; 
-        background: rgba(0, 0, 0, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        padding: 14px 14px 14px 45px;
-        border-radius: 12px; 
-        color: white; 
-        font-size: 0.95rem;
-        font-family: var(--font-code); 
-        outline: none; 
-        transition: 0.3s;
-    }
-    .inp:focus {         border-color: var(--accent-purple); 
-        background: rgba(147, 51, 234, 0.1); 
-        box-shadow: 0 0 20px rgba(147, 51, 234, 0.3); 
-    }
-    .inp.error-border {
-        border-color: var(--accent-red); 
-        box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); 
-    }
-    
-    .inp-icon { 
-        position: absolute; 
-        left: 15px; 
-        top: 40px; 
-        color: var(--text-gray); 
-        font-size: 16px; 
-        transition: 0.3s; 
-    }
-    .inp:focus ~ .inp-icon { color: var(--accent-pink); }
-    .inp.error-border ~ .inp-icon { color: var(--accent-red); }
-
-    /* --- AUTO LOGIN & ANIMATION --- */
-    .auto-login-wrapper { 
-        display: flex; 
-        align-items: center; 
-        margin-bottom: 20px; 
-        cursor: pointer; 
-        user-select: none;
-        flex-shrink: 0;
-    }
-    .checkbox-custom {
-        width: 20px; 
-        height: 20px; 
-        background: rgba(0,0,0,0.5);
-        border: 1px solid rgba(255,255,255,0.2); 
-        border-radius: 6px; 
-        margin-right: 12px;
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        flex-shrink: 0;
-    }
-    
-    .checkbox-custom.active { 
-        background: var(--accent-pink); 
-        border-color: var(--accent-pink); 
-        box-shadow: 0 0 20px var(--accent-pink);
-        animation: checkboxPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    @keyframes checkboxPop {        0% { transform: scale(1); }
-        50% { transform: scale(1.3); }
-        100% { transform: scale(1); }
-    }
-    .checkbox-custom.active::after { 
-        content: '✓'; 
-        color: white; 
-        font-weight: bold; 
-        font-size: 12px; 
-        animation: checkAppear 0.3s forwards;
-    }
-    @keyframes checkAppear {
-        from { opacity: 0; transform: scale(0); }
-        to { opacity: 1; transform: scale(1); }
-    }
-
-    .auto-text { 
-        font-family: var(--font-code); 
-        font-size: 0.8rem; 
-        color: var(--text-gray); 
-        letter-spacing: 1px; 
-        transition: 0.3s; 
-    }
-    .auto-login-wrapper:hover .auto-text { color: white; }
-
-    .submit-btn {
-        width: 100%; 
-        padding: 1.1rem; 
-        border-radius: 12px; 
-        border: none;
-        background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-        color: white; 
-        font-family: var(--font-title); 
-        font-weight: 700; 
-        letter-spacing: 2px;
-        cursor: pointer; 
-        margin-top: 10px; 
-        box-shadow: 0 8px 25px rgba(219, 39, 119, 0.4);
-        transition: all 0.3s ease; 
-        position: relative; 
-        overflow: hidden;
-        flex-shrink: 0;
-    }
-    .submit-btn:hover { 
-        transform: translateY(-3px); 
-        box-shadow: 0 12px 30px rgba(219, 39, 119, 0.6); 
-    }
-    .submit-btn:active { 
-        transform: scale(0.97); 
-    }
-    .back-link {
-        background: none; 
-        border: none;
-        color: var(--text-gray);
-        font-family: var(--font-code); 
-        font-size: 0.8rem; 
-        cursor: pointer;
-        display: flex; 
-        align-items: center; 
-        gap: 8px; 
-        margin-bottom: 20px;
-        transition: 0.3s; 
-        flex-shrink: 0;
-    }
-    .back-link:hover { 
-        color: var(--accent-pink); 
-        transform: translateX(-5px); 
-    }
-
-    /* --- IMPROVED NOTIFICATION (TOAST) --- */
-    #notification-box {
-        position: fixed;
-        top: -100px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(18, 10, 32, 0.95);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-left: 4px solid var(--accent-red);
-        padding: 15px 20px;
-        border-radius: 12px;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.8);
-        display: flex; 
-        align-items: center; 
-        gap: 15px;
-        width: calc(100% - 40px);
-        max-width: 400px;
-        z-index: 1000;
-        transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        opacity: 0;
-        pointer-events: none;
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-    }
-
-    #notification-box.active { 
-        top: 25px; 
-        opacity: 1; 
-        pointer-events: all; 
-    }    #notification-box.success { 
-        border-left-color: var(--accent-green); 
-        background: rgba(16, 185, 129, 0.05);
-    }
-    #notification-box.error { 
-        border-left-color: var(--accent-red); 
-        background: rgba(239, 68, 68, 0.05);
-    }
-    #notification-box.warning { 
-        border-left-color: var(--accent-yellow); 
-        background: rgba(251, 191, 36, 0.05);
-    }
-    #notification-box.info { 
-        border-left-color: var(--accent-cyan); 
-        background: rgba(6, 182, 212, 0.05);
-    }
-
-    .notif-icon {
-        font-size: 1.2rem;
-        width: 24px;
-        text-align: center;
-    }
-    
-    #notification-box.success .notif-icon { 
-        color: var(--accent-green); 
-    }
-    #notification-box.error .notif-icon { 
-        color: var(--accent-red); 
-    }
-    #notification-box.warning .notif-icon { 
-        color: var(--accent-yellow); 
-    }
-    #notification-box.info .notif-icon { 
-        color: var(--accent-cyan); 
-    }
-
-    .notif-text {
-        flex: 1;
-    }
-    
-    #notif-title {
-        font-family: var(--font-title);
-        font-size: 0.9rem;
-        font-weight: 700;
-        margin-bottom: 3px;
-        letter-spacing: 1px;
-    }
-    
-    #notif-msg {
-        font-family: var(--font-code);        font-size: 0.8rem;
-        color: var(--text-gray);
-        line-height: 1.4;
-    }
-    /* --- DEVICE CONFLICT MODAL --- */
-    .device-conflict-modal {
-        position: fixed;
-        top: 0; 
-        left: 0; 
-        width: 100%; 
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        display: flex; 
-        justify-content: center; 
-        align-items: center;
-        z-index: 2000; 
-        opacity: 0; 
-        visibility: hidden; 
-        transition: all 0.3s ease;
-        padding: 20px;
-    }
-    .device-conflict-modal.active { 
-        opacity: 1; 
-        visibility: visible; 
-    }
-    .device-modal-content {
-        background: linear-gradient(135deg, #11071F, #1a0b2e);
-        border: 1px solid var(--accent-red);
-        width: 100%; 
-        max-width: 350px; 
-        padding: 30px 25px; 
-        border-radius: 20px;
-        text-align: center; 
-        box-shadow: 0 20px 50px rgba(239, 68, 68, 0.3);
-        transform: scale(0.9); 
-        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        backdrop-filter: blur(10px);
-    }
-    .device-conflict-modal.active .device-modal-content { 
-        transform: scale(1); 
-    }
-
-    /* --- MEDIA QUERIES FOR RESPONSIVE DESIGN --- */
-    
-    /* Untuk layar sangat kecil (mobile kecil) */
-    @media (max-width: 375px) {
-        body {
-            padding: 15px;        }
-        
-        .container-card {
-            border-radius: 20px;
-            max-height: 95vh;
-        }
-        
-        .view-section {
-            padding: 1.2rem 1.2rem;
-        }
-        
-        .profile-img-box {
-            width: 80px;
-            height: 80px;
-        }
-        
-        h1.brand-title {
-            font-size: 1.4rem;
-        }
-        
-        p.brand-sub {
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-        }
-        
-        .video-display-box {
-            height: 75px;
-        }
-        
-        .action-btn {
-            padding: 0.9rem;
-        }
-        
-        .btn-icon-sq {
-            width: 36px;
-            height: 36px;
-        }
-        
-        .digital-clock {
-            font-size: 1.6rem;
-        }
-        
-        .date-display {
-            font-size: 0.75rem;
-        }
-        
-        #notification-box {
-            width: calc(100% - 30px);
-            padding: 12px 15px;
-        }    }
-    
-    /* Untuk tablet dan desktop kecil */
-    @media (min-width: 768px) {
-        body {
-            padding: 30px;
-        }
-        
-        .container-card {
-            max-width: 400px;
-        }
-        
-        .view-section {
-            padding: 2rem 1.8rem;
-        }
-    }
-    
-    .tool-card {
-        background: linear-gradient(135deg, #2d004b, #4a0080);
-        border-radius: 15px;
-        padding: 15px;
-        text-align: center;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        transition: transform 0.2s ease;
-        cursor: pointer;
-    }
-    
-    .tool-desc {
-        font-size: 0.75rem;
-        opacity: 0.8;
-    }
-    
-    .tool-title {
-        font-size: 1rem;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }  
-    
-    .tool-icon {
-        width: 50px;
-        height: 50px;
-        background: #9c27b0;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 10px;
-        font-size: 1.5rem;
-        color: white;
-    }       
-    .dashboard-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-    }
-    
-    /* Untuk desktop besar */
-    @media (min-width: 1024px) {
-        .container-card {
-            max-width: 420px;
-        }
-        
-        #notification-box {
-            max-width: 450px;
-        }
-    }
-    
-    /* Untuk layar sangat tinggi */
-    @media (min-height: 800px) {
-        .container-card {
-            max-height: 850px;
-        }
-    }
-    
-    /* Untuk landscape orientation */
-    @media (orientation: landscape) and (max-height: 600px) {
-        body {
-            padding: 10px;
-        }
-        
-        .container-card {
-            max-height: 95vh;
-            border-radius: 20px;
-            min-height: 500px;
-        }
-        
-        .view-section {
-            padding: 1rem;
-        }
-        
-        .profile-section {
-            margin-bottom: 10px;
-        }
-        
-        .profile-img-box {
-            width: 70px;
-            height: 70px;
-            margin-bottom: 8px;
-        }        
-        .video-wrapper {
-            margin-bottom: 15px;
-        }
-        
-        .video-display-box {
-            height: 70px;
-        }
-        
-        .button-group {
-            margin-top: 0;
-        }
-        
-        .action-btn {
-            padding: 0.8rem;
-            margin-bottom: 10px;
-        }
-        
-        .footer-widget {
-            padding: 12px;
-        }
-    }
-
-    /* --- BACKGROUND OVERLAY --- */
-    .bg-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at 50% 0%, rgba(26, 11, 46, 0.8) 0%, rgba(8, 3, 16, 0.9) 100%);
-        z-index: 1;
-        pointer-events: none;
-    }
-
-    /* --- AUTO LOGIN OVERLAY --- */
-    .auto-login-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(8, 3, 16, 0.95);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 3000;
-        opacity: 0;
-        visibility: hidden;        transition: all 0.3s ease;
-    }
-    
-    .auto-login-overlay.active {
-        opacity: 1;
-        visibility: visible;
-    }
-    
-    .auto-login-spinner {
-        width: 60px;
-        height: 60px;
-        border: 3px solid rgba(219, 39, 119, 0.2);
-        border-radius: 50%;
-        border-top-color: var(--accent-pink);
-        animation: spin 1s ease-in-out infinite;
-        margin-bottom: 25px;
-        box-shadow: 0 0 20px rgba(219, 39, 119, 0.3);
-    }
-    
-    @keyframes spin {
-        to { transform: rotate(360deg); }
-    }
-    
-    .auto-login-text {
-        font-family: var(--font-title);
-        color: var(--accent-cyan);
-        font-size: 1rem;
-        letter-spacing: 3px;
-        text-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
-    }
-    
-    /* --- DASHBOARD VIEW --- */
-    .view-dashboard {
-        opacity: 0;
-        transform: scale(1.5);
-        filter: blur(20px);
-        pointer-events: none;
-        z-index: 0;
-    }
-    
-    .show-dashboard .view-home,
-    .show-dashboard .view-login {
-        opacity: 0;
-        transform: scale(0.8);
-        filter: blur(10px);
-        pointer-events: none;
-    }
-    
-    .show-dashboard .view-dashboard {
-        opacity: 1;        transform: scale(1);
-        filter: blur(0);
-        pointer-events: all;
-        z-index: 3;
-    }
-    
-    .dashboard-content {
-        text-align: center;
-        padding: 2rem;
-    }
-    
-    .dashboard-title {
-        font-family: var(--font-title);
-        font-size: 2rem;
-        color: var(--accent-green);
-        margin-bottom: 1rem;
-        text-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
-    }
-    
-    .dashboard-welcome {
-        font-size: 1.2rem;
-        color: white;
-        margin-bottom: 2rem;
-    }
-    
-    .dashboard-info {
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 1.5rem;
-        border-radius: 15px;
-        margin-bottom: 1.5rem;
-    }
-    
-    .dashboard-username {
-        font-family: var(--font-title);
-        font-size: 1.5rem;
-        color: var(--accent-cyan);
-        margin-bottom: 0.5rem;
-    }
-    
-    .dashboard-status {
-        color: var(--accent-green);
-        font-size: 0.9rem;
-        margin-top: 0.5rem;
-    }
-    
-    .dashboard-actions {
-        display: flex;
-        gap: 15px;
-        margin-top: 2rem;    }
-    
-    .dashboard-btn {
-        flex: 1;
-        padding: 1rem;
-        background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-        border: none;
-        border-radius: 10px;
-        color: white;
-        font-family: var(--font-title);
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-    }
-    
-    .dashboard-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(147, 51, 234, 0.4);
-    }
-    
-    .dashboard-btn:active {
-        transform: scale(0.97);
-    }
-    
-    .logout-btn {
-        background: linear-gradient(135deg, var(--accent-red), #dc2626);
-    }
-
-    /* --- ERROR BOUNDARY --- */
-    .error-boundary {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(8, 3, 16, 0.98);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        padding: 20px;
-    }
-    
-    .error-boundary.active {
-        display: flex;    }
-    
-    .error-content {
-        background: linear-gradient(135deg, #1a0b2e, #2d1b4e);
-        border: 2px solid var(--accent-red);
-        padding: 30px;
-        border-radius: 20px;
-        text-align: center;
-        max-width: 400px;
-        box-shadow: 0 20px 60px rgba(239, 68, 68, 0.4);
-    }
-    
-    .error-content h2 {
-        color: var(--accent-red);
-        font-family: var(--font-title);
-        margin-bottom: 15px;
-        font-size: 1.5rem;
-    }
-    
-    .error-content p {
-        color: var(--text-gray);
-        margin-bottom: 20px;
-        line-height: 1.6;
-    }
-    
-    .error-content button {
-        background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-        border: none;
-        padding: 12px 30px;
-        border-radius: 10px;
-        color: white;
-        font-family: var(--font-title);
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    
-    .error-content button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(219, 39, 119, 0.5);
-    }
-    </style>
-</head>
-<body>
-
-    <audio id="bgMusic" loop>
-        <source src="https://files.catbox.moe/3db34i.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- ERROR BOUNDARY -->    <div class="error-boundary" id="errorBoundary">
-        <div class="error-content">
-            <h2><i class="fas fa-exclamation-triangle"></i> SYSTEM ERROR</h2>
-            <p id="errorMessage">An unexpected error occurred. Please refresh the page.</p>
-            <button onclick="location.reload()">
-                <i class="fas fa-redo"></i> REFRESH SYSTEM
-            </button>
-        </div>
-    </div>
-
-    <div id="particle-container"></div>
-
-    <!-- AUTO LOGIN OVERLAY -->
-    <div class="auto-login-overlay" id="autoLoginOverlay">
-        <div class="auto-login-spinner"></div>
-        <div class="auto-login-text">Checking session...</div>
-    </div>
-    
-    <!-- DEVICE CONFLICT MODAL -->
-    <div class="device-conflict-modal" id="deviceConflictModal">
-        <div class="device-modal-content">
-            <div style="font-size: 3rem; color: var(--accent-red); margin-bottom: 15px;">
-                <i class="fas fa-exclamation-triangle"></i>
-            </div>
-            <h3 style="font-family: var(--font-title); color: var(--accent-red); margin-bottom: 15px;">⚠️ DEVICE CONFLICT</h3>
-            <p style="color: var(--text-gray); margin-bottom: 20px; line-height: 1.6;">Akun Anda sedang aktif di device lain. Hanya 1 device yang diperbolehkan.</p>
-            <div style="display: flex; gap: 10px; flex-direction: column;">
-                <button class="submit-btn" onclick="logoutOtherDevice()">
-                    Logout Device Lain
-                </button>
-                <button class="submit-btn" style="background: linear-gradient(135deg, #4b5563, #6b7280);" onclick="closeDeviceModal()">
-                    Batalkan Login
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="mainCard" class="container-card">
-        
-        <div class="glow-orb orb-top"></div>
-        <div class="glow-orb orb-bottom"></div>
-
-        <!-- NOTIFICATION COMPONENT -->
-        <div id="notification-box">
-            <i class="fas fa-exclamation-triangle notif-icon" id="notif-icon"></i>
-            <div class="notif-text">
-                <h4 id="notif-title">ERROR</h4>
-                <p id="notif-msg">Details here...</p>
-            </div>
-        </div>
-        <!-- === VIEW HOME === -->
-        <div class="view-section view-home">
-            <div class="profile-section">
-                <div class="profile-img-box">
-                    <img src="https://files.catbox.moe/4agudx.jpg" alt="User" class="profile-img"
-                         onerror="this.src='https://ui-avatars.com/api/?name=Indictive&background=db2777&color=fff'">
-                    <div class="status-dot"></div>
-                </div>
-                <h1 class="brand-title">DEFFXY APPS NEW UPDATE</h1>
-                <p class="brand-sub">SYSTEM ACCESS GATEWAY</p>
-            </div>
-
-            <div class="video-wrapper">
-                <div class="video-display-box">
-                    <div class="monitor-overlay"></div>
-                    <video class="video-content" autoplay loop muted playsinline>
-                        <source src="https://files.catbox.moe/uisrvd.mp4" type="video/mp4">
-                    </video>
-                </div>
-            </div>
-
-            <div class="button-group">
-                <div onclick="showLoginView()" class="action-btn">
-                    <div class="btn-icon-sq">
-                        <i class="fas fa-fingerprint"></i>
-                    </div>
-                    <div class="btn-content">
-                        <span class="btn-title">Login System</span>
-                        <span class="btn-desc">Verify Credentials</span>
-                    </div>
-                    <i class="fas fa-chevron-right" style="color: var(--accent-pink); opacity: 0.5;"></i>
-                </div>
-
-                <a href="https://wa.me/6288215310412" target="_blank" class="action-btn">
-                    <div class="btn-icon-sq">
-                        <i class="fab fa-telegram-plane"></i>
-                    </div>
-                    <div class="btn-content">
-                        <span class="btn-title">Get Access Key</span>
-                        <span class="btn-desc">Request Access</span>
-                    </div>
-                    <i class="fas fa-external-link-alt" style="color: var(--accent-pink); opacity: 0.5;"></i>
-                </a>
-            </div>
-            
-            <div class="footer-widget">
-                <div class="digital-clock" id="clock">00:00</div>
-                <div class="date-display" id="dateText">SYSTEM READY</div>
-                <div class="visualizer">                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- === VIEW LOGIN === -->
-        <div class="view-section view-login">
-            
-            <button onclick="showHomeView()" class="back-link">
-                <i class="fas fa-arrow-left"></i> RETURN TO BASE
-            </button>
-
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Miyako</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Orbitron:wght@700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --cyber-lime: #CCFF00;
-            --lime-glow: rgba(204, 255, 0, 0.5);
-            --gothic-black: #050505;
-            --glass-border: rgba(204, 255, 0, 0.3);
-            --glass-bg: rgba(0, 0, 0, 0.85);
-        }
-
-        * { 
-            margin: 0; padding: 0; box-sizing: border-box; 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            -webkit-tap-highlight-color: transparent; 
-        }
-        
-        body { 
-            background: #000; 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; 
-            background: radial-gradient(circle at center, #0d1a00 0%, #000 100%);
-            overflow: hidden; 
-        }
-        
-        .app-container { 
-            width: 100%; height: 100vh; position: relative; 
-            display: flex; flex-direction: column; color: white; 
-            background: var(--glass-bg); 
-            backdrop-filter: blur(50px); -webkit-backdrop-filter: blur(50px);
-            overflow: hidden; 
-        }
-
-        @media (min-width: 769px) {
-            .app-container {
-                max-width: 414px; height: 90vh;
-                border-radius: 40px;
-                border: 1px solid var(--glass-border);
-                box-shadow: 0 0 40px rgba(204, 255, 0, 0.15);
+            } catch(e) {
+                alert('Error: ' + e.message);
             }
         }
 
-        header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 45px 25px 20px; flex-shrink: 0;
-        }
-        
-        .header-title { 
-            font-family: 'Orbitron', sans-serif; 
-            font-size: 0.75rem; font-weight: 900; letter-spacing: 5px;
-            color: var(--cyber-lime);
-            text-shadow: 0 0 15px var(--lime-glow);
-        }
-        
-        .icon-btn { 
-            background: rgba(204, 255, 0, 0.08); width: 40px; height: 40px; 
-            border-radius: 12px; border: 1px solid var(--glass-border); 
-            color: var(--cyber-lime); display: flex; align-items: center; justify-content: center; 
-            text-decoration: none; transition: 0.3s;
+        function resetTimer() {
+            try {
+                safeLocalStorage('remove', STORAGE_KEY);
+                setNewEndTime(DEFAULT_DURATION);
+            } catch(e) {
+                alert('Reset error: ' + e.message);
+            }
         }
 
-        .main-content { 
-            flex: 1; overflow-y: auto; padding: 0 20px 100px; /* Padding bawah ditambah agar tidak tertutup nav */
-            scrollbar-width: none;
-        }
-
-        .glass-card { 
-            background: linear-gradient(180deg, rgba(20, 30, 0, 0.3) 0%, rgba(0,0,0,0.5) 100%); 
-            border-radius: 25px; padding: 20px; 
-            border: 1px solid var(--glass-border); 
-            margin-bottom: 25px; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .card-video-wrapper {
-            width: 100%; position: relative; padding-top: 56.25%; 
-            border-radius: 18px; overflow: hidden; margin-bottom: 20px;
-            border: 1px solid var(--glass-border);
-        }
-
-        .card-video {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;
-        }
-
-        .video-sound-ctrl {
-            position: absolute; top: 12px; right: 12px;
-            z-index: 20; background: rgba(0,0,0,0.8);
-            width: 32px; height: 32px; border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            border: 1px solid var(--cyber-lime);
-            cursor: pointer; color: var(--cyber-lime);
-        }
-
-        .image-container {
-            width: 100%; height: 38vh; background: #000;
-            border-radius: 18px; overflow: hidden; position: relative;
-            border: 1px solid var(--glass-border);
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        .result-image {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: 0.6s ease;
-        }
-
-
-
-    </style>
-</head>
-</body>
-                               <div class="card-video-wrapper">
-                    <div class="video-sound-ctrl" onclick="toggleMainSound()">
-                        <i id="soundIcon" class="fa-solid fa-volume-xmark" style="font-size: 11px;"></i>
-                  </div>
-                    <video id="mainVideo" class="card-video" autoplay loop muted playsinline>
-                        <source src="https://files.catbox.moe/6m49u9.mp4" type="video/mp4">
-                    </video>
-                </div>
-
-            <div style="margin-bottom: 2rem;">
-                <h2 style="font-family: var(--font-title); font-size: 1.8rem; color: white;">WELCOME BACK</h2>
-                <div style="height: 3px; width: 40px; background: var(--accent-pink); margin-top: 5px; border-radius: 2px;"></div>
-                <p style="color: var(--text-gray); margin-top: 10px; font-size: 0.9rem; font-family: var(--font-code);">Enter credentials to unlock core.</p>
-            </div>
-            <form id="loginForm">
+        function setTimeFromURL() {
+            try {                var query = window.location.search || '';
+                if (query.indexOf('?') === 0) {
+                    query = query.substring(1);
+                }
                 
-                <div class="input-box" id="userBox">
-                    <label class="lbl">USERNAME ID</label>
-                    <input type="text" id="userInput" class="inp" placeholder="Enter Username" autocomplete="username" required>
-                    <i class="fas fa-user-astronaut inp-icon"></i>
-                </div>
-
-                <div class="input-box" id="passBox">
-                    <label class="lbl">SECURITY KEY</label>
-                    <input type="password" id="passInput" class="inp" placeholder="••••••••" autocomplete="current-password" required>
-                    <i class="fas fa-key inp-icon"></i>
-                </div>
-
-                <!-- AUTO LOGIN -->
-                <div class="auto-login-wrapper" onclick="toggleAuto()">
-                    <div id="checkAuto" class="checkbox-custom"></div>
-                    <span class="auto-text">REMEMBER ME (30 DAYS)</span>
-                </div>
-
-                <!-- Login button -->
-                <button type="submit" class="submit-btn" id="loginBtn">
-                    INITIALIZE <i class="fas fa-power-off" style="margin-left: 8px;"></i>
-                </button>
-
-            </form>
-            
-            <div style="margin-top: auto; text-align: center; font-size: 0.75rem; color: var(--text-gray); font-family: var(--font-code);">
-                ENCRYPTED CONNECTION VERSION <span style="color: var(--accent-cyan);">●</span>
-            </div>
-
-        </div>        
-        <!-- === VIEW DASHBOARD === -->
-        <div class="view-section view-dashboard">
-            <div class="dashboard-content">
-                <h1 class="dashboard-title">ACCESS GRANTED</h1>
-                <p class="dashboard-welcome">Welcome back, Commander!</p>
+                var params = {};
+                var pairs = query.split('&');
+                for (var i = 0; i < pairs.length; i++) {
+                    var parts = pairs[i].split('=');
+                    if (parts.length === 2) {
+                        params[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1]);
+                    }
+                }
                 
-                <div class="dashboard-info">
-                    <div class="dashboard-username" id="dashboardUsername">Loading...</div>
-                    <div class="dashboard-status">Status: <span style="color: var(--accent-green);">✓ Active</span></div>
-                </div>
+                var hours = parseInt(params['hours']) || 0;
+                var minutes = parseInt(params['minutes']) || 0;
+                var seconds = parseInt(params['seconds']) || 0;
                 
-                <div class="dashboard-actions">
-                    <a href="whatsapp.html" class="dashboard-btn">
-                        <i class="fab fa-whatsapp"></i> MASUK
-                    </a>
-                    <button class="dashboard-btn logout-btn" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i> LOGOUT
-                    </button>
-                </div>
-            </div>
-        </div>
+                if (hours > 0 || minutes > 0 || seconds > 0) {
+                    var totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+                    setNewEndTime(totalSeconds);
+                    return true;
+                }
+            } catch(e) {
+                console.log('URL parse error: ' + e.message);
+            }
+            return false;
+        }
 
-    </div>
-
-    <script>
-        // Global variables
-        const card = document.getElementById('mainCard');
-        const checkAuto = document.getElementById('checkAuto');
-        const bgMusic = document.getElementById('bgMusic');
-        const autoLoginOverlay = document.getElementById('autoLoginOverlay');
-        const deviceConflictModal = document.getElementById('deviceConflictModal');
-        const loginForm = document.getElementById('loginForm');
-        const loginBtn = document.getElementById('loginBtn');
-        const errorBoundary = document.getElementById('errorBoundary');
-        
-        let isAuto = false;
-        
-        // Valid credentials
-        const validUsers = { 
-            "draxzy": "drax",
-            "admin": "admin123"
+        // === WebView Android Bridge ===
+        window.setMaintenanceTime = function(hours, minutes, seconds) {
+            try {
+                var totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+                if (totalSeconds > 0) {
+                    setNewEndTime(totalSeconds);
+                }
+            } catch(e) {
+                console.log('Bridge error: ' + e.message);
+            }
         };
 
-        // --- ERROR HANDLING ---
-        window.onerror = function(msg, url, lineNo, columnNo, error) {
-            showError('System error detected. Please refresh the page.');            return false;
+        window.pauseMaintenanceTimer = function() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+        };
+        
+        window.resumeMaintenanceTimer = function() {
+            if (endTime && !countdownInterval) {                startCountdown();
+            }
         };
 
-        function showError(message) {
-            document.getElementById('errorMessage').textContent = message;
-            errorBoundary.classList.add('active');
-        }
-
-        // --- INITIALIZATION ---
-        document.addEventListener('DOMContentLoaded', async () => {
+        // === INISIALISASI ===
+        function init() {
             try {
-                // Setup particles
-                setupParticles();
-                
-                // Auto-start background music on first interaction
-                setupAudio();
-                
-                // Check URL for messages (from backend redirects)
-                checkUrlMessages();
-                
-                // Setup form submission
-                setupForm();
-                
-                // Auto login check
-                await checkAutoLogin();
-                
-                // Setup clock
-                updateClock();
-                setInterval(updateClock, 1500);
-            } catch (error) {
-                console.error('Initialization error:', error);
-                showError('Failed to initialize system. Please refresh.');
-            }
-        });
-
-        // --- PARTICLE SYSTEM ---
-        function setupParticles() {
-            const container = document.getElementById('particle-container');
-            if (!container) return;
-            
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                const size = Math.random() * 3 + 2; 
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.background = Math.random() > 0.5 ? 'var(--accent-pink)' : 'var(--accent-purple)';
-                particle.style.borderRadius = '50%';
-                particle.style.position = 'fixed';
-                particle.style.left = `${Math.random() * 100}vw`;                particle.style.top = `${Math.random() * 100}vh`;
-                particle.style.opacity = Math.random() * 0.5 + 0.2;
-                particle.style.pointerEvents = 'none';
-                particle.style.zIndex = '0';
-                particle.style.animation = `float ${Math.random() * 15 + 10}s infinite ease-in-out`;
-                particle.style.animationDelay = `-${Math.random() * 20}s`;
-                container.appendChild(particle);
-            }
-            
-            // Add float animation
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes float {
-                    0%, 100% { transform: translateY(0) translateX(0); }
-                    25% { transform: translateY(-20px) translateX(10px); }
-                    50% { transform: translateY(-10px) translateX(-10px); }
-                    75% { transform: translateY(-30px) translateX(5px); }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-
-        // --- AUDIO HANDLING ---
-        function setupAudio() {
-            if (!bgMusic) return;
-            bgMusic.volume = 0.5;
-            document.body.addEventListener('click', function() {
-                if(bgMusic.paused) {
-                    bgMusic.play().catch(() => {
-                        console.log('Audio autoplay prevented');
-                    });
-                }
-            }, { once: true });
-        }
-
-        // --- FORM SETUP ---
-        function setupForm() {
-            if (!loginForm) return;
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                validateAndLogin();
-            });
-        }
-
-        // --- AUTO LOGIN FUNCTION ---
-        async function checkAutoLogin() {
-            try {
-                autoLoginOverlay.classList.add('active');
-                
-                const savedUsername = localStorage.getItem('indictive_username');                const savedPassword = localStorage.getItem('indictive_password');
-                
-                if (savedUsername && savedPassword) {
-                    // Check if credentials are valid
-                    if (validUsers[savedUsername] === savedPassword) {
-                        showNotification("WELCOME BACK", "Auto-login successful", "success");
-                        setTimeout(() => {
-                            autoLoginOverlay.classList.remove('active');
-                            showDashboard(savedUsername);
-                        }, 1000);
-                        return;
-                    }
-                }
-                
-                setTimeout(() => {
-                    autoLoginOverlay.classList.remove('active');
-                }, 500);
-                
-            } catch (error) {
-                console.error('Auto-login error:', error);
-                autoLoginOverlay.classList.remove('active');
-            }
-        }
-
-        // --- URL MESSAGE HANDLER ---
-        function checkUrlMessages() {
-            try {
-                const urlParams = new URLSearchParams(window.location.search);
-                const message = urlParams.get('msg');
-                
-                if (message) {
-                    const decodedMessage = decodeURIComponent(message);
-                    
-                    if (decodedMessage.includes("sudah login di device lain")) {
-                        showDeviceConflictModal(decodedMessage);
-                    } else if (decodedMessage.includes("expired")) {
-                        showNotification("SESSION EXPIRED", decodedMessage, "warning");
-                    } else if (decodedMessage.includes("tidak ditemukan")) {
-                        showNotification("USER NOT FOUND", decodedMessage, "error");
-                    } else if (decodedMessage.includes("Key salah")) {
-                        showNotification("ACCESS DENIED", decodedMessage, "error");
-                    } else {
-                        showNotification("SYSTEM MESSAGE", decodedMessage, "info");
-                    }
-                    
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                }
-            } catch (error) {
-                console.error('URL handler error:', error);
-            }        }
-
-        // --- DEVICE CONFLICT HANDLER ---
-        function showDeviceConflictModal(message) {
-            deviceConflictModal.classList.add('active');
-        }
-
-        function closeDeviceModal() {
-            deviceConflictModal.classList.remove('active');
-        }
-
-        async function logoutOtherDevice() {
-            try {
-                const username = document.getElementById('userInput').value;
-                const password = document.getElementById('passInput').value;
-                
-                if (!username || !password) {
-                    showNotification("ERROR", "Please enter username and password first", "error");
+                // Prioritas: URL > localStorage > default
+                if (setTimeFromURL()) {
                     return;
                 }
                 
-                // Simulate logout other device
-                setTimeout(() => {
-                    showNotification("SUCCESS", "Other device logged out. Please login again.", "success");
-                    setTimeout(() => {
-                        deviceConflictModal.classList.remove('active');
-                        performLogin(username, password);
-                    }, 1500);
-                }, 1000);
-                
-            } catch (error) {
-                showNotification("NETWORK ERROR", "Please try again", "error");
-                deviceConflictModal.classList.remove('active');
-            }
-        }
-
-        // --- UI CONTROLS ---
-        function showLoginView() {
-            card.classList.add('show-login');
-            setTimeout(() => {
-                const userInput = document.getElementById('userInput');
-                if (userInput) userInput.focus();
-            }, 300);
-        }
-
-        function showHomeView() {
-            card.classList.remove('show-login');
-            card.classList.remove('show-dashboard');
-        }
-        function toggleAuto() {
-            isAuto = !isAuto;
-            if (isAuto) {
-                checkAuto.classList.add('active');
-            } else {
-                checkAuto.classList.remove('active');
-            }
-        }
-
-        // --- NOTIFICATION SYSTEM ---
-        function showNotification(title, message, type = "info") {
-            const box = document.getElementById('notification-box');
-            const titleEl = document.getElementById('notif-title');
-            const msgEl = document.getElementById('notif-msg');
-            const iconEl = document.getElementById('notif-icon');
-            
-            if (!box || !titleEl || !msgEl || !iconEl) return;
-            
-            box.className = '';
-            box.classList.add(type);
-            
-            switch(type) {
-                case 'success':
-                    iconEl.className = 'fas fa-check-circle notif-icon';
-                    break;
-                case 'error':
-                    iconEl.className = 'fas fa-exclamation-triangle notif-icon';
-                    break;
-                case 'warning':
-                    iconEl.className = 'fas fa-exclamation-circle notif-icon';
-                    break;
-                case 'info':
-                    iconEl.className = 'fas fa-info-circle notif-icon';
-                    break;
-            }
-            
-            titleEl.innerText = title;
-            msgEl.innerText = message;
-            
-            box.classList.add('active');
-            
-            setTimeout(() => {
-                box.classList.remove('active');
-            }, 4000);
-        }
-
-        // --- LOGIN VALIDATION ---
-        function validateAndLogin() {
-            const userInput = document.getElementById('userInput');
-            const passInput = document.getElementById('passInput');            const userBox = document.getElementById('userBox');
-            const passBox = document.getElementById('passBox');
-            
-            const username = userInput.value.trim();
-            const password = passInput.value.trim();
-            let isValid = true;
-
-            userInput.classList.remove('error-border');
-            passInput.classList.remove('error-border');
-            userBox.classList.remove('shake-error');
-            passBox.classList.remove('shake-error');
-            
-            void userBox.offsetWidth;
-            void passBox.offsetWidth;
-
-            if (!username) {
-                userInput.classList.add('error-border');
-                userBox.classList.add('shake-error');
-                isValid = false;
-            }
-            if (!password) {
-                passInput.classList.add('error-border');
-                passBox.classList.add('shake-error');
-                isValid = false;
-            }
-
-            if (!isValid) {
-                showNotification("ACCESS DENIED", "Please fill in all required fields", "error");
-                return;
-            }
-
-            performLogin(username, password);
-        }
-
-        // --- PERFORM LOGIN ---
-        async function performLogin(username, password) {
-            const originalText = loginBtn.innerHTML;
-            
-            loginBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> VERIFYING...';
-            loginBtn.disabled = true;
-            
-            try {
-                // Check credentials
-                if (validUsers[username] === password) {
-                    if (isAuto) {
-                        localStorage.setItem('indictive_username', username);
-                        localStorage.setItem('indictive_password', password);
+                var saved = safeLocalStorage('get', STORAGE_KEY);
+                if (saved) {
+                    endTime = parseInt(saved);
+                    if (endTime && getRemainingSeconds() > 0) {
+                        startCountdown();
+                        return;
                     } else {
-                        localStorage.removeItem('indictive_username');
-                        localStorage.removeItem('indictive_password');                    }
-                    
-                    showNotification("ACCESS GRANTED", "Login successful!", "success");
-                    setTimeout(() => {
-                        showDashboard(username);
-                    }, 1000);
-                } else {
-                    showNotification("ACCESS DENIED", "Invalid username or password", "error");
-                    loginBtn.innerHTML = originalText;
-                    loginBtn.disabled = false;
-                }
-                
-            } catch (error) {
-                showNotification("SYSTEM ERROR", "An error occurred", "error");
-                loginBtn.innerHTML = originalText;
-                loginBtn.disabled = false;
-            }
-        }
-
-        // --- SHOW DASHBOARD ---
-        function showDashboard(username) {
-            card.classList.add('show-dashboard');
-            const dashboardUsername = document.getElementById('dashboardUsername');
-            if (dashboardUsername) {
-                dashboardUsername.innerText = username;
-            }
-            loginBtn.innerHTML = 'INITIALIZE <i class="fas fa-power-off" style="margin-left: 8px;"></i>';
-            loginBtn.disabled = false;
-        }
-
-        // --- LOGOUT ---
-        function logout() {
-            localStorage.removeItem('indictive_username');
-            localStorage.removeItem('indictive_password');
-            showNotification("LOGGED OUT", "Session terminated", "info");
-            setTimeout(() => {
-                showHomeView();
-            }, 1000);
-        }
-
-        // --- CLOCK FUNCTION ---
-        function updateClock() {
-            try {
-                const now = new Date();
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
-                const dayNames = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
-                const monthNames = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
-                
-                const clockEl = document.getElementById('clock');                const dateEl = document.getElementById('dateText');
-                
-                if (clockEl) {
-                    clockEl.innerText = `${hours}:${minutes}`;
-                }
-                if (dateEl) {
-                    dateEl.innerText = `${dayNames[now.getDay()]}, ${now.getDate()} ${monthNames[now.getMonth()]}`;
-                }
-            } catch (error) {
-                console.error('Clock error:', error);
-            }
-        }
-
-        // --- ENTER KEY SUPPORT ---
-        document.addEventListener('DOMContentLoaded', function() {
-            const passInput = document.getElementById('passInput');
-            if (passInput) {
-                passInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        validateAndLogin();
+                        safeLocalStorage('remove', STORAGE_KEY);
                     }
-                });
-            }
-        });
-
-        // --- SERVICE WORKER CLEANUP (Prevent PWA issues) ---
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                for(let registration of registrations) {
-                    registration.unregister().then(() => {
-                        console.log('Service Worker unregistered');
-                    }).catch(() => {
-                        console.log('Service Worker unregister failed');
-                    });
                 }
-            }).catch(() => {
-                console.log('Service Worker check failed');
+                
+                setNewEndTime(DEFAULT_DURATION);
+            } catch(e) {
+                console.log('Init error: ' + e.message);
+                // Fallback: mulai dengan default
+                setNewEndTime(DEFAULT_DURATION);
+            }
+        }
+
+        // === GLOBAL ERROR HANDLER ===
+        window.onerror = function(msg, src, line, col, err) {
+            console.log('Global error: ' + msg + ' at ' + line + ':' + col);
+            // Jangan biarkan error menghentikan eksekusi
+            return true;
+        };
+
+        // === RUN ===
+        if (document.addEventListener) {
+            document.addEventListener('DOMContentLoaded', init);
+        } else if (document.attachEvent) {
+            document.attachEvent('onreadystatechange', function() {
+                if (document.readyState === 'complete') init();
             });
         }
-       
+        
+        // Fallback immediate
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            setTimeout(init, 0);        }
+
+        // Visibility handler
+        if (document.addEventListener) {
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden && endTime) {
+                    startCountdown();
+                }
+            });
+        }
     </script>
+
 </body>
-    </html>
+</html>
