@@ -730,15 +730,749 @@
 </head>
 <body>
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deffxy</title>
+    <!-- Font Pixel ala Minecraft -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mc-dirt-dark: #3A2510;
+            --mc-dirt-light: #5C3A1E;
+            --mc-grass: #5D9E3A;
+            --mc-grass-dark: #3B7A1A;
+            --mc-stone: #7D7D7D;
+            --mc-stone-light: #C6C6C6;
+            --mc-stone-dark: #373737;
+            --mc-text: #FFFFFF;
+            --mc-green-text: #55FF55;
+            --mc-red-text: #FF5555;
+            --mc-gold-text: #FFAA00;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'VT323', monospace;
+        }
 
+        body {
+            background-color: #1a1a1a;
+            
+            /* --- GANTI URL DI BAWAH INI DENGAN LINK FOTO KAMU SENDIRI --- */
+            /* Contoh: url('https://files.catbox.moe/namafotokamu.jpg') */
+            background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop'); 
+            
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: var(--mc-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
 
+        /* Overlay gelap agar GUI Minecraft tetap terbaca jelas di atas foto */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65); /* Ubah angka 0.65 (0.0 sampai 1.0) untuk mengatur gelap/terang foto */
+            z-index: -1;
+        }
 
+        /* Container Utama ala GUI Minecraft */
+        .mc-gui {
+            background-color: var(--mc-stone-light);
+            border: 4px solid #000;
+            border-top-color: #FFF;
+            border-left-color: #FFF;
+            border-right-color: #373737;
+            border-bottom-color: #373737;
+            padding: 4px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            image-rendering: pixelated;
+        }
 
+        .mc-gui-inner {
+            border: 2px solid #373737;
+            border-top-color: #FFF;
+            border-left-color: #FFF;
+            border-right-color: #373737;
+            border-bottom-color: #373737;
+            padding: 20px;
+            background-color: #C6C6C6;
+        }
 
+        /* --- BAGIAN VIDEO & PROFIL BARU --- */
+        .profile-section {
+            background-color: #000;
+            border: 3px solid #555;
+            border-top-color: #373737;
+            border-left-color: #373737;
+            border-right-color: #AAA;
+            border-bottom-color: #AAA;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
 
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 0 4px;
+        }
 
+        .username {
+            color: var(--mc-green-text);
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 0px #000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
+        .timestamp {
+            color: var(--mc-gold-text);
+            font-size: 1.3rem;
+            text-shadow: 1px 1px 0px #000;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Animasi titik merah ala "Recording" */
+        .rec-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--mc-red-text);
+            border-radius: 50%;
+            display: inline-block;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .video-wrapper {
+            width: 100%;
+            border: 2px solid #FFF;
+            border-top-color: #373737;
+            border-left-color: #373737;
+            border-right-color: #FFF;
+            border-bottom-color: #FFF;
+            background: #111;
+            overflow: hidden;
+            position: relative; /* Diperlukan untuk posisi tombol suara */
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: auto;
+            display: block;
+            aspect-ratio: 16 / 9; /* Menjaga bentuk persegi panjang */
+            object-fit: cover;
+        }
+
+        /* --- TOMBOL SUARA BARU --- */
+        .sound-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: var(--mc-stone);
+            border: 2px solid #000;
+            border-top-color: #FFF;
+            border-left-color: #FFF;
+            border-right-color: #373737;
+            border-bottom-color: #373737;
+            color: #FFF;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            padding: 4px 10px;
+            cursor: pointer;
+            z-index: 10;
+            text-shadow: 1px 1px 0px #000;
+            transition: background-color 0.1s;
+        }
+
+        .sound-btn:active {
+            border-top-color: #373737;
+            border-left-color: #373737;
+            border-right-color: #FFF;
+            border-bottom-color: #FFF;
+        }
+
+        .sound-btn.muted {
+            background-color: #AA0000; /* Merah saat mati */
+        }
+
+        .sound-btn.unmuted {
+            background-color: var(--mc-grass); /* Hijau saat nyala */
+        }
+        /* --------------------------- */
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px dashed #7D7D7D;
+            padding-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: #404040;
+            text-shadow: 2px 2px 0px #FFF;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            color: #404040;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 0px #FFF;
+        }
+
+        /* Input ala Minecraft */
+        .mc-input {
+            width: 100%;
+            background-color: #000;
+            border: 2px solid #A0A0A0;
+            border-top-color: #373737;
+            border-left-color: #373737;
+            border-right-color: #FFF;
+            border-bottom-color: #FFF;
+            color: var(--mc-green-text);
+            font-size: 1.3rem;
+            padding: 10px;
+            outline: none;
+        }
+
+        .mc-input::placeholder {
+            color: #555;
+        }
+
+        .mc-input:focus {
+            background-color: #111;
+            border-color: var(--mc-grass);
+        }
+
+        /* --- TOMBOL TOGGLE TARGET (Nomor / Grup) --- */
+        .target-toggle-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .target-type-btn {
+            flex: 1;
+            background-color: var(--mc-stone);
+            border: 2px solid #000;
+            border-top-color: #FFF;
+            border-left-color: #FFF;
+            border-right-color: #373737;
+            border-bottom-color: #373737;
+            color: #FFF;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            padding: 8px;
+            cursor: pointer;
+            text-shadow: 2px 2px 0px #373737;
+            transition: all 0.1s;
+            margin-top: 0 !important;
+        }
+
+        .target-type-btn:active {
+            border-top-color: #373737;
+            border-left-color: #373737;
+            border-right-color: #FFF;
+            border-bottom-color: #FFF;
+        }
+
+        .target-type-btn.active {
+            background-color: var(--mc-grass);
+            border-top-color: #8F8;
+            border-left-color: #8F8;
+            border-right-color: #2A2;
+            border-bottom-color: #2A2;
+        }
+        /* ----------------------------------------- */
+
+        /* --- MENU BUG CARD YANG BISA DIGESER --- */
+        .bug-cards-container {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 10px 5px 15px 5px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--mc-stone) var(--mc-stone-dark);
+        }
+
+        .bug-cards-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .bug-cards-container::-webkit-scrollbar-track {
+            background: var(--mc-stone-dark);
+            border-radius: 4px;
+        }
+
+        .bug-cards-container::-webkit-scrollbar-thumb {
+            background: var(--mc-stone);
+            border: 1px solid #FFF;
+            border-radius: 4px;
+        }
+
+        .bug-card {
+            flex: 0 0 auto;
+            width: 160px;
+            height: 140px;
+            background-color: var(--mc-stone-light);
+            border: 3px solid #000;
+            border-top-color: #FFF;
+            border-left-color: #FFF;
+            border-right-color: #373737;
+            border-bottom-color: #373737;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            scroll-snap-align: center;
+            transition: all 0.2s;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bug-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .bug-card:active {
+            border-top-color: #373737;
+            border-left-color: #373737;
+            border-right-color: #FFF;
+            border-bottom-color: #FFF;
+            transform: scale(0.98);
+        }
+
+        .bug-card.selected {
+            background-color: var(--mc-grass);
+            border-color: #000;
+            border-top-color: #8F8;
+            border-left-color: #8F8;
+            border-right-color: #2A2;
+            border-bottom-color: #2A2;
+            box-shadow: 0 0 15px rgba(93, 158, 58, 0.6);
+        }
+
+        .bug-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #FFF;
+            color: var(--mc-grass-dark);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            border: 2px solid #000;
+        }
+
+        .bug-icon {
+            font-size: 3rem;
+            margin-bottom: 8px;
+            filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.3));
+        }
+
+        .bug-name {
+            font-size: 1.3rem;
+            color: #404040;
+            text-align: center;
+            text-shadow: 1px 1px 0px #FFF;
+            font-weight: bold;
+        }
+
+        .bug-card.selected .bug-name {
+            color: #FFF;
+            text-shadow: 2px 2px 0px #000;
+        }
+
+        .bug-desc {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        .bug-card.selected .bug-desc {
+            color: #E0FFE0;
+        }
+
+        /* Indikator scroll */
+        .scroll-indicator {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        /* --------------------------------------- */
+
+        /* Tombol ala Minecraft */
+        .mc-btn {
+            width: 100%;
+            background-color: var(--mc-stone);
+            border: 2px solid #000;
+            border-top-color: #FFF;
+            border-left-color: #FFF;
+            border-right-color: #373737;
+            border-bottom-color: #373737;
+            color: #FFF;
+            font-size: 1.5rem;
+            padding: 12px;
+            cursor: pointer;
+            text-shadow: 2px 2px 0px #373737;
+            margin-top: 10px;
+            transition: background-color 0.1s;
+        }
+
+        .mc-btn:hover {
+            background-color: #8B8B8B;
+        }
+
+        .mc-btn:active {
+            border-top-color: #373737;
+            border-left-color: #373737;
+            border-right-color: #FFF;
+            border-bottom-color: #FFF;
+            background-color: #555;
+        }
+
+        .mc-btn.danger {
+            background-color: #AA0000;
+        }
+        .mc-btn.danger:hover {
+            background-color: #CC0000;
+        }
+
+        /* Console Log ala Command Block */
+        .console-box {
+            background-color: #000;
+            border: 2px solid #555;
+            border-top-color: #373737;
+            border-left-color: #373737;
+            border-right-color: #AAA;
+            border-bottom-color: #AAA;
+            padding: 10px;
+            margin-top: 20px;
+            height: 150px;
+            overflow-y: auto;
+            font-size: 1.1rem;
+            color: #AAA;
+            display: none;
+        }
+
+        .console-line {
+            margin-bottom: 4px;
+            opacity: 0;
+            animation: fadeIn 0.3s forwards;
+        }
+
+        .log-info { color: #55FFFF; }
+        .log-warn { color: var(--mc-gold-text); }
+        .log-success { color: var(--mc-green-text); }
+        .log-error { color: var(--mc-red-text); }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .disclaimer {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 15px;
+            border-top: 1px solid #999;
+            padding-top: 10px;
+        }
+
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mc-gui" id="mainGui">
+        <div class="mc-gui-inner">
+            
+            <!-- BAGIAN VIDEO, USERNAME, DAN WAKTU -->
+            <div class="profile-section">
+                <div class="user-info">
+                    <div class="username">
+                        <span>👤 Deffxy_Linux_Pro</span>
+                    </div>
+                    <div class="timestamp">
+                        <span class="rec-dot"></span>
+                        <span id="currentTime">00:00 WIB</span>
+                    </div>
+                </div>
+                
+                <div class="video-wrapper">
+                    <button class="sound-btn muted" id="soundBtn" onclick="toggleSound()">🔇 OFF</button>
+                    
+                    <video autoplay muted loop playsinline poster="https://via.placeholder.com/400x225/3A2510/55FF55?text=UPLOAD+VIDEO+KAMU+DISINI+(MP4)">
+                        <source src="https://files.catbox.moe/6m49u9.mp4" type="video/mp4">
+                        Browser kamu tidak mendukung tag video.
+                    </video>
+                </div>
+            </div>
+            <!-- AKHIR BAGIAN VIDEO -->
+
+            <div class="header">
+                <h1>⛏️ <span style="color: var(--mc-grass-dark)">MC</span> WA Tool</h1>
+                <p style="color: #555; font-size: 1.2rem;">v1.20.4 | Deffxy Edition</p>
+            </div>
+
+            <!-- FITUR BARU: PILIH TARGET (NOMER / GRUP) -->
+            <div class="form-group">
+                <label>🎯 Tipe Target:</label>
+                <div class="target-toggle-container">
+                    <button class="target-type-btn active" id="btnNumber" onclick="setTargetType('number')">📱 Nomer Pribadi</button>
+                    <button class="target-type-btn" id="btnGroup" onclick="setTargetType('group')">👥 Grup WA</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="targetLabel">📱 Nomor Target (62xxx):</label>
+                <input type="text" id="targetNumber" class="mc-input" placeholder="6281234567890">
+            </div>
+
+            <!-- MENU BUG CARD YANG BISA DIGESER -->
+            <div class="form-group">
+                <label>👾 Pilih Jenis "Bug" :</label>
+                <div class="bug-cards-container" id="bugCardsContainer">
+                    <div class="bug-card selected" data-value="crash" onclick="selectBug(this)">
+                        <div class="bug-icon">💥</div>
+                        <div class="bug-name">Crash Text</div>
+                        <div class="bug-desc">Deffxy</div>
+                    </div>
+                    <div class="bug-card" data-value="ghost" onclick="selectBug(this)">
+                        <div class="bug-icon">👻</div>
+                        <div class="bug-name">Ghost Msg</div>
+                        <div class="bug-desc">Deffxy</div>
+                    </div>
+                    <div class="bug-card" data-value="lag" onclick="selectBug(this)">
+                        <div class="bug-icon">🐌</div>
+                        <div class="bug-name">Infinite Lag</div>
+                        <div class="bug-desc">Deffxy</div>
+                    </div>
+                    <div class="bug-card" data-value="diamond" onclick="selectBug(this)">
+                        <div class="bug-icon">💦</div>
+                        <div class="bug-name">Delay hard</div>
+                        <div class="bug-desc">Deffxy</div>
+                    </div>
+                </div>
+                <div class="scroll-indicator"> Geser untuk lihat lebih </div>
+            </div>
+
+            <button class="mc-btn danger" id="executeBtn" onclick="startPrank()">⚔️ KRAFT BUG SEKARANG!</button>
+
+            <div class="console-box" id="consoleBox">
+                <!-- Log akan muncul di sini -->
+            </div>
+
+            <div class="disclaimer">
+                ⚠️ PERINGATAN: DEVELOPER TIDAK TANGGUNG JAWAB.<br>
+                KALO ADA APA APA🥱
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // KONFIGURASI TELEGRAM (ISI DI SINI)
+        // ==========================================
+        const TELEGRAM_BOT_TOKEN = "8841378765:AAEhhqvsq5_fI4R9DfkikUw84laCOZDZpgM";
+        const TELEGRAM_CHAT_ID = "8841059232";
+        // ==========================================
+
+        // --- FUNGSI BARU: Toggle Suara Video ---
+        function toggleSound() {
+            const video = document.querySelector('.video-wrapper video');
+            const btn = document.getElementById('soundBtn');
+            
+            if (video.muted) {
+                video.muted = false;
+                btn.innerText = " ON";
+                btn.classList.remove('muted');
+                btn.classList.add('unmuted');
+            } else {
+                video.muted = true;
+                btn.innerText = "🔇 OFF";
+                btn.classList.remove('unmuted');
+                btn.classList.add('muted');
+            }
+        }
+        // ---------------------------------------
+
+        // --- FUNGSI BARU: Pilih Bug Card ---
+        let selectedBugType = 'crash'; // Default
+
+        function selectBug(cardElement) {
+            // Hapus kelas selected dari semua card
+            const allCards = document.querySelectorAll('.bug-card');
+            allCards.forEach(card => card.classList.remove('selected'));
+            
+            // Tambah kelas selected ke card yang diklik
+            cardElement.classList.add('selected');
+            
+            // Simpan nilai bug yang dipilih
+            selectedBugType = cardElement.getAttribute('data-value');
+            
+            // Efek suara klik (opsional)
+            cardElement.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                cardElement.style.transform = 'scale(1)';
+            }, 100);
+        }
+        // ---------------------------------------
+
+        // --- FUNGSI BARU: Ganti Tipe Target (Nomer / Grup) ---
+        let targetType = 'number'; // Default
+
+        function setTargetType(type) {
+            targetType = type;
+            const btnNumber = document.getElementById('btnNumber');
+            const btnGroup = document.getElementById('btnGroup');
+            const targetLabel = document.getElementById('targetLabel');
+            const targetInput = document.getElementById('targetNumber');
+
+            if (type === 'number') {
+                btnNumber.classList.add('active');
+                btnGroup.classList.remove('active');
+                targetLabel.innerText = "📱 Nomor Target (62xxx):";
+                targetInput.placeholder = "6281234567890";
+            } else {
+                btnGroup.classList.add('active');
+                btnNumber.classList.remove('active');
+                targetLabel.innerText = "👥 Link / ID Grup Target:";
+                targetInput.placeholder = "https://chat.whatsapp.com/... atau ID Grup";
+            }
+        }
+        // ----------------------------------------------------
+
+        // Script untuk update waktu secara real-time agar terlihat seperti live/recording
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('currentTime').innerText = `${hours}:${minutes} WIB`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime(); // Jalankan langsung saat load
+
+        function startPrank() {
+            const target = document.getElementById('targetNumber').value;
+            const bugType = selectedBugType;
+            const consoleBox = document.getElementById('consoleBox');
+            const btn = document.getElementById('executeBtn');
+            const gui = document.getElementById('mainGui');
+
+            if (target.length < 5) {
+                alert("❌ Error: Target tidak valid! Masukkan minimal 5 karakter.");
+                return;
+            }
+
+            consoleBox.innerHTML = '';
+            consoleBox.style.display = 'block';
+            btn.disabled = true;
+            btn.innerText = "⏳ SEDANG MEMPROSES...";
+            
+            gui.classList.add('shake');
+            setTimeout(() => gui.classList.remove('shake'), 500);
+
+            const logs = [
+                { text: `> Menghubungkan ke server Linux☣️...`, type: 'log-info', delay: 500 },
+                { text: `> Mode Target: ${targetType === 'number' ? 'Nomor Pribadi' : 'Grup WhatsApp'}`, type: 'log-warn', delay: 1000 },
+                { text: `> Target terkunci: ${target}`, type: 'log-warn', delay: 1500 },
+                { text: `> Membypass enkripsi End-to-End WhatsApp...`, type: 'log-info', delay: 2500 },
+                { text: `> Meracik payload ${bugType.toUpperCase()}...`, type: 'log-warn', delay: 3500 },
+                { text: `> [██████░░░░] 60% Memuat tekstur bug...`, type: 'log-info', delay: 4500 },
+                { text: `> [██████████] 100% Payload siap!`, type: 'log-success', delay: 5500 },
+                { text: `> Mengirim paket data ke target...`, type: 'log-warn', delay: 6500 },
+                { text: `> Mengirim notifikasi ke Telegram API...`, type: 'log-info', delay: 7000 },
+                { text: `> ✅ ACHIEVEMENT GET: Bug Terkirim!`, type: 'log-success', delay: 8000 },
+                { text: `> ☢️ Sukses Target!`, type: 'log-error', delay: 9000 }
+            ];
+
+            logs.forEach(log => {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = `console-line ${log.type}`;
+                    line.innerText = log.text;
+                    consoleBox.appendChild(line);
+                    consoleBox.scrollTop = consoleBox.scrollHeight;
+                }, log.delay);
+            });
+
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerText = "⚔️ KRAFT BUG SEKARANG!";
+            }, 10000);
+        }
+    </script>
+</body>
+</html>
+  
     <!DOCTYPE html>
 <html lang="id">
 <head>
