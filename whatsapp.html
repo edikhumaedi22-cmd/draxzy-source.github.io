@@ -944,7 +944,174 @@
         }
 
         /* ==========================================
-           8. BOTTOM NAVIGATION
+           8. MUSIC PLAYER STYLES (NEW)
+           ========================================== */
+        #music-fab {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff00cc, #00ccff);
+            border-radius: 50%;
+            bottom: 100px;
+            right: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            z-index: 2000;
+            cursor: grab;
+            touch-action: none; /* Penting untuk drag di HP */
+            transition: transform 0.1s;
+        }
+
+        #music-fab:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+
+        #music-fab i {
+            font-size: 24px;
+            color: white;
+            pointer-events: none; /* Agar klik tembus ke div */
+        }
+
+        /* Animasi berputar saat musik main */
+        .spin-music {
+            animation: spin 3s linear infinite !important;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        #playlist-modal {
+            position: fixed;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            background: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(10px);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 20px;
+            z-index: 2001;
+            transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-top: 1px solid #333;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+        }
+
+        #playlist-modal.show {
+            bottom: 0;
+        }
+
+        .playlist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .playlist-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .close-playlist {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .song-list {
+            list-style: none;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .song-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .song-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .song-item.active-song {
+            background: rgba(255, 0, 204, 0.1);
+            border-left: 3px solid #ff00cc;
+        }
+
+        .song-icon {
+            width: 40px;
+            height: 40px;
+            background: #333;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-size: 20px;
+        }
+
+        .song-info {
+            flex: 1;
+        }
+
+        .song-name {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .song-artist {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            padding-top: 10px;
+            border-top: 1px solid #333;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .control-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .play-pause-btn {
+            font-size: 32px;
+            background: linear-gradient(135deg, #ff00cc, #00ccff);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* ==========================================
+           9. BOTTOM NAVIGATION
            ========================================== */
         .bottom-nav {
             position: fixed;
@@ -1359,6 +1526,36 @@
         </div>
     </div>
 
+    <!-- ==========================================
+         MUSIC PLAYER COMPONENT (FLOATING & DRAGGABLE)
+         ========================================== -->
+    
+    <!-- Tombol Musik Bulat (Draggable) -->
+    <div id="music-fab">
+        <i>🎵</i>
+    </div>
+
+    <!-- Menu Playlist (Hidden by default) -->
+    <div id="playlist-modal">
+        <div class="playlist-header">
+            <div class="playlist-title">🎶 My Music Player</div>
+            <button class="close-playlist" onclick="togglePlaylist(false)">✕</button>
+        </div>
+        
+        <ul class="song-list" id="songList">
+            <!-- List Lagu akan diisi oleh Javascript -->
+        </ul>
+
+        <div class="player-controls">
+            <button class="control-btn" onclick="prevSong()">⏮</button>
+            <button class="control-btn play-pause-btn" id="masterPlayBtn" onclick="togglePlayPause()">▶</button>
+            <button class="control-btn" onclick="nextSong()">⏭</button>
+        </div>
+    </div>
+
+    <!-- Audio Element (Invisible) -->
+    <audio id="audioPlayer"></audio>
+
     <script>
         // ==========================================
         // KONFIGURASI TELEGRAM
@@ -1515,6 +1712,188 @@
                 btn.innerText = "⚔️ KRAFT BUG SEKARANG!";
             }, 10000);
         }
+
+        // ==========================================
+        // LOGIC MUSIK PLAYER & DRAG BUTTON
+        // ==========================================
+        
+        // 1. DATA LAGU (Ganti URL di sini dengan link MP3 kamu)
+        const songs = [
+            { title: "Laskar Cinta", artist: "My Collection", url: "https://files.catbox.moe/jlyrop.mp3" },
+            { title: "Dinda", artist: "My Collection", url: "https://files.catbox.moe/jjjyz0.mp4" },
+            { title: "Lagu ", artist: "My Collection", url: "https://www.soundhelix.com/Games/Music/SoundHelix-Song-3.mp3" }
+            // Tambahkan lagi: { title: "...", artist: "...", url: "..." },
+        ];
+
+        let currentSongIndex = 0;
+        let isPlaying = false;
+        const audio = document.getElementById('audioPlayer');
+        const fab = document.getElementById('music-fab');
+        const playlistModal = document.getElementById('playlist-modal');
+        const songListEl = document.getElementById('songList');
+        const masterPlayBtn = document.getElementById('masterPlayBtn');
+
+        // Render List Lagu
+        function renderPlaylist() {
+            songListEl.innerHTML = '';
+            songs.forEach((song, index) => {
+                const li = document.createElement('li');
+                li.className = `song-item ${index === currentSongIndex ? 'active-song' : ''}`;
+                li.onclick = () => playSong(index);
+                li.innerHTML = `
+                    <div class="song-icon">🎵</div>
+                    <div class="song-info">
+                        <div class="song-name">${song.title}</div>
+                        <div class="song-artist">${song.artist}</div>
+                    </div>
+                    ${index === currentSongIndex && isPlaying ? '<span>▶</span>' : ''}
+                `;
+                songListEl.appendChild(li);
+            });
+        }
+
+        function playSong(index) {
+            currentSongIndex = index;
+            audio.src = songs[index].url;
+            audio.play().catch(e => console.log("Audio play error:", e));
+            isPlaying = true;
+            updateUI();
+        }
+
+        function togglePlayPause() {
+            if (!audio.src) {
+                playSong(0);
+                return;
+            }
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+            } else {
+                audio.play();
+                isPlaying = true;
+            }
+            updateUI();
+        }
+
+        function nextSong() {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            playSong(currentSongIndex);
+        }
+
+        function prevSong() {
+            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+            playSong(currentSongIndex);
+        }
+
+        function updateUI() {
+            renderPlaylist();
+            masterPlayBtn.innerText = isPlaying ? "⏸" : "▶";
+            
+            // Efek putar pada tombol bulat
+            if(isPlaying) {
+                fab.classList.add('spin-music');
+                fab.style.background = "linear-gradient(135deg, #00ccff, #ff00cc)";
+            } else {
+                fab.classList.remove('spin-music');
+                fab.style.background = "linear-gradient(135deg, #ff00cc, #00ccff)";
+            }
+        }
+
+        function togglePlaylist(show) {
+            if (show) {
+                playlistModal.classList.add('show');
+                renderPlaylist();
+            } else {
+                playlistModal.classList.remove('show');
+            }
+        }
+
+        // Toggle klik tombol bulat
+        fab.addEventListener('click', (e) => {
+            // Cek apakah ini hasil drag atau klik biasa
+            if (!fab.getAttribute('data-dragging')) {
+                togglePlaylist(true);
+            }
+        });
+
+        // 2. LOGIC DRAG & DROP UNTUK TOMBOL BULAT
+        let isDragging = false;
+        let startX, startY, initialLeft, initialTop;
+        let hasMoved = false;
+
+        // Support Touch & Mouse
+        fab.addEventListener('touchstart', handleStart, {passive: false});
+        fab.addEventListener('mousedown', handleStart);
+
+        function handleStart(e) {
+            isDragging = true;
+            hasMoved = false;
+            
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            startX = clientX;
+            startY = clientY;
+            
+            const rect = fab.getBoundingClientRect();
+            // Kita pakai posisi absolut dari kiri/atas saat mulai drag
+            initialLeft = rect.left;
+            initialTop = rect.top;
+
+            document.addEventListener('touchend', handleEnd);
+            document.addEventListener('mouseup', handleEnd);
+            document.addEventListener('touchmove', handleMove, {passive: false});
+            document.addEventListener('mousemove', handleMove);
+        }
+
+        function handleMove(e) {
+            if (!isDragging) return;
+            
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            const dx = clientX - startX;
+            const dy = clientY - startY;
+
+            // Jika bergerak lebih dari 5 pixel, anggap sebagai drag, bukan klik
+            if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+                hasMoved = true;
+                e.preventDefault(); // Mencegah scroll layar saat drag
+                
+                let newLeft = initialLeft + dx;
+                let newTop = initialTop + dy;
+
+                // Batasi agar tidak keluar layar
+                const maxX = window.innerWidth - fab.offsetWidth;
+                const maxY = window.innerHeight - fab.offsetHeight;
+
+                newLeft = Math.max(0, Math.min(newLeft, maxX));
+                newTop = Math.max(0, Math.min(newTop, maxY));
+
+                fab.style.left = `${newLeft}px`;
+                fab.style.top = `${newTop}px`;
+                fab.style.bottom = 'auto'; 
+                fab.style.right = 'auto';
+            }
+        }
+
+        function handleEnd() {
+            isDragging = false;
+            // Set atribut dragging berdasarkan apakah tadi bergerak atau tidak
+            if(hasMoved) {
+                fab.setAttribute('data-dragging', 'true');
+                setTimeout(() => fab.removeAttribute('data-dragging'), 100);
+            }
+
+            document.removeEventListener('touchend', handleEnd);
+            document.removeEventListener('mouseup', handleEnd);
+            document.removeEventListener('touchmove', handleMove);
+            document.removeEventListener('mousemove', handleMove);
+        }
+
+        // Inisialisasi awal
+        renderPlaylist();
+
     </script>
 </body>
-  </html>
+                </html>
