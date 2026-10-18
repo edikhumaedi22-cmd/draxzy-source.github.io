@@ -1,1056 +1,1070 @@
-<!DOCTYPE
-                    </video><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeffXy APPS V25</title>
+    <title>DeffXy APPS V26 - Ultimate Edition</title>
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto+Mono:wght@300;400&family=VT323&family=Segoe+UI&display=swap" rel="stylesheet">
+
     <style>
+        /* ==========================================
+           1. VARIABEL GLOBAL & RESET
+           ========================================== */
         :root {
             --bg: #0a0515;
             --card-bg: #1a0a2e;
+            --card-hover: #2a103e;
             --accent: linear-gradient(135deg, #ff00cc, #00ccff);
+            --accent-dark: #2a004d;
             --text: #e0d6f0;
-            --purple-dark: #4b0082;
+            --text-light: #a090c0;
+            --red: #ff3366;
+            --green: #00ff99;
+            --yellow: #ffcc00;
+            --purple: #cc00ff;
+            --border: rgba(100, 50, 150, 0.4);
+            
+            --font-title: 'Orbitron', sans-serif;
+            --font-code: 'Roboto Mono', monospace;
+            
+            /* Minecraft Theme Variables */
+            --mc-dirt-dark: #3A2510;
+            --mc-dirt-light: #5C3A1E;
+            --mc-grass: #5D9E3A;
+            --mc-stone: #7D7D7D;
+            --mc-stone-light: #C6C6C6;
+            --mc-stone-dark: #373737;
+            --mc-green-text: #55FF55;
+            --mc-gold-text: #FFAA00;
+            --mc-red-text: #FF5555;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg);
-            font-family: 'Orbitron', sans-serif;
+            font-family: var(--font-title);
             color: var(--text);
             margin: 0;
             padding: 0;
-            padding-bottom: 80px; /* Ruang untuk nav bawah */
+            padding-bottom: 80px;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* Header */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(100, 0, 200, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 200, 255, 0.05) 0%, transparent 20%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Override font khusus untuk area Minecraft GUI */
+        .mc-gui, .mc-gui * {
+            font-family: 'VT323', monospace !important;
+        }
+
+        /* ==========================================
+           2. HEADER & SIDEBAR (Style V26)
+           ========================================== */
         header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 15px;
+            padding: 16px 20px;
             background: rgba(10, 5, 21, 0.9);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 900;
         }
-        
+
+        .hamburger {
+            font-size: 24px;
+            cursor: pointer;
+            user-select: none;
+            color: var(--text);
+        }
+
         .title {
-            flex-grow: 1;
-            text-align: center;
-            font-weight: bold;
+            font-size: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
             background: var(--accent);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+            flex-grow: 1;
+            text-align: center;
         }
 
-        /* Dashboard Card */
-        .dashboard-card {
-            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
-            border-radius: 15px;
-            padding: 15px;
-            margin: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: rgba(10, 5, 21, 0.98);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid var(--border);
+            z-index: 1000;
+            transition: left 0.4s ease;
+            padding-top: 20px;
+            overflow-y: auto;
         }
 
-        /* News Section - Perbaikan Gambar di Sini */
-        .section-title {
-            margin: 20px 15px 10px;
-            font-size: 16px;
-            border-left: 4px solid #ff00cc;
-            padding-left: 10px;
+        .sidebar.active {
+            left: 0;
         }
 
-        .news-carousel {
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .sidebar h3 {
+            color: var(--red);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 20px 20px 10px;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin: 8px 0;
+        }
+
+        .nav-links a {
             display: flex;
-            overflow-x: auto;
-            gap: 12px;
-            padding: 0 15px 15px;
-            scroll-snap-type: x mandatory;
+            align-items: center;
+            padding: 14px 20px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
         }
 
-        .news-card {
-            min-width: 85%; /* Supaya kartu selanjutnya sedikit terlihat */
-            max-width: 300px;
-            background: var(--card-bg);
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--card-hover);
+            border-left: 3px solid var(--accent-dark);
+        }
+
+        .nav-links a span {
+            margin-right: 14px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .logout-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: linear-gradient(to right, #800040, #400080);
+            color: #ff99cc;
+            border: none;
             border-radius: 12px;
-            overflow: hidden;
-            scroll-snap-align: center;
+            padding: 14px;
+            font-family: var(--font-title);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .news-image {
-            width: 100%;
-            height: auto; /* Gambar akan menyesuaikan proporsi */
-            max-height: 150px;
-            object-fit: cover; /* Gambar tetap rapi meski dicrop */
+        .logout-btn:before {
+            content: "→";
+            margin-right: 8px;
+        }
+
+        /* ==========================================
+           3. MAIN CONTENT & PAGE NAVIGATION
+           ========================================== */
+        main {
+            padding: 20px;
+            max-width: 100%;
+            margin: 0 auto;
+            transition: filter 0.3s ease;
+        }
+
+        .page {
+            display: none;
+            min-height: calc(100vh - 80px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
             display: block;
         }
 
-        /* Stats Grid */
-        .account-stats {
-            padding: 0 15px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .account-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 10px;
+        /* ==========================================
+           4. DASHBOARD COMPONENTS (HOME STYLE)
+           ========================================== */
+        .welcome-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(100, 0, 200, 0.2);
+            position: relative;
+            overflow: hidden;
         }
 
-        .account-box {
-            background: rgba(255,255,255,0.05);
+        .welcome-card::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 0, 204, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .welcome-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .app-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
             border-radius: 12px;
-            padding: 12px;
-            font-size: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
         }
 
-        /* Tool Card */
+        .welcome-text h2 {
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+
+        .welcome-text p {
+            font-size: 24px;
+            font-weight: 700;
+            background: var(--accent);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .stat-box {
+            flex: 1;
+            background: rgba(30, 10, 50, 0.5);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .stat-box span {
+            font-size: 20px;
+            margin-right: 12px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            margin: 24px 0 16px;
+            font-size: 16px;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .section-title:before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background: var(--accent);
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .carousel-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding-bottom: 10px;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+        .carousel-container::-webkit-scrollbar { display: none; }
+
+        .carousel-card {
+            flex: 0 0 auto;
+            width: 85%;
+            max-width: 300px;
+            aspect-ratio: 16/9;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            scroll-snap-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--card-bg);
+        }
+
+        .news-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        .news-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, #080310 10%, transparent 90%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 15px;
+        }
+
+        .news-headline {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .news-tag {
+            font-family: var(--font-code);
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
         .dashboard-grid {
-            padding: 0 15px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
         }
 
         .tool-card {
             background: linear-gradient(135deg, #2d004b, #4a0080);
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: 15px;
+            padding: 20px 15px;
             text-align: center;
             text-decoration: none;
             color: white;
             display: block;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease;
+            cursor: pointer;
         }
 
-        /* Bottom Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: #1a0a2e;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            border-top: 2px solid #ff00cc;
-            z-index: 1000;
+        .tool-card:hover {
+            transform: translateY(-5px);
         }
 
-        .nav-item {
-            text-align: center;
-            font-size: 10px;
-            color: #aaa;
-            text-decoration: none;
-        }
-
-        .nav-item.active {
-            color: #ff00cc;
-        }
-
-        .nav-icon {
-            font-size: 20px;
-            display: block;
-        }
-    </style>
-</head>
-<body>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp</title>
-    <style>
-        body {
-            background-color: #121212;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-            color: white;
-            text-align: center;
+        .tool-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            margin: 0 auto 10px;
+            font-size: 1.5rem;
         }
 
-    .stat-label {
-      font-size: 14px;
-      color: var(--text-light);
-    }
-        
-        .bottom-nav {
-            width: 100%;
-            background-color: #2a2a2a;
+        .tool-title {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .tool-desc {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        /* ==========================================
+           5. GENERIC PAGE STYLES
+           ========================================== */
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+        }
+
+        .content-box {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            border-color: var(--purple);
+            transform: translateY(-5px);
+            background: var(--card-hover);
+        }
+
+        .feature-icon { font-size: 40px; margin-bottom: 10px; }
+        .feature-title { font-weight: 600; margin-bottom: 5px; font-size: 14px; }
+        .feature-desc { font-size: 12px; color: var(--text-light); }
+
+        /* ==========================================
+           6. MINECRAFT GUI STYLES (Scoped)
+           ========================================== */
+        .mc-page-wrapper {
+            background-color: #1a1a1a;
+            background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
             display: flex;
-            justify-content: space-around;
-            padding: 12px 0;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 80px);
+            padding: 20px;
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+
+        .mc-page-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 0;
+        }
+
+        .mc-gui {
+            background-color: var(--mc-stone-light);
+            border: 4px solid #000;
+            border-top-color: #FFF;
+            border-left-color: #FFF;
+            border-right-color: var(--mc-stone-dark);
+            border-bottom-color: var(--mc-stone-dark);
+            padding: 4px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            image-rendering: pixelated;
+            position: relative;
+            z-index: 1;
+        }
+
+        .mc-gui-inner {
+            border: 2px solid var(--mc-stone-dark);
+            border-top-color: #FFF;
+            border-left-color: #FFF;
+            border-right-color: var(--mc-stone-dark);
+            border-bottom-color: var(--mc-stone-dark);
+            padding: 20px;
+            background-color: var(--mc-stone-light);
+        }
+
+        .profile-section {
+            background-color: #000;
+            border: 3px solid #555;
+            border-top-color: var(--mc-stone-dark);
+            border-left-color: var(--mc-stone-dark);
+            border-right-color: #AAA;
+            border-bottom-color: #AAA;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 0 4px;
+        }
+
+        .username {
+            color: var(--mc-green-text);
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 0px #000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timestamp {
+            color: var(--mc-gold-text);
+            font-size: 1.3rem;
+            text-shadow: 1px 1px 0px #000;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .rec-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--mc-red-text);
+            border-radius: 50%;
+            display: inline-block;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .video-wrapper {
+            width: 100%;
+            border: 2px solid #FFF;
+            border-top-color: var(--mc-stone-dark);
+            border-left-color: var(--mc-stone-dark);
+            border-right-color: #FFF;
+            border-bottom-color: #FFF;
+            background: #111;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: auto;
+            display: block;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+        }
+
+        .sound-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: var(--mc-stone);
+            border: 2px solid #000;
+            border-top-color: #FFF;
+            border-left-color: #FFF;
+            border-right-color: var(--mc-stone-dark);
+            border-bottom-color: var(--mc-stone-dark);
+            color: #FFF;
+            font-size: 1.2rem;
+            padding: 4px 10px;
+            cursor: pointer;
+            z-index: 10;
+            text-shadow: 1px 1px 0px #000;
+        }
+
+        .sound-btn:active {
+            border-top-color: var(--mc-stone-dark);
+            border-left-color: var(--mc-stone-dark);
+            border-right-color: #FFF;
+            border-bottom-color: #FFF;
+        }
+
+        .sound-btn.muted { background-color: #AA0000; }
+        .sound-btn.unmuted { background-color: var(--mc-grass); }
+
+        .mc-header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px dashed #7D7D7D;
+            padding-bottom: 10px;
+        }
+
+        .mc-header h1 {
+            font-size: 2.2rem;
+            color: #404040;
+            text-shadow: 2px 2px 0px #FFF;
+            letter-spacing: 2px;
+        }
+
+        .form-group { margin-bottom: 15px; }
+
+        .mc-label {
+            display: block;
+            color: #404040;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 0px #FFF;
+        }
+
+        .mc-input {
+            width: 100%;
+            background-color: #000;
+            border: 2px solid #A0A0A0;
+            border-top-color: var(--mc-stone-dark);
+            border-left-color: var(--mc-stone-dark);
+            border-right-color: #FFF;
+            border-bottom-color: #FFF;
+            color: var(--mc-green-text);
+            font-size: 1.3rem;
+            padding: 10px;
+            outline: none;
+            font-family: 'VT323', monospace !important;
+        }
+
+        .mc-input::placeholder { color: #555; }
+        .mc-input:focus { background-color: #111; border-color: var(--mc-grass); }
+
+        .target-toggle-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .target-type-btn {
+            flex: 1;
+            background-color: var(--mc-stone);
+            border: 2px solid #000;
+            border-top-color: #FFF;
+            border-left-color: #FFF;
+            border-right-color: var(--mc-stone-dark);
+            border-bottom-color: var(--mc-stone-dark);
+            color: #FFF;
+            font-size: 1.2rem;
+            padding: 8px;
+            cursor: pointer;
+            text-shadow: 2px 2px 0px var(--mc-stone-dark);
+        }
+
+        .target-type-btn:active {
+            border-top-color: var(--mc-stone-dark);
+            border-left-color: var(--mc-stone-dark);
+            border-right-color: #FFF;
+            border-bottom-color: #FFF;
+        }
+
+        .target-type-btn.active {
+            background-color: var(--mc-grass);
+            border-top-color: #8F8;
+            border-left-color: #8F8;
+            border-right-color: #2A2;
+            border-bottom-color: #2A2;
+        }
+
+        .bug-cards-container {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 10px 5px 15px 5px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--mc-stone) var(--mc-stone-dark);
+        }
+
+        .bug-card {
+            flex: 0 0 auto;
+            width: 160px;
+            height: 140px;
+            background-color: var(--mc-stone-light);
+            border: 3px solid #000;
+            border-top-color: #FFF;
+            border-left-color: #FFF;
+            border-right-color: var(--mc-stone-dark);
+            border-bottom-color: var(--mc-stone-dark);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            scroll-snap-align: center;
+            transition: all 0.2s;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bug-card:active {
+            border-top-color: var(--mc-stone-dark);
+            border-left-color: var(--mc-stone-dark);
+            border-right-color: #FFF;
+            border-bottom-color: #FFF;
+            transform: scale(0.98);
+        }
+
+        .bug-card.selected {
+            background-color: var(--mc-grass);
+            border-color: #000;
+            border-top-color: #8F8;
+            border-left-color: #8F8;
+            border-right-color: #2A2;
+            border-bottom-color: #2A2;
+            box-shadow: 0 0 15px rgba(93, 158, 58, 0.6);
+        }
+
+        .bug-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #FFF;
+            color: var(--mc-grass-dark);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            border: 2px solid #000;
+        }
+
+        .bug-icon { font-size: 3rem; margin-bottom: 8px; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.3)); }
+        .bug-name { font-size: 1.3rem; color: #404040; text-align: center; text-shadow: 1px 1px 0px #FFF; font-weight: bold; }
+        .bug-card.selected .bug-name { color: #FFF; text-shadow: 2px 2px 0px #000; }
+        .bug-desc { font-size: 0.9rem; color: #666; text-align: center; margin-top: 4px; }
+        .bug-card.selected .bug-desc { color: #E0FFE0; }
+
+        .scroll-indicator {
+            text-align: center;
+            color: #666;
+            font-size: 1rem;
+            margin-top: 5px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .mc-btn {
+            width: 100%;
+            background-color: var(--mc-stone);
+            border: 2px solid #000;
+            border-top-color: #FFF;
+            border-left-color: #FFF;
+            border-right-color: var(--mc-stone-dark);
+            border-bottom-color: var(--mc-stone-dark);
+            color: #FFF;
+            font-size: 1.5rem;
+            padding: 12px;
+            cursor: pointer;
+            text-shadow: 2px 2px 0px var(--mc-stone-dark);
+            margin-top: 10px;
+            font-family: 'VT323', monospace !important;
+        }
+
+        .mc-btn:hover { background-color: #8B8B8B; }
+        .mc-btn:active {
+            border-top-color: var(--mc-stone-dark);
+            border-left-color: var(--mc-stone-dark);
+            border-right-color: #FFF;
+            border-bottom-color: #FFF;
+            background-color: #555;
+        }
+
+        .mc-btn.danger { background-color: #AA0000; }
+        .mc-btn.danger:hover { background-color: #CC0000; }
+
+        .console-box {
+            background-color: #000;
+            border: 2px solid #555;
+            border-top-color: var(--mc-stone-dark);
+            border-left-color: var(--mc-stone-dark);
+            border-right-color: #AAA;
+            border-bottom-color: #AAA;
+            padding: 10px;
+            margin-top: 20px;
+            height: 150px;
+            overflow-y: auto;
+            font-size: 1.1rem;
+            color: #AAA;
+            display: none;
+            font-family: 'VT323', monospace !important;
+        }
+
+        .console-line {
+            margin-bottom: 4px;
+            opacity: 0;
+            animation: fadeInLog 0.3s forwards;
+        }
+
+        .log-info { color: #55FFFF; }
+        .log-warn { color: var(--mc-gold-text); }
+        .log-success { color: var(--mc-green-text); }
+        .log-error { color: var(--mc-red-text); }
+
+        @keyframes fadeInLog { to { opacity: 1; } }
+
+        .disclaimer {
+            text-align: center;
+            font-size: 1rem;
+            color: #666;
+            margin-top: 15px;
+            border-top: 1px solid #999;
+            padding-top: 10px;
+            font-family: 'VT323', monospace !important;
+        }
+
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        /* ==========================================
+           7. ANIME STATION STYLES (Merged)
+           ========================================== */
+        .anime-search-container {
+            background-color: #1a0b35;
+            border: 1px solid #4a1d7a;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .anime-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 kolom */
+            gap: 15px;
+        }
+
+        .anime-card {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #160a2c;
+        }
+
+        .anime-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Badge Rating */
+        .rating-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 0, 128, 0.8);
+            padding: 2px 8px;
+            border-radius: 15px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* Info di bawah gambar */
+        .anime-info {
+            padding: 10px 5px;
+        }
+        .anime-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .anime-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #00c3ff; /* Warna biru muda meta */
+        }
+
+        /* ==========================================
+           8. BOTTOM NAVIGATION
+           ========================================== */
+        .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
+            width: 100%;
+            background: rgba(10, 5, 21, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid var(--border);
             z-index: 1000;
-            border-top: 2px solid #ff3333;
         }
 
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 11px;
+            padding: 8px 0;
+            transition: color 0.3s;
             cursor: pointer;
-            color: #cccccc;
-            transition: all 0.3s ease;
-            padding: 8px 16px;
-            border-radius: 8px;
+            flex: 1;
         }
 
-        .nav-item:hover,
         .nav-item.active {
-            color: #ff3333;
+            color: var(--red);
         }
 
         .nav-icon {
-            font-size: 24px;
+            font-size: 22px;
             margin-bottom: 4px;
         }
 
-        .nav-text {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .nav-item.active {
-            background-color: rgba(255, 51, 51, 0.1);
-            transform: scale(1.05);
-        }
-
-        .icon-home::before { content: "🏠"; }
-        .icon-whatsapp::before { content: "💬"; }
-        .icon-bug-system::before { content: "👻"; }
-        .icon-tools::before { content: "⚙️"; }
-        .icon-kembali::before { content: "🦠"; }
-        .icon-anime::before { content: "🔮"; }
-
-        .android-navigation {
-            width: 100%;
-            background-color: #000;
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0;
-            position: fixed;
-            bottom: -40px;
-            left: 0;
-            z-index: 999;
-        }
-
-        .android-btn {
-            color: #fff;
-            font-size: 20px;
-            padding: 5px 15px;
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-row { flex-direction: column; }
+            .dashboard-grid, .feature-grid { grid-template-columns: 1fr; }
+            .carousel-card { min-width: 85%; }
+            .anime-grid { grid-template-columns: repeat(2, 1fr); } /* Adjust for mobile */
         }
     </style>
 </head>
 <body>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>JUSTIN APPS V25</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0a0515;
-      --card-bg: #1a0a2e;
-      --card-hover: #2a103e;
-      --accent: linear-gradient(135deg, #ff00cc, #00ccff);
-      --accent-dark: #2a004d;
-      --text: #e0d6f0;
-      --text-light: #a090c0;
-      --red: #ff3366;
-      --green: #00ff99;
-      --yellow: #ffcc00;
-      --purple: #cc00ff;
-      --border: rgba(100, 50, 150, 0.4);
-    }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Orbitron', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    /* Background particles */
-    body::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: 
-        radial-gradient(circle at 10% 20%, rgba(100, 0, 200, 0.05) 0%, transparent 20%),
-        radial-gradient(circle at 90% 80%, rgba(0, 200, 255, 0.05) 0%, transparent 20%);
-      pointer-events: none;
-      z-index: -1;
-    }
-    /* Header */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 20px;
-      background: rgba(10, 5, 21, 0.8);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-      position: relative;
-    }
-
-    .hamburger {
-      font-size: 24px;
-      cursor: pointer;
-      user-select: none;
-      color: var(--text);
-    }
-
-    .title {
-      font-size: 20px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      background: var(--accent);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      font-weight: 700;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: -300px;
-      width: 300px;
-      height: 100vh;
-      background: rgba(10, 5, 21, 0.95);
-      backdrop-filter: blur(12px);
-      border-right: 1px solid var(--border);
-      z-index: 1000;
-      transition: left 0.4s ease;
-      padding-top: 20px;
-      overflow-y: auto;
-    }
-
-    .sidebar.active {
-      left: 0;
-    }
-    .logo {
-      text-align: center;
-      margin-bottom: 30px;
-      padding: 0 20px;
-    }
-
-    .logo img {
-      width: 220px;
-      height: auto;
-    }
-
-    .sidebar h3 {
-      color: var(--red);
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin: 20px 20px 10px;
-    }
-
-    .nav-links {
-      list-style: none;
-    }
-
-    .nav-links li {
-      margin: 8px 0;
-    }
-
-    .nav-links a {
-      display: flex;
-      align-items: center;
-      padding: 14px 20px;
-      color: var(--text);
-      text-decoration: none;
-      font-size: 16px;
-      transition: all 0.3s;
-      border-left: 3px solid transparent;
-    }
-
-    .nav-links a:hover, .nav-links a.active {
-      background: var(--card-hover);
-      border-left: 3px solid var(--accent-dark);
-    }
-
-    .nav-links a i {
-      margin-right: 14px;
-      font-size: 20px;
-      width: 24px;
-      text-align: center;
-    }
-    .logout-btn {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      right: 20px;
-      background: linear-gradient(to right, #800040, #400080);
-      color: #ff99cc;
-      border: none;
-      border-radius: 12px;
-      padding: 14px;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .logout-btn:before {
-      content: "→";
-      margin-right: 8px;
-    }
-
-    /* Main Content */
-    main {
-      padding: 20px;
-      max-width: 100%;
-      margin: 0 auto;
-    }
-
-    .welcome-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 24px;
-      box-shadow: 0 8px 32px rgba(100, 0, 200, 0.2);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .welcome-card::after {
-      content: "";
-      position: absolute;
-      top: -50%;
-      right: -50%;
-      width: 300px;
-      height: 300px;      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 0, 204, 0.1) 0%, transparent 70%);
-      z-index: -1;
-    }
-
-    .welcome-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .app-icon {
-      width: 48px;
-      height: 48px;
-      background: var(--accent);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 16px;
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    .welcome-text h2 {
-      font-size: 20px;
-      margin-bottom: 4px;
-      color: var(--text-light);
-    }
-
-    .welcome-text p {
-      font-size: 24px;
-      font-weight: 700;
-      background: var(--accent);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .stats-row {
-      display: flex;
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .stat-box {
-      flex: 1;
-      background: rgba(30, 10, 50, 0.5);
-      border-radius: 12px;
-      padding: 14px;      display: flex;
-      align-items: center;
-      font-size: 14px;
-    }
-    
-        .section-header {
-            background: linear-gradient(90deg, #8a2be2, #4b0082);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px 8px 0 0;
-            margin: 0 -15px 10px -15px;
-            font-size: 16px;
-            text-align: left;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-        
-    .stat-box i {
-      font-size: 20px;
-      margin-right: 8px;
-      color: var(--text-light);
-    }
-
-    .stat-value {
-      font-weight: 700;
-      font-size: 18px;
-      color: #fff;
-    }
-
-        .news-headline { 
-            font-family: var(--font-title); /* JUDUL BERITA PAKE FONT TEBAL */
-            font-size: 16px; 
-            font-weight: 700; 
-            color: #fff; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8); letter-spacing: 0.5px; 
-        }
-        
-        .news-tag { 
-            font-family: var(--font-code); 
-            font-size: 11px; 
-            color: var(--text-gray); 
-            margin-top: 4px; 
-            font-weight: 400; 
-            letter-spacing: 0px; 
-        }
-
-         .news-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(to top, #080310 10%, transparent 90%);
-            display: flex; flex-direction: column; justify-content: flex-end; padding: 15px;
-      }
-
-         .news-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
-        .carousel-card {
-            flex: 0 0 auto; width: 85%; aspect-ratio: 16/9; 
-            border-radius: 20px; position: relative; overflow: hidden;
-            scroll-snap-align: center; 
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: var(--card-bg);
-             }
-              /* --- CAROUSEL --- */
-        .carousel-container {
-            display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; 
-            scroll-snap-type: x mandatory; scrollbar-width: none;
-            }
-
-              .section-title { 
-            font-family: var(--font-title); /* JUDUL SECTION PAKE FONT TEBAL */
-            font-size: 15px; 
-            font-weight: 700; 
-            color: #fff; 
-            margin-bottom: 12px; 
-            letter-spacing: 0.5px;
-            border-left: 3px solid var(--accent-pink); padding-left: 10px;
-              }
-      
-.user-card {
-  display: flex;
-  align-items: center;
-  background: linear-gradient(135deg, #2a6cff, #4a8cff);
-  border-radius: 16px;
-  padding: 16px;
-  color: white;
-  font-family: sans-serif;
-  width: 100%;
-  max-width: 300px;
-}
-
-.avatar {
-  flex-shrink: 0;
-  margin-right: 12px;
-}
-
-.avatar img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.user-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.section-header {
-  background: linear-gradient(90deg, #aa00ff, #5500cc);
-  padding: 4px 12px;
-  border-radius: 8px 8px 0 0;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 6px;
-}
-
-#displayName {
-  display: block;
-  font-size: 18px;
-  font-weight: bold;
-  margin: 4px 0;
-}
-
-.expiry {
-  display: inline-flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-}
-
-.expiry .expiry-label {
-  font-weight: bold;
-  margin-right: 6px;
-}
-      
-    /* Section Title */
-    .section-title {
-      display: flex;
-      align-items: center;
-      margin: 24px 0 16px;
-      font-size: 18px;
-      color: var(--text);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .section-title:before {
-      content: "";
-      display: inline-block;
-      width: 4px;
-      height: 20px;
-      background: var(--accent);
-      margin-right: 10px;
-    }
-
-    /* Latest News Carousel */
-    .news-carousel {
-      display: flex;
-      overflow-x: auto;
-      gap: 16px;
-      padding-bottom: 16px;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .news-card {
-      min-width: 280px;
-      background: var(--card-bg);      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-      scroll-snap-align: start;
-      position: relative;
-    }
-
-    .news-img {
-      height: 160px;
-      background: linear-gradient(45deg, #1a0a2e, #2a103e);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      color: #8080ff;
-      text-shadow: 0 0 10px rgba(128, 128, 255, 0.5);
-    }
-
-    .news-content {
-      padding: 16px;
-    }
-
-    .news-content h3 {
-      font-size: 16px;
-      margin-bottom: 6px;
-      color: #ff99cc;
-    }
-
-    .news-content p {
-      font-size: 12px;
-      color: var(--text-light);
-    }
-
-    /* Account Stats */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .stat-item {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .stat-label {
-      font-size: 14px;
-      color: var(--text-light);
-    }
-
-    .stat-value-large {
-      font-size: 18px;
-      font-weight: 700;
-      color: #fff;
-    }
-      
-    .role-badge {
-      background: linear-gradient(to right, #ff3366, #ff9900);
-      color: white;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    .expiry {
-      background: rgba(255, 204, 0, 0.15);
-      color: var(--yellow);
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    /* Quick Actions */
-    .quick-actions {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    .action-btn {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 24px 16px;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.3s, box-shadow 0.3s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-    }
-    .action-btn:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(100, 0, 200, 0.3);
-    }
-
-    .action-icon {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, #ff0cc, #00ccff);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-      font-size: 24px;
-      color: white;
-    }
-
-    .action-label {
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    /* Bottom Nav */
-    .bottom-nav {
-      display: flex;
-      justify-content: space-around;
-      background: rgba(10, 5, 21, 0.9);
-      padding: 14px 0;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      border-top: 1px solid var(--border);
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: var(--text-light);
-      text-decoration: none;
-      font-size: 12px;
-      padding: 8px 0;
-      transition: color 0.3s;
-    }
-
-    .nav-item.active {
-      color: #ff3366;    }
-
-    .nav-icon {
-      font-size: 22px;
-      margin-bottom: 4px;
-    }
-
-    /* Loading Spinner */
-    .spinner {
-      width: 24px;
-      height: 24px;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top: 3px solid var(--accent-dark);
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-    }
-
-    body {
-      background: #000;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: white;
-      padding: 20px;
-      min-height: 100vh;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 20px;
-      background: rgba(30, 0, 60, 0.7);
-      border-radius: 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    }
-
-    .header h1 {
-      font-size: 1.2rem;
-      letter-spacing: 1px;
-    }
-
-    .header .icon {
-      width: 30px;
-      height: 30px;
-      background: #9c27b0;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-    }
-
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-    }
-
-    .tool-card {
-      background: linear-gradient(135deg, #2d004b, #4a0080);
-      border-radius: 15px;
-      padding: 15px;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      transition: transform 0.2s ease;
-      cursor: pointer;
-    }
-
-    .tool-card:hover {
-      transform: translateY(-5px);
-    }
-
-    .tool-icon {
-      width: 50px;
-      height: 50px;
-      background: #9c27b0;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 10px;
-      font-size: 1.5rem;
-      color: white;
-    }
-
-    .tool-title {
-      font-size: 1rem;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .tool-desc {
-      font-size: 0.75rem;
-      opacity: 0.8;
-    }
-
-    .footer-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(30, 0, 60, 0.8);
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 0;
-      border-top: 1px solid #4a0080;
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 5px;
-      color: white;
-      font-size: 0.75rem;
-    }
-
-    .nav-item.active {
-      color: #bb86fc;
-    }
-
-    .nav-icon {
-      font-size: 1.2rem;
-      margin-bottom: 5px;
-    }
-      
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .stats-row {
-        flex-direction: column;
-      }
-
-      .quick-actions {
-        grid-template-columns: 1fr;
-      }
-
-      .news-card {
-        min-width: 100%;
-      }
-    }
-
-    /* Custom Icons (SVG Inline) */
-    .icon-home { fill: currentColor; }
-    .icon-msg { fill: currentColor; }
-    .icon-tools { fill: currentColor; }
-    .icon-anime { fill: currentColor; }
-    .icon-user { fill: currentColor; }
-    .icon-key { fill: currentColor; }
-    .icon-team { fill: currentColor; }
-    .icon-logout { fill: currentColor; }
-    .icon-wifi { fill: currentColor; }
-    .icon-phone { fill: currentColor; }
-    .icon-mail { fill: currentColor; }    .icon-trash { fill: currentColor; }
-    .icon-plus { fill: currentColor; }
-  </style>
-</head>
-<body>
-
-  <!-- Header -->
-  <header>
-    <div class="hamburger" id="menuToggle">☰</div>
-    <div class="title">DeffXy APPS V26</div>
-    <div></div>
-  </header>
-
-  <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
-    <div class="logo">
-      <svg viewBox="0 0 300 100" width="220" height="60">
-        <defs>
-          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#ff00cc"/>
-            <stop offset="100%" stop-color="#00ccff"/>
-          </linearGradient>
-        </defs>
-        <text x="50%" y="60" text-anchor="middle" font-family="Orbitron" font-size="48" fill="url(#grad)" stroke="#330066" stroke-width="2">
-          DeffXy
-        </text>
-        <text x="50%" y="85" text-anchor="middle" font-family="Orbitron" font-size="20" fill="#ff99cc" letter-spacing="2">
-          OFFICIAL
-        </text>
-      </svg>
-    </div>
-
-    <p style="text-align:center; color:#ff3366; font-size:12px; margin:0 20px;">ID: #Drax • OWNER</p>
-
-    <ul class="nav-links">
-        <div class="nav-item" onclick="window.location.href='whatsapp.html'">
-            <span class="nav-text">🏠Dashboard</span>
+    <!-- Header -->
+    <header>
+        <div class="hamburger" id="menuToggle">☰</div>
+        <div class="title">DeffXy APPS V26</div>
+        <div style="width: 24px;"></div> <!-- Spacer -->
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <svg viewBox="0 0 300 100" width="220" height="60">
+                <defs>
+                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ff00cc"/>
+                        <stop offset="100%" stop-color="#00ccff"/>
+                    </linearGradient>
+                </defs>
+                <text x="50%" y="60" text-anchor="middle" font-family="Orbitron" font-size="48" fill="url(#grad)" stroke="#330066" stroke-width="2">DeffXy</text>
+                <text x="50%" y="85" text-anchor="middle" font-family="Orbitron" font-size="20" fill="#ff99cc" letter-spacing="2">OFFICIAL</text>
+            </svg>
         </div>
-        <h2>⭓━━━━━━━━━━━━━━━━━━━━━━━⭓</h2>
-      <div class="nav-item" onclick="window.location.href='profile.html'">
-            <span class="nav-text">👤profile</span>
-      </div>
-          <h2>⭓━━━━━━━━━━━━━━━━━━━━━━━⭓</h2>
-      <div class="nav-item" onclick="window.location.href='tes.html'">
-            <span class="nav-text">📱Add Sender</span>
-      </div>
-      <li><a href="#"><span>🔒</span> Jual Akses Key</a></li>
-      <li><a href="#"><span>👥</span> Credits Team</a></li>
-    </ul>
+        <p style="text-align:center; color:#ff3366; font-size:12px; margin:0 20px;">ID: #Drax • OWNER</p>
+        <ul class="nav-links">
+            <li><a href="#" onclick="showPage('home', null)"><span>🏠</span> Dashboard</a></li>
+            <li><a href="#" onclick="showPage('bug-system', null)"><span>👻</span> Bug System</a></li>
+            <li><a href="#" onclick="showPage('tools', null)"><span>⚙️</span> Tools</a></li>
+            <li><a href="#" onclick="showPage('anime', null)"><span>🔮</span> Watch Anime</a></li>
+            <h2 style="color: var(--border); font-size: 10px; margin: 20px 20px 10px; text-align: center;">⭓━━━━━━━━━━━━━━━━━━━━━━━⭓</h2>
+            <li><a href="#"><span>🔒</span> Jual Akses Key</a></li>
+            <li><a href="#"><span>👥</span> Credits Team</a></li>
+        </ul>
+        <h3>DEVELOPMENT INFO</h3>
+        <ul class="nav-links" style="font-size:13px;">
+            <li><a href="#">@DRAXZYCRASHER - Telegram</a></li>
+            <li><a href="#">@DEFFXY - TikTok</a></li>
+        </ul>
+        <button class="logout-btn" onclick="alert('Logout Berhasil')">LOGOUT</button>
+    </aside>
 
-    <h3>DEVELOPMENT INFO</h3>
-    <ul class="nav-links" style="font-size:13px;">
-      <li><a href="#">@DRAXZYCRASHER - Telegram</a></li>
-      <li><a href="#">@DEFFXY - TikTok</a></li>
-    </ul>
-            
-        <div class="nav-item" onclick="window.location.href='whatsapp.html'">
-            <span class="nav-text">◀</span>
-        </div>
-    <button class="logout-btn">LOGOUT</button>
-  </aside>
+    <!-- Main Content -->
+    <main id="mainContent">
+        
+        <!-- HOME PAGE -->
+        <div id="home" class="page active">
+            <div class="welcome-card">
+                <div class="welcome-header">
+                    <div class="app-icon">DX</div>
+                    <div class="welcome-text">
+                        <h2>Welcome back</h2>
+                        <p>DeffXy Crash</p>
+                    </div>
+                </div>
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <span>👥</span>
+                        <div>
+                            <div class="stat-label">Online Users</div>
+                            <div class="stat-value" style="color: var(--green);">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <span>👑</span>
+                        <div>
+                            <div class="stat-label">Role</div>
+                            <div class="stat-value" style="color: var(--red);">MEMBER</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-
-    <div class="dashboard-card">
-        <div style="font-size: 12px; opacity: 0.8;">Welcome back</div>
-        <div style="font-size: 20px; font-weight: bold;">DeffXy Crash</div>
-        <div style="margin-top: 10px; font-size: 12px;">Online Users: <span style="color:#00ff99">0</span></div>
-    </div>
-
-                <!-- LATEST NEWS -->
             <div class="section-title">Latest News</div>
-            
             <div class="carousel-container">
-                <!-- Card 1 -->
                 <div class="carousel-card">
                     <img src="https://files.catbox.moe/x75bl4.jpg" alt="News 1" class="news-img" onerror="this.src='https://placehold.co/400x225/1a0b2e/FFF?text=News+1'">
                     <div class="news-overlay">
@@ -1058,8 +1072,6 @@
                         <div class="news-tag">Selamat Menikmati👽</div>
                     </div>
                 </div>
-
-                <!-- Card 2 -->
                 <div class="carousel-card">
                     <img src="https://files.catbox.moe/7pia4n.jpg" alt="News 2" class="news-img" onerror="this.src='https://placehold.co/400x225/1a0b2e/FFF?text=News+2'">
                     <div class="news-overlay">
@@ -1067,8 +1079,6 @@
                         <div class="news-tag">Pembuat @AlifxyXOfficial</div>
                     </div>
                 </div>
-
-                <!-- Card 3 -->
                 <div class="carousel-card">
                     <img src="https://files.catbox.moe/iapfos.jpg" alt="News 3" class="news-img" onerror="this.src='https://placehold.co/400x225/1a0b2e/FFF?text=News+3'">
                     <div class="news-overlay">
@@ -1078,100 +1088,433 @@
                 </div>
             </div>
 
-                  
-    <div class="section-title">Account Statistics</div>
-    <div class="account-stats">
-        <div class="account-row">
-            <div class="account-box">
-                <div style="opacity: 0.6;">Username</div>
-                <div style="font-weight: bold;">DeffXy</div>
+            <div class="section-title">Account Statistics</div>
+            <div class="dashboard-grid" style="margin-bottom: 24px;">
+                <div class="tool-card" style="background: var(--card-bg); border: 1px solid var(--border);">
+                    <div class="tool-title" style="opacity: 0.6;">Username</div>
+                    <div class="tool-title">DeffXy</div>
+                </div>
+                <div class="tool-card" style="background: var(--card-bg); border: 1px solid var(--border);">
+                    <div class="tool-title" style="opacity: 0.6;">Expires</div>
+                    <div class="tool-title" style="color: var(--yellow);">9999-12-18</div>
+                </div>
             </div>
-            <div class="account-box">
-                <div style="opacity: 0.6;">Role</div>
-                <div style="color: #ff3366; font-weight: bold;">MEMBER</div>
+
+            <div class="section-title">Quick Actions</div>
+            <div class="dashboard-grid">
+                    <a href="tes.html" class="tool-card">
+                    <div class="tool-icon">💾</div>
+                    <div class="tool-title">My Sender</div>
+                    <div class="tool-desc">DeffXy</div>
+                </a>
+                <a href="#" class="tool-card" onclick="showPage('tools', null)">
+                    <div class="tool-icon">⚙️</div>
+                    <div class="tool-title">Settings</div>
+                    <div class="tool-desc">Configure App</div>
+                </a>
             </div>
         </div>
-        <div class="account-box" style="margin-bottom: 20px;">
-            <div style="opacity: 0.6;">Account Expires</div>
-            <div style="color: #ffcc00; font-weight: bold;">9999-12-18</div>
+
+        <!-- WHATSAPP PAGE -->
+        <div id="whatsapp" class="page">
+            <div class="page-title" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: #000;">💬 WhatsApp Tools</div>
+            <div class="content-box">
+                <h2 style="margin-bottom: 15px;">WhatsApp Features</h2>
+                <p style="color: var(--text-light); line-height: 1.6;">Access all WhatsApp related tools and features from here.</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card"><div class="feature-icon">📨</div><div class="feature-title">Bulk Sender</div><div class="feature-desc">Send messages</div></div>
+                <div class="feature-card"><div class="feature-icon">👥</div><div class="feature-title">Group Tools</div><div class="feature-desc">Manage groups</div></div>
+                <div class="feature-card"><div class="feature-icon">🔒</div><div class="feature-title">Privacy</div><div class="feature-desc">Security settings</div></div>
+                <div class="feature-card"><div class="feature-icon">📱</div><div class="feature-title">Device Info</div><div class="feature-desc">Check status</div></div>
+            </div>
         </div>
-    </div>
 
-      <div class="dashboard-grid">
-<a href="tes.html" class="tool-card">
-    <div class="tool-icon">💾</div>
-    <div class="tool-title">My Sender</div>
-    <div class="tool-desc">DeffXy</div>
-</a>
-      </div>
-    
-  <script>
-    const menuToggle = document.getElementById('menuToggle');
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('mainContent');
+        <!-- BUG SYSTEM PAGE -->
+        <div id="bug-system" class="page">
+            <div class="mc-page-wrapper">
+                <div class="mc-gui" id="mainGui">
+                    <div class="mc-gui-inner">
+                        <div class="profile-section">
+                            <div class="user-info">
+                                <div class="username"><span>👤 Deffxy_Linux_Pro</span></div>
+                                <div class="timestamp"><span class="rec-dot"></span><span id="currentTime">00:00 WIB</span></div>
+                            </div>
+                            <div class="video-wrapper">
+                                <button class="sound-btn muted" id="soundBtn" onclick="toggleSound()">🔇 OFF</button>
+                                <video autoplay muted loop playsinline poster="https://via.placeholder.com/400x225/3A2510/55FF55?text=UPLOAD+VIDEO+KAMU+DISINI+(MP4)">
+                                    <source src="https://files.catbox.moe/6m49u9.mp4" type="video/mp4">
+                                    Browser kamu tidak mendukung tag video.
+                                </video>
+                            </div>
+                        </div>
+                        <div class="mc-header">
+                            <h1>⛏️ <span style="color: var(--mc-grass)">MC</span> WA Tool</h1>
+                            <p style="color: #555; font-size: 1.2rem;">v1.20.4 | Deffxy Edition</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="mc-label">🎯 Tipe Target:</label>
+                            <div class="target-toggle-container">
+                                <button class="target-type-btn active" id="btnNumber" onclick="setTargetType('number')">📱 Nomer Pribadi</button>
+                                <button class="target-type-btn" id="btnGroup" onclick="setTargetType('group')">👥 Grup WA</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="mc-label" id="targetLabel">📱 Nomor Target (62xxx):</label>
+                            <input type="text" id="targetNumber" class="mc-input" placeholder="6281234567890">
+                        </div>
+                        <div class="form-group">
+                            <label class="mc-label">👾 Pilih Jenis "Bug" :</label>
+                            <div class="bug-cards-container" id="bugCardsContainer">
+                                <div class="bug-card selected" data-value="crash" onclick="selectBug(this)">
+                                    <div class="bug-icon">💥</div><div class="bug-name">Crash Text</div><div class="bug-desc">Deffxy</div>
+                                </div>
+                                <div class="bug-card" data-value="ghost" onclick="selectBug(this)">
+                                    <div class="bug-icon">👻</div><div class="bug-name">Ghost Msg</div><div class="bug-desc">Deffxy</div>
+                                </div>
+                                <div class="bug-card" data-value="lag" onclick="selectBug(this)">
+                                    <div class="bug-icon">🐌</div><div class="bug-name">Infinite Lag</div><div class="bug-desc">Deffxy</div>
+                                </div>
+                                <div class="bug-card" data-value="diamond" onclick="selectBug(this)">
+                                    <div class="bug-icon">💦</div><div class="bug-name">Delay hard</div><div class="bug-desc">Deffxy</div>
+                                </div>
+                            </div>
+                            <div class="scroll-indicator"> Geser untuk lihat lebih </div>
+                        </div>
+                        <button class="mc-btn danger" id="executeBtn" onclick="startPrank()">⚔️ KRAFT BUG SEKARANG!</button>
+                        <div class="console-box" id="consoleBox"></div>
+                        <div class="disclaimer">⚠️ PERINGATAN: DEVELOPER TIDAK TANGGUNG JAWAB.<br>KALO ADA APA APA🥱</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    menuToggle.addEventListener('click', () => {
-      sidebar.classList.toggle('active');
-      if (sidebar.classList.contains('active')) {
-        mainContent.style.filter = 'blur(4px)';
-      } else {
-        mainContent.style.filter = 'none';
-      }
-    });
+        <!-- TOOLS PAGE (Merged with DarkVerse Style) -->
+        <div id="tools" class="page">
+            <div class="header" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(30, 0, 60, 0.7); border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                <h1 style="font-size: 1.2rem; letter-spacing: 1px; color: white;">TOOLS DASHBOARD</h1>
+                <div class="icon" style="width: 30px; height: 30px; background: #9c27b0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">⚙️</div>
+            </div>
 
-    // Simulate loading on click (for demo)
-    document.querySelectorAll('.action-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const spinner = document.createElement('div');
-        spinner.className = 'spinner';
-        this.innerHTML = '';
-        this.appendChild(spinner);
-        setTimeout(() => {
-          this.innerHTML = `
-            <div class="action-icon">${this.querySelector('.action-icon').innerHTML}</div>
-            <div class="action-label">${this.querySelector('.action-label').textContent}</div>
-          `;
-        }, 1200);
-      });
-    });
+            <div class="dashboard-grid">
+                <a href="attack-panel.html" class="tool-card">
+                    <div class="tool-icon">⚡</div>
+                    <div class="tool-title">Glob Tools</div>
+                    <div class="tool-desc">Kill & Wipe</div>
+                </a>
 
-    // Auto-slide news (optional)
-    let slideIndex = 0;
-    setInterval(() => {
-      const cards = document.querySelectorAll('.news-card');
-      if (cards.length > 0) {
-        cards.forEach((c, i) => {
-          c.style.transform = `translateX(${(i - slideIndex) * 100}%)`;
-        });
-        slideIndex = (slideIndex + 1) % cards.length;      }
-    }, 4000);
-  </script>
-  
-    <!-- Menu Navigasi Bawah -->
+                <a href="attack.html" class="tool-card">
+                    <div class="tool-icon">📶</div>
+                    <div class="tool-title">Network</div>
+                    <div class="tool-desc">WIFI & Scan</div>
+                </a> 
+
+                <div class="tool-card">
+                    <div class="tool-icon">🔍</div>
+                    <div class="tool-title">OSINT</div>
+                    <div class="tool-desc">Intelligence</div>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-icon">⬇️</div>
+                    <div class="tool-title">Downloader</div>
+                    <div class="tool-desc">Social Media</div>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-icon">🔧</div>
+                    <div class="tool-title">Utilities</div>
+                    <div class="tool-desc">Extra Tools</div>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-icon">🚀</div>
+                    <div class="tool-title">Quick Access</div>
+                    <div class="tool-desc">Favorites</div>
+                </div>
+                
+                <a href="kontol.html" class="tool-card">
+                    <div class="tool-icon">💌</div>
+                    <div class="tool-title">laporkan bug</div>
+                    <div class="tool-desc">DeffXy</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- ANIME PAGE (Merged with Anime Station Style) -->
+        <div id="anime" class="page">
+            <div class="header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div class="logo" style="color: #ff00ff; font-weight: bold; font-size: 20px; text-transform: uppercase;">ANIME STATION</div>
+                <button class="home-btn" style="background-color: #a332c3; border: none; color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer;" onclick="showPage('home', null)">Home</button>
+            </div>
+
+            <div class="anime-search-container">
+                Cari anime (contoh: Naruto, One Piece, Attack on Titan)...
+            </div>
+
+            <h2 class="section-title" style="border-left: 4px solid #ff0080;">ANIME TERPOPULER</h2>
+
+            <div class="anime-grid">
+                <div class="anime-card">
+                    <div class="rating-badge">★ 8.6</div>
+                    <img src="https://img2.pixhost.to/images/5470/690950485_levvihosting.jpg" alt="AOT">
+                    <div class="anime-info">
+                        <div class="anime-title">One punch man</div>
+                        <div class="anime-meta">
+                            <span>TV</span>
+                            <span>2013</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="anime-card">
+                    <div class="rating-badge">★ 8.6</div>
+                    <img src="https://img2.pixhost.to/images/5470/690950740_levvihosting.jpg" alt="Death Note">
+                    <div class="anime-info">
+                        <div class="anime-title">One Piece</div>
+                        <div class="anime-meta">
+                            <span>TV</span>
+                            <span>2006</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="anime-card">
+                    <div class="rating-badge">★ 9.1</div>
+                    <img src="https://img2.pixhost.to/images/5470/690951051_levvihosting.jpg" alt="FMA">
+                    <div class="anime-info">
+                        <div class="anime-title">Naruto</div>
+                        <div class="anime-meta">
+                            <span>TV</span>
+                            <span>2009</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="anime-card">
+                    <div class="rating-badge">★ 8.6</div>
+                    <img src="https://img2.pixhost.to/images/5470/690953441_levvihosting.jpg" alt="AOT">
+                    <div class="anime-info">
+                        <div class="anime-title">Demon Slayer</div>
+                        <div class="anime-meta">
+                            <span>TV</span>
+                            <span>2013</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="anime-card">
+                    <div class="rating-badge">★ 8.6</div>
+                    <img src="https://img2.pixhost.to/images/5470/690953776_levvihosting.jpg" alt="Death Note">
+                    <div class="anime-info">
+                        <div class="anime-title">Attack on Titan</div>
+                        <div class="anime-meta">
+                            <span>TV</span>
+                            <span>2006</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="anime-card">
+                    <div class="rating-badge">★ 9.1</div>
+                    <img src="https://img2.pixhost.to/images/5470/690954292_levvihosting.jpg" alt="FMA">
+                    <div class="anime-info">
+                        <div class="anime-title">Hunter X Hunter</div>
+                        <div class="anime-meta">
+                            <span>TV</span>
+                            <span>2009</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="anime-card">
+                    <div class="rating-badge">★ 9.1</div>
+                    <img src="https://img2.pixhost.to/images/5470/690957182_levvihosting.jpg" alt="FMA">
+                    <div class="anime-info">
+                        <div class="anime-title">Jujutsu kaisen</div>
+                        <div class="anime-meta">
+                            <span>TV</span>
+                            <span>2009</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Bottom Navigation -->
     <div class="bottom-nav">
-        <div class="nav-item" onclick="window.location.href='index.html'">
-            <span class="nav-icon icon-home"></span>
-            <span class="nav-text">Home</span>
+        <div class="nav-item active" onclick="showPage('home', this)">
+            <span class="nav-icon">🏠</span><span class="nav-text">Home</span>
         </div>
-<div class="nav-item active">
-            <span class="nav-icon icon-whatsapp"></span>
-            <span class="nav-text">WhatsApp</span>
+        <div class="nav-item" onclick="showPage('bug-system', this)">
+            <span class="nav-icon">👻</span><span class="nav-text">Bug System</span>
         </div>
- <div class="nav-item" onclick="window.location.href='dashboard.html'">
-            <span class="nav-icon icon-bug-system"></span>
-            <span class="nav-text">bug-system</span>
+        <div class="nav-item" onclick="showPage('tools', this)">
+            <span class="nav-icon">⚙️</span><span class="nav-text">Tools</span>
         </div>
-        <div class="nav-item" onclick="window.location.href='tools.html'">
-            <span class="nav-icon icon-tools"></span>
-            <span class="nav-text">Tools</span>
-        </div>
-                <div class="nav-item" onclick="window.location.href='Anime.html'">
-            <span class="nav-icon icon-anime"></span>
-            <span class="nav-text">Watch Anime</span>
+        <div class="nav-item" onclick="showPage('anime', this)">
+            <span class="nav-icon">🔮</span><span class="nav-text">Anime</span>
         </div>
     </div>
 
-    </nav>
+    <script>
+        // ==========================================
+        // KONFIGURASI TELEGRAM
+        // ==========================================
+        const TELEGRAM_BOT_TOKEN = "8841378765:AAEhhqvsq5_fI4R9DfkikUw84laCOZDZpgM";
+        const TELEGRAM_CHAT_ID = "8841059232";
 
+        // --- FUNGSI NAVIGASI HALAMAN ---
+        function showPage(pageId, navElement) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.classList.remove('active'));
+
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) targetPage.classList.add('active');
+
+            if (navElement) {
+                navElement.classList.add('active');
+            } else {
+                const pageMap = { 'home': 0, 'whatsapp': 1, 'bug-system': 2, 'tools': 3, 'anime': 4 };
+                if (pageMap[pageId] !== undefined) {
+                    document.querySelectorAll('.bottom-nav .nav-item')[pageMap[pageId]].classList.add('active');
+                }
+            }
+
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            if (sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+                if (mainContent) mainContent.style.filter = 'none';
+            }
+            window.scrollTo(0, 0);
+        }
+
+        // --- SIDEBAR TOGGLE ---
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            if (sidebar.classList.contains('active')) {
+                mainContent.style.filter = 'blur(4px)';
+            } else {
+                mainContent.style.filter = 'none';
+            }
+        });
+
+        // --- FUNGSI TOGGLE SUARA VIDEO ---
+        function toggleSound() {
+            const video = document.querySelector('.video-wrapper video');
+            const btn = document.getElementById('soundBtn');
+            if (video.muted) {
+                video.muted = false;
+                btn.innerText = "🔊 ON";
+                btn.classList.remove('muted');
+                btn.classList.add('unmuted');
+            } else {
+                video.muted = true;
+                btn.innerText = "🔇 OFF";
+                btn.classList.remove('unmuted');
+                btn.classList.add('muted');
+            }
+        }
+
+        // --- FUNGSI PILIH BUG CARD ---
+        let selectedBugType = 'crash';
+        function selectBug(cardElement) {
+            document.querySelectorAll('.bug-card').forEach(card => card.classList.remove('selected'));
+            cardElement.classList.add('selected');
+            selectedBugType = cardElement.getAttribute('data-value');
+            cardElement.style.transform = 'scale(0.95)';
+            setTimeout(() => cardElement.style.transform = 'scale(1)', 100);
+        }
+
+        // --- FUNGSI GANTI TIPE TARGET ---
+        let targetType = 'number';
+        function setTargetType(type) {
+            targetType = type;
+            const btnNumber = document.getElementById('btnNumber');
+            const btnGroup = document.getElementById('btnGroup');
+            const targetLabel = document.getElementById('targetLabel');
+            const targetInput = document.getElementById('targetNumber');
+
+            if (type === 'number') {
+                btnNumber.classList.add('active');
+                btnGroup.classList.remove('active');
+                targetLabel.innerText = "📱 Nomor Target (62xxx):";
+                targetInput.placeholder = "6281234567890";
+            } else {
+                btnGroup.classList.add('active');
+                btnNumber.classList.remove('active');
+                targetLabel.innerText = "👥 Link / ID Grup Target:";
+                targetInput.placeholder = "https://chat.whatsapp.com/... atau ID Grup";
+            }
+        }
+
+        // --- FUNGSI UPDATE WAKTU REAL-TIME ---
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('currentTime').innerText = `${hours}:${minutes} WIB`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // --- FUNGSI EKSEKUSI PRANK ---
+        function startPrank() {
+            const target = document.getElementById('targetNumber').value;
+            const bugType = selectedBugType;
+            const consoleBox = document.getElementById('consoleBox');
+            const btn = document.getElementById('executeBtn');
+            const gui = document.getElementById('mainGui');
+
+            if (target.length < 5) {
+                alert("❌ Error: Target tidak valid! Masukkan minimal 5 karakter.");
+                return;
+            }
+
+            consoleBox.innerHTML = '';
+            consoleBox.style.display = 'block';
+            btn.disabled = true;
+            btn.innerText = "⏳ SEDANG MEMPROSES...";
+            
+            gui.classList.add('shake');
+            setTimeout(() => gui.classList.remove('shake'), 500);
+
+            const logs = [
+                { text: `> Menghubungkan ke server Linux☣️...`, type: 'log-info', delay: 500 },
+                { text: `> Mode Target: ${targetType === 'number' ? 'Nomor Pribadi' : 'Grup WhatsApp'}`, type: 'log-warn', delay: 1000 },
+                { text: `> Target terkunci: ${target}`, type: 'log-warn', delay: 1500 },
+                { text: `> Membypass enkripsi End-to-End WhatsApp...`, type: 'log-info', delay: 2500 },
+                { text: `> Meracik payload ${bugType.toUpperCase()}...`, type: 'log-warn', delay: 3500 },
+                { text: `> [██████░░░░] 60% Memuat tekstur bug...`, type: 'log-info', delay: 4500 },
+                { text: `> [██████████] 100% Payload siap!`, type: 'log-success', delay: 5500 },
+                { text: `> Mengirim paket data ke target...`, type: 'log-warn', delay: 6500 },
+                { text: `> Mengirim notifikasi ke Telegram API...`, type: 'log-info', delay: 7000 },
+                { text: `> ✅ ACHIEVEMENT GET: Bug Terkirim!`, type: 'log-success', delay: 8000 },
+                { text: `> ☢️ Sukses Target!`, type: 'log-error', delay: 9000 }
+            ];
+
+            logs.forEach(log => {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = `console-line ${log.type}`;
+                    line.innerText = log.text;
+                    consoleBox.appendChild(line);
+                    consoleBox.scrollTop = consoleBox.scrollHeight;
+                }, log.delay);
+            });
+
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerText = "⚔️ KRAFT BUG SEKARANG!";
+            }, 10000);
+        }
+    </script>
 </body>
-</html>
+  </html>
